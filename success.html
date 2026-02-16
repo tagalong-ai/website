@@ -22,32 +22,11 @@
       --text-secondary: #A8A29E;
       --text-tertiary: #78716C;
       --accent: #F59E0B;
-      --accent-hover: #D97706;
-      --accent-subtle: rgba(245,158,11,0.1);
-      --secondary: #7DA882;
-      --secondary-subtle: rgba(125,168,130,0.1);
-      --success: #7DA882;
+      --cta: #7DA882;
+      --cta-hover: #6B8F71;
       --card-shadow: 0 4px 24px rgba(0,0,0,0.3);
-      --radius: 12px;
+      --radius: 16px;
       --radius-sm: 8px;
-    }
-
-    html.light {
-      --bg: #FAF9F6;
-      --surface: #F5F0EB;
-      --surface-elevated: #FFFFFF;
-      --border: #E7E5E4;
-      --border-subtle: #F0EEEB;
-      --text: #1C1917;
-      --text-secondary: #78716C;
-      --text-tertiary: #A8A29E;
-      --accent: #D97706;
-      --accent-hover: #B45309;
-      --accent-subtle: rgba(217,119,6,0.08);
-      --secondary: #6B8F71;
-      --secondary-subtle: rgba(107,143,113,0.08);
-      --success: #6B8F71;
-      --card-shadow: 0 4px 24px rgba(0,0,0,0.06);
     }
 
     body {
@@ -65,58 +44,118 @@
 
     .success-container {
       text-align: center;
-      max-width: 600px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 56px 40px;
-      box-shadow: var(--card-shadow);
+      max-width: 480px;
+      width: 100%;
     }
 
-    .success-icon {
-      width: 80px;
-      height: 80px;
-      background: var(--secondary-subtle);
-      border-radius: 50%;
-      display: flex;
+    .logo-mark {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 32px;
+      filter: drop-shadow(0 8px 24px rgba(245,158,11,0.2));
+    }
+
+    .logo-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .badge {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-      font-size: 48px;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(125,168,130,0.12);
+      border: 1px solid rgba(125,168,130,0.25);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cta);
+      margin-bottom: 20px;
+      letter-spacing: .02em;
+    }
+
+    .badge svg {
+      width: 14px;
+      height: 14px;
     }
 
     h1 {
-      font-size: 48px;
+      font-size: 32px;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       letter-spacing: -.02em;
-      background: linear-gradient(135deg, var(--accent), #FBBF24);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--text);
     }
 
-    p {
-      font-size: 18px;
-      line-height: 1.6;
+    .description {
+      font-size: 16px;
+      line-height: 1.7;
       color: var(--text-secondary);
-      margin-bottom: 32px;
+      margin-bottom: 36px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .step + .step {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(245,158,11,0.1);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .step-text strong {
+      color: var(--text);
+      font-weight: 600;
     }
 
     .button-group {
       display: flex;
-      gap: 16px;
+      gap: 12px;
       justify-content: center;
-      flex-wrap: wrap;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 14px 28px;
-      border-radius: var(--radius);
-      font-size: 16px;
+      padding: 13px 24px;
+      border-radius: 10px;
+      font-size: 15px;
       font-weight: 600;
       border: none;
       cursor: pointer;
@@ -126,53 +165,66 @@
     }
 
     .btn-primary {
-      background: var(--accent);
-      color: #1C1917;
+      background: var(--cta);
+      color: #fff;
     }
 
     .btn-primary:hover {
-      background: var(--accent-hover);
+      background: var(--cta-hover);
       transform: translateY(-1px);
     }
 
     .btn-outline {
       background: transparent;
-      color: var(--text);
+      color: var(--text-secondary);
       border: 1px solid var(--border);
     }
 
     .btn-outline:hover {
-      border-color: var(--accent);
-      color: var(--accent);
+      border-color: var(--cta);
+      color: var(--cta);
     }
 
     @media (max-width: 480px) {
-      .success-container {
-        padding: 40px 24px;
-      }
-
-      h1 {
-        font-size: 36px;
-      }
-
-      p {
-        font-size: 16px;
-      }
-
-      .button-group {
-        flex-direction: column;
-        align-items: stretch;
-      }
+      .logo-mark { width: 72px; height: 72px; }
+      h1 { font-size: 26px; }
+      .card { padding: 20px 16px; }
+      .button-group { flex-direction: column; }
+      .btn { justify-content: center; }
     }
   </style>
 </head>
 <body>
   <div class="success-container">
-    <div class="success-icon">🎉</div>
-    <h1>Welcome to Tagalong Pro!</h1>
-    <p>
-      Your subscription is now active. Open the Tagalong app on your Mac to start recording unlimited meetings with all Pro features unlocked.
+    <div class="logo-mark">
+      <img src="assets/app-icon-box.png" alt="Tagalong">
+    </div>
+
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      Payment successful
+    </div>
+
+    <h1>You’re all set</h1>
+    <p class="description">
+      Your Pro subscription is being activated. Return to Tagalong and it will detect your payment automatically.
     </p>
+
+    <div class="card">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-text"><strong>Switch back to the app</strong> — it's polling for your payment now</div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-text"><strong>Pro unlocks instantly</strong> — conference mode, infographics, and all 25 features</div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-text">Didn't work? Open <strong>Settings > Subscription</strong> and tap “Already paid? Verify”</div>
+      </div>
+    </div>
+
     <div class="button-group">
       <a href="/" class="btn btn-primary">Return to Home</a>
       <a href="https://github.com/tagalong-ai/releases/latest" class="btn btn-outline">Download App</a>
