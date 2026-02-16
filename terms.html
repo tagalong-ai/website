@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Tagalong</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --bg-surface: #161b22;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --border: #30363d;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #ffffff;
+                --bg-surface: #f6f8fa;
+                --text-primary: #1f2328;
+                --text-secondary: #656d76;
+                --accent: #0969da;
+                --border: #d0d7de;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        nav {
+            margin: 16px 0 40px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            margin-right: 24px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        nav a.active {
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .effective-date {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 40px;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        ul, ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .callout {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 14px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-surface);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        td {
+            color: var(--text-primary);
+        }
+
+        .footer {
+            margin-top: 64px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 32px 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="#" class="brand">
+            <div class="brand-icon">T</div>
+            <span class="brand-name">Tagalong</span>
+        </a>
+
+        <nav>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html" class="active">Terms of Service</a>
+        </nav>
+
+        <h1>Terms of Service</h1>
+        <p class="effective-date">Effective date: February 15, 2026</p>
+
+        <p>These Terms of Service ("Terms") govern your use of Tagalong, a native macOS application for meeting recording, transcription, and AI-powered summary generation ("the App"). By downloading, installing, or using the App, you agree to be bound by these Terms.</p>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By using Tagalong, you confirm that you have read, understood, and agree to these Terms. If you do not agree, you must not use the App. We may update these Terms from time to time as described in Section 14.</p>
+
+        <h2>2. Service Description</h2>
+        <p>Tagalong provides the following capabilities:</p>
+        <ul>
+            <li>Live meeting recording via microphone or conference mode (system audio capture)</li>
+            <li>Real-time speech-to-text transcription powered by OpenAI Whisper</li>
+            <li>Speaker identification and diarization via AssemblyAI</li>
+            <li>AI-generated meeting summaries via GPT</li>
+            <li>Visual infographic generation via Google Gemini</li>
+            <li>Meeting notes capture and markdown export</li>
+            <li>Import and processing of existing audio files and transcripts</li>
+        </ul>
+        <p>The App runs natively on macOS and processes data either locally or through third-party AI services, depending on your licensing mode.</p>
+
+        <h2>3. Licensing Modes</h2>
+        <p>Tagalong is available under two licensing modes:</p>
+
+        <h3>3.1 Subscription</h3>
+        <table>
+            <tr>
+                <th>Price</th>
+                <td>$9.99 per month</td>
+            </tr>
+            <tr>
+                <th>Billing</th>
+                <td>Auto-renewing monthly</td>
+            </tr>
+            <tr>
+                <th>API Keys</th>
+                <td>Managed by Tagalong (included in subscription)</td>
+            </tr>
+            <tr>
+                <th>Data Routing</th>
+                <td>Through our proxy at api.tagalongai.com</td>
+            </tr>
+            <tr>
+                <th>Cancellation</th>
+                <td>Cancel anytime; access continues through end of billing period</td>
+            </tr>
+        </table>
+
+        <h3>3.2 Private License</h3>
+        <table>
+            <tr>
+                <th>Price</th>
+                <td>$199 one-time payment</td>
+            </tr>
+            <tr>
+                <th>License Type</th>
+                <td>Perpetual, non-transferable, single user</td>
+            </tr>
+            <tr>
+                <th>API Keys</th>
+                <td>User provides their own (OpenAI, AssemblyAI, Google Gemini)</td>
+            </tr>
+            <tr>
+                <th>Data Routing</th>
+                <td>Direct from your Mac to third-party APIs</td>
+            </tr>
+            <tr>
+                <th>Updates</th>
+                <td>Included for 1 year from date of purchase</td>
+            </tr>
+        </table>
+
+        <h3>3.3 Free Tier</h3>
+        <p>Without a license or subscription, you may use Tagalong with limited functionality: microphone-only recording, basic summaries, markdown export, and speaker editing. The free tier is limited to 5 meetings per calendar month.</p>
+
+        <h2>4. Refund Policy</h2>
+
+        <h3>4.1 Private License</h3>
+        <p>Private License purchases include a <strong>30-day money-back guarantee</strong>. If you are unsatisfied with the App for any reason, you may request a full refund within 30 days of purchase by contacting <a href="mailto:legal@tagalongai.com">legal@tagalongai.com</a>. No questions asked.</p>
+
+        <h3>4.2 Subscription</h3>
+        <p>Subscription fees are non-refundable for partial months. When you cancel a subscription, you retain access to Pro features through the end of your current billing period. No refunds are issued for unused time within a billing cycle.</p>
+
+        <h2>5. User Responsibilities</h2>
+        <p>By using Tagalong, you agree to:</p>
+
+        <ul>
+            <li><strong>Comply with recording consent laws.</strong> You are solely responsible for ensuring that your use of the App complies with all applicable laws regarding the recording of conversations, including but not limited to one-party and two-party consent statutes. Many jurisdictions require all parties to consent to being recorded. It is your responsibility to obtain any required consent before recording.</li>
+            <li><strong>Use the App lawfully.</strong> You must not use Tagalong for any purpose that is illegal, fraudulent, or harmful. This includes, but is not limited to, unauthorized surveillance, recording privileged communications without consent, or any activity that violates the rights of others.</li>
+            <li><strong>Protect your credentials.</strong> You are responsible for safeguarding your API keys, license keys, and any other credentials associated with your account. Tagalong is not liable for unauthorized access resulting from compromised credentials.</li>
+            <li><strong>Respect third-party terms.</strong> If you use Private License mode, you must comply with the terms of service of the third-party API providers (OpenAI, AssemblyAI, Google Gemini) whose services you configure.</li>
+        </ul>
+
+        <h2>6. API Costs (Private License)</h2>
+
+        <div class="callout">
+            <p class="callout-title">Private License users are responsible for their own API costs.</p>
+            <p>When using Private License mode, all API calls to OpenAI, AssemblyAI, and Google Gemini are made using your own API keys and billed directly to your accounts with those providers. Tagalong does not control, subsidize, or take responsibility for these costs. You should review the pricing pages of each provider and monitor your usage.</p>
+        </div>
+
+        <p>Subscription users have API costs included in their monthly fee. Fair usage policies may apply.</p>
+
+        <h2>7. Intellectual Property</h2>
+
+        <h3>7.1 Your Content</h3>
+        <p><strong>You own your data.</strong> All recordings, transcripts, summaries, infographics, and meeting notes generated by Tagalong are your property. We claim no ownership or license over your content. You are free to use, share, modify, or delete your outputs as you see fit.</p>
+
+        <h3>7.2 The Application</h3>
+        <p>Tagalong, including its source code, design, documentation, and branding, is the intellectual property of Tagalong and is protected by copyright and other intellectual property laws. Your license grants you the right to use the App, not to copy, reverse-engineer, or redistribute it.</p>
+
+        <h2>8. AI-Generated Content Disclaimer</h2>
+        <p>Tagalong uses artificial intelligence to generate transcriptions, summaries, and infographics. While we strive for accuracy:</p>
+        <ul>
+            <li><strong>AI outputs may contain errors.</strong> Transcriptions may not be perfectly accurate. Summaries may miss nuances or misrepresent context. Infographics are generated interpretations, not authoritative documents.</li>
+            <li><strong>AI outputs should be reviewed.</strong> You should review all AI-generated content before relying on it for business decisions, legal matters, or any purpose where accuracy is critical.</li>
+            <li><strong>No warranty of accuracy.</strong> We do not warrant or guarantee the accuracy, completeness, or reliability of any AI-generated content produced by the App.</li>
+        </ul>
+
+        <h2>9. Limitation of Liability</h2>
+        <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW:</p>
+        <ul>
+            <li>Tagalong is provided "AS IS" and "AS AVAILABLE" without warranties of any kind, whether express, implied, statutory, or otherwise, including warranties of merchantability, fitness for a particular purpose, and non-infringement.</li>
+            <li>In no event shall Tagalong, its creators, affiliates, or licensors be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, use, goodwill, or other intangible losses.</li>
+            <li>Our total aggregate liability for any claims arising out of or relating to these Terms or the App shall not exceed the amount you paid for the App in the 12 months preceding the claim.</li>
+            <li>We are not liable for any loss or damage resulting from inaccurate transcriptions, summaries, or other AI-generated content.</li>
+            <li>We are not liable for any costs or damages arising from your use of third-party API services (OpenAI, AssemblyAI, Google Gemini).</li>
+        </ul>
+
+        <h2>10. Availability and Service Interruptions</h2>
+        <p>Tagalong depends on third-party AI services. We do not guarantee uninterrupted access to transcription, summarization, diarization, or infographic features. Service interruptions may occur due to:</p>
+        <ul>
+            <li>Third-party API outages or rate limiting</li>
+            <li>Network connectivity issues</li>
+            <li>macOS updates affecting permissions or system capabilities</li>
+            <li>Maintenance or updates to the App</li>
+        </ul>
+        <p>Core local functionality (recording, file storage, markdown export) does not depend on network access.</p>
+
+        <h2>11. Termination</h2>
+
+        <h3>11.1 By You</h3>
+        <p>You may stop using Tagalong at any time by uninstalling the App. Subscription users should cancel their subscription before uninstalling to prevent future charges.</p>
+
+        <h3>11.2 By Us</h3>
+        <p>We reserve the right to terminate or suspend your access to the App if you:</p>
+        <ul>
+            <li>Violate these Terms</li>
+            <li>Use the App for illegal purposes</li>
+            <li>Attempt to reverse-engineer, redistribute, or misuse the App</li>
+            <li>Abuse the subscription proxy service (excessive usage, automated abuse, etc.)</li>
+        </ul>
+        <p>Where possible, we will provide notice before termination. In the case of Private License users, termination disables license validation but does not affect locally stored data.</p>
+
+        <h2>12. Privacy</h2>
+        <p>Your use of Tagalong is also governed by our <a href="privacy.html">Privacy Policy</a>, which describes how your data is handled across both licensing modes. By using the App, you acknowledge and agree to the practices described in the Privacy Policy.</p>
+
+        <h2>13. Governing Law</h2>
+        <p>These Terms shall be governed by and construed in accordance with the laws of the State of California, United States, without regard to its conflict of law provisions. Any disputes arising under these Terms shall be resolved in the courts located in San Jose, California.</p>
+
+        <h2>14. Changes to Terms</h2>
+        <p>We may modify these Terms from time to time. When we make material changes, we will:</p>
+        <ul>
+            <li>Provide at least <strong>30 days' notice</strong> before the changes take effect</li>
+            <li>Notify you via email (if you have provided one) and/or by posting a notice on our website</li>
+            <li>Update the "Effective date" at the top of this page</li>
+        </ul>
+        <p>Your continued use of the App after the effective date of any changes constitutes your acceptance of the revised Terms. If you do not agree to the changes, you must stop using the App.</p>
+
+        <h2>15. Severability</h2>
+        <p>If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.</p>
+
+        <h2>16. Entire Agreement</h2>
+        <p>These Terms, together with the <a href="privacy.html">Privacy Policy</a>, constitute the entire agreement between you and Tagalong regarding the use of the App, and supersede all prior agreements and understandings.</p>
+
+        <h2>17. Contact</h2>
+        <p>If you have questions about these Terms, contact us at:</p>
+        <p><a href="mailto:legal@tagalongai.com">legal@tagalongai.com</a></p>
+
+        <div class="footer">
+            <p>&copy; 2026 Tagalong. All rights reserved.</p>
+            <p><a href="privacy.html">Privacy Policy</a> &middot; <a href="terms.html">Terms of Service</a></p>
+        </div>
+    </div>
+</body>
+</html>

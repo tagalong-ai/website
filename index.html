@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tagalong — Every meeting, remembered.</title>
+  <meta name="description" content="Tagalong captures your meetings from the macOS menu bar — transcription, speaker identification, AI summaries, and visual infographics. No bots. No browser tabs.">
+  <meta property="og:title" content="Tagalong — Every meeting, remembered.">
+  <meta property="og:description" content="Tagalong captures your meetings from the macOS menu bar — transcription, speaker identification, AI summaries, and visual infographics. No bots. No browser tabs.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tagalongai.com">
+  <meta property="og:image" content="https://tagalongai.com/assets/app-icon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tagalong — Every meeting, remembered.">
+  <meta name="twitter:description" content="Tagalong captures your meetings from the macOS menu bar — transcription, speaker identification, AI summaries, and visual infographics. No bots. No browser tabs.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+    :root {
+      --bg: #1C1917;
+      --surface: #292524;
+      --surface-elevated: #352F2B;
+      --border: #3D3835;
+      --border-subtle: #332E2A;
+      --text: #FAF9F6;
+      --text-secondary: #A8A29E;
+      --text-tertiary: #78716C;
+      --accent: #F59E0B;
+      --accent-hover: #D97706;
+      --accent-subtle: rgba(245,158,11,0.1);
+      --secondary: #7DA882;
+      --secondary-subtle: rgba(125,168,130,0.1);
+      --recording: #EF4444;
+      --success: #7DA882;
+      --error: #EF4444;
+      --hero-gradient: linear-gradient(135deg, #1C1917 0%, #292524 50%, #1C1917 100%);
+      --card-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html.light {
+      --bg: #FAF9F6;
+      --surface: #F5F0EB;
+      --surface-elevated: #FFFFFF;
+      --border: #E7E5E4;
+      --border-subtle: #F0EEEB;
+      --text: #1C1917;
+      --text-secondary: #78716C;
+      --text-tertiary: #A8A29E;
+      --accent: #D97706;
+      --accent-hover: #B45309;
+      --accent-subtle: rgba(217,119,6,0.08);
+      --secondary: #6B8F71;
+      --secondary-subtle: rgba(107,143,113,0.08);
+      --recording: #DC2626;
+      --success: #6B8F71;
+      --error: #DC2626;
+      --hero-gradient: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 50%, #FAF9F6 100%);
+      --card-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: var(--accent); text-decoration: none; transition: opacity .2s }
+    a:hover { opacity: .85 }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(28,25,23,.85);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s;
+    }
+    html.light nav { background: rgba(250,249,246,.85) }
+    nav .container { display: flex; align-items: center; justify-content: space-between; height: 100px }
+
+    .nav-logo { display: flex; align-items: center; gap: 8px }
+    .nav-logo img { height: 90px; display: none }
+    html.dark .nav-logo-dark { display: block }
+    html.light .nav-logo-light { display: block }
+
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none }
+    .nav-links a { color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: color .2s }
+    .nav-links a:hover { color: var(--accent) }
+
+    .nav-right { display: flex; align-items: center; gap: 12px }
+
+    .theme-toggle {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      width: 36px; height: 36px; cursor: pointer; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary); transition: all .2s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--text) }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 600; border: none; cursor: pointer;
+      transition: all .2s; text-decoration: none; font-family: inherit;
+    }
+    .btn-primary { background: var(--accent); color: #1C1917 }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px) }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border) }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent) }
+    .btn-large { padding: 14px 28px; font-size: 16px; border-radius: var(--radius) }
+
+    .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; padding: 4px }
+
+    /* HERO */
+    .hero {
+      padding: 160px 0 80px; background: var(--hero-gradient);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(245,158,11,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 6px 14px; font-size: 13px;
+      color: var(--text-secondary); margin-bottom: 24px; font-weight: 500;
+    }
+    .hero-badge span { color: var(--accent); font-weight: 600 }
+    .hero h1 {
+      font-size: 56px; font-weight: 700; line-height: 1.1;
+      letter-spacing: -.03em; margin-bottom: 20px;
+      max-width: 720px; margin-left: auto; margin-right: auto;
+    }
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--accent), #FBBF24);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero p {
+      font-size: 20px; color: var(--text-secondary);
+      max-width: 640px; margin: 0 auto 36px; line-height: 1.6;
+    }
+    .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap }
+
+    .hero-logo {
+      margin-bottom: 32px; display: flex; justify-content: center;
+    }
+    .hero-logo img {
+      height: 280px; object-fit: contain;
+      filter: drop-shadow(0 0 60px rgba(245,158,11,.15));
+    }
+    html.light .hero-logo-dark { display: none }
+    html.dark .hero-logo-light { display: none }
+    .hero-trust {
+      margin-top: 36px; font-size: 18px; font-weight: 600;
+      color: var(--text-secondary); letter-spacing: .01em;
+    }
+
+    /* SECTIONS */
+    section { padding: 100px 0 }
+    .section-label {
+      text-transform: uppercase; font-size: 13px; font-weight: 700;
+      letter-spacing: .08em; color: var(--accent); margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 40px; font-weight: 700; line-height: 1.15;
+      letter-spacing: -.02em; margin-bottom: 16px;
+    }
+    .section-subtitle {
+      font-size: 18px; color: var(--text-secondary); max-width: 560px; line-height: 1.6;
+    }
+    .section-header { text-align: center; margin-bottom: 56px }
+    .section-header .section-subtitle { margin: 0 auto }
+
+    /* FEATURES */
+    .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px }
+    .feature-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px; transition: all .3s ease;
+    }
+    .feature-card:hover {
+      border-color: var(--accent); transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(245,158,11,.08);
+    }
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .feature-icon svg { width: 22px; height: 22px; stroke-width: 1.75 }
+    .feature-icon.amber { background: var(--accent-subtle); color: var(--accent) }
+    .feature-icon.sage { background: var(--secondary-subtle); color: var(--secondary) }
+    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px }
+    .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.5 }
+    .feature-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 4px; margin-top: 10px;
+      background: var(--accent-subtle); color: var(--accent);
+    }
+
+    /* HOW IT WORKS */
+    .how-it-works { background: var(--surface) }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; position: relative }
+    .steps::before {
+      content: ''; position: absolute; top: 40px; left: 16.67%; right: 16.67%;
+      height: 2px; background: var(--border);
+    }
+    .step { text-align: center; position: relative }
+    .step-number {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--bg); border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent);
+      margin: 0 auto 20px; position: relative; z-index: 1;
+    }
+    .step-number svg { width: 32px; height: 32px; stroke-width: 1.5 }
+    .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px }
+    .step p { font-size: 14px; color: var(--text-secondary); max-width: 280px; margin: 0 auto }
+
+    /* PRICING */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+      max-width: 1080px; margin: 0 auto;
+    }
+    .pricing-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 36px 32px;
+      position: relative; transition: all .3s;
+    }
+    .pricing-card:hover { transform: translateY(-2px); box-shadow: var(--card-shadow) }
+    .pricing-card.popular {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent), 0 8px 40px rgba(245,158,11,.12);
+    }
+    .popular-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--accent); color: #1C1917;
+      font-size: 12px; font-weight: 700; padding: 4px 14px;
+      border-radius: 12px; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .pricing-tier { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px }
+    .pricing-price { font-size: 48px; font-weight: 700; margin-bottom: 4px; letter-spacing: -.03em }
+    .pricing-price span { font-size: 18px; font-weight: 500; color: var(--text-secondary) }
+    .pricing-alt { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px }
+    .pricing-divider { height: 1px; background: var(--border); margin: 20px 0 }
+    .pricing-features { list-style: none; margin-bottom: 28px }
+    .pricing-features li { font-size: 14px; padding: 6px 0; display: flex; align-items: flex-start; gap: 10px }
+    .pricing-features li::before { content: ''; flex-shrink: 0 }
+    .pricing-features .included::before { content: '\2713'; color: var(--secondary); font-weight: 700; width: 16px }
+    .pricing-features .excluded::before { content: '\2014'; color: var(--text-tertiary); width: 16px }
+    .pricing-features .excluded { color: var(--text-tertiary) }
+
+    .pricing-note {
+      max-width: 1080px; margin: 24px auto 0;
+      background: var(--surface); border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 16px 20px; font-size: 14px; color: var(--text-secondary);
+    }
+    .pricing-note strong { color: var(--text); font-weight: 600 }
+
+    /* COMPARISON */
+    .comparison { background: var(--surface) }
+    .comparison-table {
+      max-width: 960px; margin: 0 auto;
+      border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+    .comparison-table table { width: 100%; border-collapse: collapse; font-size: 14px }
+    .comparison-table thead th {
+      padding: 14px 16px; text-align: left; font-weight: 700;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+      font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+      color: var(--text-secondary);
+    }
+    .comparison-table thead th:first-child { width: 25% }
+    .comparison-table thead th.highlight-col {
+      color: var(--accent); background: var(--accent-subtle);
+    }
+    .comparison-table tbody td {
+      padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px;
+    }
+    .comparison-table tbody tr:last-child td { border-bottom: none }
+    .comparison-table tbody td.highlight-col { background: var(--accent-subtle) }
+    .comparison-table .check { color: var(--secondary); font-weight: 700 }
+    .comparison-table .cross { color: var(--text-tertiary) }
+    .comparison-table .highlight { color: var(--accent); font-weight: 600 }
+
+    /* FAQ */
+    .faq-list { max-width: 720px; margin: 0 auto }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 0 }
+    .faq-question {
+      width: 100%; padding: 20px 0; background: none; border: none;
+      color: var(--text); font-size: 16px; font-weight: 600;
+      text-align: left; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      font-family: inherit; line-height: 1.4;
+    }
+    .faq-question:hover { color: var(--accent) }
+    .faq-arrow { font-size: 12px; transition: transform .3s; flex-shrink: 0; color: var(--text-secondary) }
+    .faq-item.open .faq-arrow { transform: rotate(180deg) }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease }
+    .faq-answer-inner { padding: 0 0 20px; font-size: 15px; color: var(--text-secondary); line-height: 1.7 }
+    .faq-item.open .faq-answer { max-height: 300px }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 40px 0 }
+    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center }
+    .footer-logo { margin-bottom: 4px }
+    .footer-logo img { height: 48px }
+    html.dark .footer-logo .footer-logo-light { display: none }
+    html.light .footer-logo .footer-logo-dark { display: none }
+    .footer-tagline { font-size: 13px; color: var(--text-tertiary); font-weight: 500; margin-bottom: 8px }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-left { font-size: 14px; color: var(--text-secondary) }
+    .footer-links { display: flex; gap: 24px; list-style: none }
+    .footer-links a { color: var(--text-secondary); font-size: 14px }
+    .footer-links a:hover { color: var(--accent) }
+
+    /* ANIMATIONS */
+    .animate-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease }
+    .animate-in.visible { opacity: 1; transform: translateY(0) }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none }
+      .mobile-menu-btn { display: block }
+      .nav-links.mobile-open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 100px; left: 0; right: 0;
+        background: var(--bg); border-bottom: 1px solid var(--border);
+        padding: 16px 24px; gap: 16px;
+      }
+      .hero { padding: 140px 0 60px }
+      .hero h1 { font-size: 36px }
+      .hero p { font-size: 17px }
+      .hero-logo img { height: 200px }
+      .section-title { font-size: 30px }
+      .features-grid { grid-template-columns: repeat(2, 1fr); gap: 16px }
+      .steps { grid-template-columns: 1fr; gap: 40px }
+      .steps::before { display: none }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px }
+      .comparison-table { overflow-x: auto }
+      .comparison-table table { min-width: 640px }
+      .footer-bottom { flex-direction: column; text-align: center }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 28px }
+      .hero p { font-size: 15px }
+      .hero-logo img { height: 160px }
+      .features-grid { grid-template-columns: 1fr }
+      .section-title { font-size: 26px }
+      .pricing-card { padding: 28px 20px }
+      .hero-buttons { flex-direction: column; align-items: center }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <img src="assets/logo-dark.png" alt="Tagalong" class="nav-logo-dark">
+        <img src="assets/logo-light.png" alt="Tagalong" class="nav-logo-light">
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span id="themeIcon">&#9790;</span>
+        </button>
+        <a href="https://github.com/tagalong-ai/releases/latest" class="btn btn-primary">Download</a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="animate-in">
+        <div class="hero-logo">
+          <img src="assets/logo-stacked-dark.png" alt="Tagalong" class="hero-logo-dark">
+          <img src="assets/logo-light.png" alt="Tagalong" class="hero-logo-light">
+        </div>
+        <div class="hero-badge">
+          <span>Every meeting, remembered.</span>
+        </div>
+        <h1>Never write <span class="gradient-text">meeting notes</span> again.</h1>
+        <p>Tagalong lives in your menu bar, captures every word and every speaker, and delivers a summary and infographic before you close the call. No bots. No browser tabs. No note-taking.</p>
+        <div class="hero-buttons">
+          <a href="https://github.com/tagalong-ai/releases/latest" class="btn btn-primary btn-large">
+            &#63743; Download for macOS &mdash; Free
+          </a>
+          <a href="#how-it-works" class="btn btn-outline btn-large">See how it works</a>
+        </div>
+      </div>
+      <div class="hero-trust animate-in">No meeting bots. No cloud storage. Your Mac, your data.</div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <div class="section-header animate-in">
+        <div class="section-label">Features</div>
+        <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+        <p class="section-subtitle">Powerful AI working quietly from your menu bar so you can focus on the conversation, not the notes.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card animate-in">
+          <div class="feature-icon amber"><i data-lucide="mic"></i></div>
+          <h3>One-Click Recording</h3>
+          <p>Click the menu bar icon. That's it. Tagalong captures your mic &mdash; or your entire conference call &mdash; without a bot joining the meeting.</p>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="feature-icon sage"><i data-lucide="users"></i></div>
+          <h3>Speaker Identification</h3>
+          <p>Tagalong labels who said what automatically. Edit speaker names once and they carry through the transcript, summary, and infographic.</p>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="feature-icon amber"><i data-lucide="file-text"></i></div>
+          <h3>AI Summaries</h3>
+          <p>Structured summaries with decisions, action items, and key takeaways. Choose from 4 built-in recipes or create your own template.</p>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="feature-icon sage"><i data-lucide="image"></i></div>
+          <h3>Visual Infographics</h3>
+          <p>Drop a meeting infographic into your deck or Slack channel. 5 styles, 3 aspect ratios, 6 color palettes.</p>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="feature-icon amber"><i data-lucide="monitor-speaker"></i></div>
+          <h3>Conference Mode</h3>
+          <p>Capture system audio from Zoom, Meet, or Teams alongside your mic. No browser extension needed.</p>
+          <span class="feature-tag">Pro</span>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="feature-icon sage"><i data-lucide="message-circle"></i></div>
+          <h3>AI Chat</h3>
+          <p>Ask questions about your meeting and get instant answers grounded in the transcript.</p>
+          <span class="feature-tag">Pro</span>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="feature-icon amber"><i data-lucide="calendar"></i></div>
+          <h3>Calendar Integration</h3>
+          <p>Your next meeting name auto-populates from your calendar. One less thing to think about.</p>
+          <span class="feature-tag">Pro</span>
+        </div>
+        <div class="feature-card animate-in">
+          <div class="feature-icon sage"><i data-lucide="search"></i></div>
+          <h3>Cross-Meeting Search</h3>
+          <p>Find what was discussed three weeks ago. Search across every transcript and summary you've ever recorded.</p>
+          <span class="feature-tag">Pro</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="container">
+      <div class="section-header animate-in">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title">Three steps. No learning curve.</h2>
+        <p class="section-subtitle">Start recording and let the AI handle the rest. Your summary is ready before you close the call.</p>
+      </div>
+      <div class="steps">
+        <div class="step animate-in">
+          <div class="step-number"><i data-lucide="circle-dot"></i></div>
+          <h3>Record</h3>
+          <p>Click the menu bar icon or press Cmd+Shift+R. Conference mode captures everyone on the call.</p>
+        </div>
+        <div class="step animate-in">
+          <div class="step-number"><i data-lucide="audio-lines"></i></div>
+          <h3>Transcribe</h3>
+          <p>Whisper transcribes in real time. AssemblyAI identifies every speaker after recording.</p>
+        </div>
+        <div class="step animate-in">
+          <div class="step-number"><i data-lucide="share-2"></i></div>
+          <h3>Share</h3>
+          <p>Get a structured summary, a visual infographic, and export to Slack, Notion, or markdown.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-header animate-in">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-title">Start free, upgrade when you need more</h2>
+        <p class="section-subtitle">No credit card required. Try the core features with up to 5 meetings per month.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card animate-in">
+          <div class="pricing-tier">Free</div>
+          <div class="pricing-price">$0 <span>/mo</span></div>
+          <div class="pricing-alt">Free forever</div>
+          <div class="pricing-divider"></div>
+          <ul class="pricing-features">
+            <li class="included">5 meetings per month</li>
+            <li class="included">Microphone recording</li>
+            <li class="included">Real-time transcription</li>
+            <li class="included">Speaker diarization &amp; editing</li>
+            <li class="included">Basic AI summary</li>
+            <li class="included">Markdown export</li>
+            <li class="excluded">Conference mode</li>
+            <li class="excluded">Visual infographics</li>
+            <li class="excluded">AI chat</li>
+            <li class="excluded">Calendar integration</li>
+          </ul>
+          <a href="https://github.com/tagalong-ai/releases/latest" class="btn btn-outline" style="width: 100%; justify-content: center;">
+            Download Free
+          </a>
+        </div>
+        <div class="pricing-card popular animate-in">
+          <div class="popular-badge">Most Popular</div>
+          <div class="pricing-tier">Pro Subscription</div>
+          <div class="pricing-price">$9.99 <span>/mo</span></div>
+          <div class="pricing-alt">Billed monthly, cancel anytime</div>
+          <div class="pricing-divider"></div>
+          <ul class="pricing-features">
+            <li class="included">Unlimited meetings</li>
+            <li class="included">Everything in Free</li>
+            <li class="included">Conference mode (system audio)</li>
+            <li class="included">Visual infographics (5 styles)</li>
+            <li class="included">AI chat &mdash; ask about your meeting</li>
+            <li class="included">Calendar integration</li>
+            <li class="included">Cross-meeting search</li>
+            <li class="included">Summary recipes &amp; templates</li>
+            <li class="included">Session history &amp; file import</li>
+            <li class="included">Slack &amp; Notion export</li>
+            <li class="included">API keys managed for you</li>
+          </ul>
+          <a href="https://github.com/tagalong-ai/releases/latest" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            Subscribe to Pro
+          </a>
+        </div>
+        <div class="pricing-card animate-in" style="border-color: var(--secondary);">
+          <div class="pricing-tier">Private License</div>
+          <div class="pricing-price">$199 <span>once</span></div>
+          <div class="pricing-alt">One-time payment, yours forever</div>
+          <div class="pricing-divider"></div>
+          <ul class="pricing-features">
+            <li class="included">Unlimited meetings</li>
+            <li class="included">Everything in Pro</li>
+            <li class="included">Bring your own API keys</li>
+            <li class="included">Audio goes direct to AI providers</li>
+            <li class="included">Nothing passes through our servers</li>
+            <li class="included">Files stored locally on your Mac</li>
+            <li class="included">No recurring cost</li>
+            <li class="included">Full data ownership</li>
+          </ul>
+          <a href="https://github.com/tagalong-ai/releases/latest" class="btn btn-outline" style="width: 100%; justify-content: center; border-color: var(--secondary); color: var(--secondary);">
+            Get Private License
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="comparison">
+    <div class="container">
+      <div class="section-header animate-in">
+        <div class="section-label">Comparison</div>
+        <h2 class="section-title">The meeting tool that never joins the call</h2>
+        <p class="section-subtitle">See how Tagalong compares to meeting tools that put a bot in your call.</p>
+      </div>
+      <div class="comparison-table animate-in">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th class="highlight-col">Tagalong</th>
+              <th>Granola</th>
+              <th>Otter</th>
+              <th>Fireflies</th>
+              <th>Fathom</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bot joins call?</td>
+              <td class="highlight-col"><span class="check">&#10003; No</span></td>
+              <td><span class="check">&#10003; No</span></td>
+              <td><span class="cross">Yes</span></td>
+              <td><span class="cross">Yes</span></td>
+              <td><span class="cross">Yes</span></td>
+            </tr>
+            <tr>
+              <td>Speaker diarization</td>
+              <td class="highlight-col"><span class="highlight">Full (AssemblyAI)</span></td>
+              <td>Limited</td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Visual infographics</td>
+              <td class="highlight-col"><span class="check">&#10003; 5 styles</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+            </tr>
+            <tr>
+              <td>Private API keys</td>
+              <td class="highlight-col"><span class="check">&#10003; Your keys</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+            </tr>
+            <tr>
+              <td>One-time purchase</td>
+              <td class="highlight-col"><span class="highlight">$199 Private License</span></td>
+              <td><span class="cross">No</span></td>
+              <td><span class="cross">No</span></td>
+              <td><span class="cross">No</span></td>
+              <td><span class="cross">No</span></td>
+            </tr>
+            <tr>
+              <td>Data stays on your Mac</td>
+              <td class="highlight-col"><span class="check">&#10003; With Private License</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+            </tr>
+            <tr>
+              <td>AI summary</td>
+              <td class="highlight-col"><span class="check">&#10003; With recipes</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Audio playback</td>
+              <td class="highlight-col"><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10005;</span></td>
+            </tr>
+            <tr>
+              <td>Starting price</td>
+              <td class="highlight-col"><span class="highlight">Free</span></td>
+              <td>$18/mo</td>
+              <td>$16.99/mo</td>
+              <td>$18/mo</td>
+              <td>$19/mo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-header animate-in">
+        <div class="section-label">FAQ</div>
+        <h2 class="section-title">Frequently asked questions</h2>
+      </div>
+      <div class="faq-list animate-in">
+        <div class="faq-item">
+          <button class="faq-question">
+            What API keys do I need?
+            <span class="faq-arrow">&#9660;</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              With a subscription, Tagalong handles the API keys for you &mdash; nothing to configure. With a Private License, you'll need an OpenAI key (for Whisper transcription and GPT summaries) and an AssemblyAI key (for speaker identification). A Google Gemini key is optional and enables visual infographics.
+            </div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Does it work with Zoom, Google Meet, and Teams?
+            <span class="faq-arrow">&#9660;</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes. Conference Mode captures system audio from any app on your Mac &mdash; Zoom, Meet, Teams, Webex, and anything else that plays sound. No browser extension or meeting integration required. You can also import recorded audio files (MP3, WAV, M4A, MP4, AAC) for post-meeting processing.
+            </div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Is my meeting data private?
+            <span class="faq-arrow">&#9660;</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              With a Private License, your API keys stay in the macOS Keychain and every request goes directly to the AI provider. No audio or transcript data passes through our servers. Your recordings are saved as markdown files in ~/Documents/Tagalong/ on your Mac. You own your data.
+            </div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            What macOS versions are supported?
+            <span class="faq-arrow">&#9660;</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Tagalong requires macOS 15.0 (Sequoia) or later. It runs natively on both Apple Silicon and Intel Macs as a universal binary.
+            </div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Is there a free trial?
+            <span class="faq-arrow">&#9660;</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              The Free tier is always available &mdash; no credit card, no time limit. You get 5 meetings per month with full transcription, speaker identification, AI summaries, and markdown export. Upgrade to Pro when you need unlimited meetings and advanced features like conference mode and infographics.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <img src="assets/logo-dark.png" alt="Tagalong" class="footer-logo-dark">
+          <img src="assets/logo-light.png" alt="Tagalong" class="footer-logo-light">
+        </div>
+        <div class="footer-tagline">Every meeting, remembered.</div>
+        <div class="footer-bottom">
+          <div class="footer-left">&copy; 2026 Tagalong. All rights reserved.</div>
+          <ul class="footer-links">
+            <li><a href="/privacy">Privacy</a></li>
+            <li><a href="/terms">Terms</a></li>
+            <li><a href="https://github.com/tagalong-ai" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    (function () {
+      var html = document.documentElement;
+      var toggle = document.getElementById('themeToggle');
+      var icon = document.getElementById('themeIcon');
+      var stored = localStorage.getItem('theme');
+
+      if (stored === 'light') {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        icon.innerHTML = '\u2600';
+      }
+
+      toggle.addEventListener('click', function () {
+        var isLight = html.classList.contains('light');
+        if (isLight) {
+          html.classList.remove('light');
+          html.classList.add('dark');
+          icon.innerHTML = '\u263E';
+          localStorage.setItem('theme', 'dark');
+        } else {
+          html.classList.remove('dark');
+          html.classList.add('light');
+          icon.innerHTML = '\u2600';
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    })();
+
+    // Mobile menu toggle
+    (function () {
+      var btn = document.getElementById('mobileMenuBtn');
+      var links = document.getElementById('navLinks');
+
+      btn.addEventListener('click', function () {
+        links.classList.toggle('mobile-open');
+      });
+
+      links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          links.classList.remove('mobile-open');
+        });
+      });
+    })();
+
+    // FAQ accordion
+    (function () {
+      document.querySelectorAll('.faq-question').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var item = btn.parentElement;
+          var isOpen = item.classList.contains('open');
+
+          document.querySelectorAll('.faq-item.open').forEach(function (el) {
+            el.classList.remove('open');
+          });
+
+          if (!isOpen) {
+            item.classList.add('open');
+          }
+        });
+      });
+    })();
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Intersection Observer for scroll animations
+    (function () {
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.animate-in').forEach(function (el) {
+          el.classList.add('visible');
+        });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.animate-in').forEach(function (el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful - Tagalong</title>
+  <meta name="description" content="Welcome to Tagalong Pro! Your subscription is now active.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+    :root {
+      --bg: #1C1917;
+      --surface: #292524;
+      --surface-elevated: #352F2B;
+      --border: #3D3835;
+      --border-subtle: #332E2A;
+      --text: #FAF9F6;
+      --text-secondary: #A8A29E;
+      --text-tertiary: #78716C;
+      --accent: #F59E0B;
+      --accent-hover: #D97706;
+      --accent-subtle: rgba(245,158,11,0.1);
+      --secondary: #7DA882;
+      --secondary-subtle: rgba(125,168,130,0.1);
+      --success: #7DA882;
+      --card-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html.light {
+      --bg: #FAF9F6;
+      --surface: #F5F0EB;
+      --surface-elevated: #FFFFFF;
+      --border: #E7E5E4;
+      --border-subtle: #F0EEEB;
+      --text: #1C1917;
+      --text-secondary: #78716C;
+      --text-tertiary: #A8A29E;
+      --accent: #D97706;
+      --accent-hover: #B45309;
+      --accent-subtle: rgba(217,119,6,0.08);
+      --secondary: #6B8F71;
+      --secondary-subtle: rgba(107,143,113,0.08);
+      --success: #6B8F71;
+      --card-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .success-container {
+      text-align: center;
+      max-width: 600px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 56px 40px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--secondary-subtle);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 48px;
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -.02em;
+      background: linear-gradient(135deg, var(--accent), #FBBF24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #1C1917;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    @media (max-width: 480px) {
+      .success-container {
+        padding: 40px 24px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+
+      .button-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="success-container">
+    <div class="success-icon">🎉</div>
+    <h1>Welcome to Tagalong Pro!</h1>
+    <p>
+      Your subscription is now active. Open the Tagalong app on your Mac to start recording unlimited meetings with all Pro features unlocked.
+    </p>
+    <div class="button-group">
+      <a href="/" class="btn btn-primary">Return to Home</a>
+      <a href="https://github.com/tagalong-ai/releases/latest" class="btn btn-outline">Download App</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Tagalong</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --bg-surface: #161b22;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --border: #30363d;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #ffffff;
+                --bg-surface: #f6f8fa;
+                --text-primary: #1f2328;
+                --text-secondary: #656d76;
+                --accent: #0969da;
+                --border: #d0d7de;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        nav {
+            margin: 16px 0 40px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            margin-right: 24px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        nav a.active {
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .effective-date {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 40px;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        ul {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .callout {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+            font-size: 14px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-surface);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        td {
+            color: var(--text-primary);
+        }
+
+        .footer {
+            margin-top: 64px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 32px 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="#" class="brand">
+            <div class="brand-icon">T</div>
+            <span class="brand-name">Tagalong</span>
+        </a>
+
+        <nav>
+            <a href="privacy.html" class="active">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+        </nav>
+
+        <h1>Privacy Policy</h1>
+        <p class="effective-date">Effective date: February 15, 2026</p>
+
+        <p>Tagalong is a native macOS application for meeting recording, transcription, and AI-powered summary generation. We are committed to your privacy. This policy explains how your data is handled across the two licensing modes available in the application.</p>
+
+        <h2>1. Product Overview</h2>
+        <p>Tagalong operates in two distinct modes, each with different data handling characteristics:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Mode</th>
+                    <th>Data Routing</th>
+                    <th>API Keys</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Private License</strong></td>
+                    <td>Direct to third-party APIs</td>
+                    <td>User provides their own</td>
+                </tr>
+                <tr>
+                    <td><strong>Subscription</strong></td>
+                    <td>Through our proxy at api.tagalongai.com</td>
+                    <td>Managed by Tagalong</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>2. Private License Mode</h2>
+        <p>In Private License mode, Tagalong operates entirely between your Mac and the third-party AI services you configure. <strong>No data is sent to Tagalong servers.</strong></p>
+
+        <ul>
+            <li><strong>Audio recording</strong> is captured and stored locally on your Mac.</li>
+            <li><strong>Transcripts, summaries, infographics, and meeting notes</strong> are generated and stored in a directory you choose (default: <code>~/Documents/Tagalong/</code>).</li>
+            <li><strong>API keys</strong> (OpenAI, AssemblyAI, Google Gemini) are stored securely in the macOS Keychain using Data Protection. They are never transmitted to Tagalong.</li>
+            <li><strong>Audio and transcript data</strong> is sent directly from your Mac to the third-party APIs (OpenAI, AssemblyAI, Google Gemini) for processing. These transmissions use the API keys you provide and are governed by the respective third-party privacy policies.</li>
+        </ul>
+
+        <div class="callout">
+            <p class="callout-title">Private License Summary</p>
+            <p>Your data stays on your Mac and goes directly to the AI services you configure. Tagalong has no access to your recordings, transcripts, API keys, or any other data.</p>
+        </div>
+
+        <h2>3. Subscription Mode</h2>
+        <p>In Subscription mode, audio and transcript data is routed through our proxy server at <code>api.tagalongai.com</code> before being forwarded to the underlying AI services.</p>
+
+        <ul>
+            <li><strong>Ephemeral processing only.</strong> Audio chunks and transcript data pass through our proxy in real time and are forwarded to OpenAI, AssemblyAI, or Google Gemini for processing. We do not store audio, transcripts, summaries, or any meeting content on our servers.</li>
+            <li><strong>Authentication</strong> is handled via JWT tokens. Your subscription credentials are used to authorize proxy requests &mdash; the underlying API keys are managed by Tagalong and are not exposed to you.</li>
+            <li><strong>No long-term storage.</strong> Our proxy does not retain any meeting data after the request completes. Request logs may include metadata (timestamps, request sizes, endpoint called) for operational purposes but never contain meeting content.</li>
+            <li><strong>Local storage</strong> of final outputs (transcripts, summaries, infographics, notes) remains on your Mac, identical to Private License mode.</li>
+        </ul>
+
+        <h2>4. Third-Party AI Services</h2>
+        <p>Both licensing modes rely on the following third-party services for AI processing. Your use of Tagalong means your audio and text data will be processed by these services according to their respective privacy policies:</p>
+
+        <ul>
+            <li><strong>OpenAI</strong> &mdash; Whisper (speech-to-text transcription) and GPT (meeting summary generation). <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">OpenAI Privacy Policy</a></li>
+            <li><strong>AssemblyAI</strong> &mdash; Speaker diarization (identifying who said what). <a href="https://www.assemblyai.com/legal/privacy-policy" target="_blank" rel="noopener">AssemblyAI Privacy Policy</a></li>
+            <li><strong>Google Gemini</strong> &mdash; Infographic image generation. <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">Google AI Terms</a></li>
+        </ul>
+
+        <p>We encourage you to review these policies to understand how your data is handled by each provider.</p>
+
+        <h2>5. Local Data Storage</h2>
+        <p>All meeting outputs are stored locally on your Mac:</p>
+
+        <ul>
+            <li><strong>Default location:</strong> <code>~/Documents/Tagalong/{meeting-name}/</code></li>
+            <li><strong>Transcript:</strong> Markdown file (<code>.md</code>) with speaker labels and timestamps</li>
+            <li><strong>Meeting notes:</strong> Plain text file (<code>_notes.txt</code>), human-editable</li>
+            <li><strong>Infographic:</strong> JPEG image (<code>_infographic.jpg</code>)</li>
+            <li><strong>Audio recording:</strong> WAV file (<code>.wav</code>), if recording was used</li>
+        </ul>
+
+        <p>You have full control over these files. You can move, copy, delete, or back them up as you see fit. Tagalong does not sync, upload, or access these files beyond the initial creation.</p>
+
+        <h2>6. Keychain Security</h2>
+        <p>API keys and license keys are stored in the macOS Keychain under the service identifier <code>com.tagalongai.tagalong</code>. The Keychain provides:</p>
+
+        <ul>
+            <li>Hardware-backed encryption via the Secure Enclave (on supported Macs)</li>
+            <li>Data Protection class access controls</li>
+            <li>Per-application access restrictions</li>
+        </ul>
+
+        <p>Keys are never written to disk in plaintext, logged, or transmitted to Tagalong servers.</p>
+
+        <h2>7. Analytics, Tracking, and Data Collection</h2>
+
+        <div class="callout">
+            <p class="callout-title">We do not collect any data.</p>
+            <p>Tagalong does not include analytics SDKs, tracking pixels, telemetry, or any form of usage data collection. We do not collect personally identifiable information (PII). There are no network calls to Tagalong servers in Private License mode.</p>
+        </div>
+
+        <p><strong>Future consideration:</strong> We may introduce opt-in error reporting (e.g., via Sentry) in a future release to help diagnose crashes. This would be strictly opt-in, anonymized, and limited to crash data. This privacy policy will be updated before any such feature is shipped.</p>
+
+        <h2>8. macOS Permissions</h2>
+        <p>Tagalong requests the following macOS permissions:</p>
+
+        <ul>
+            <li><strong>Microphone Access</strong> &mdash; Required for meeting recording. The app records audio from your selected input device.</li>
+            <li><strong>Screen Recording</strong> &mdash; Required only for Conference Mode, which captures system audio (e.g., Zoom, Teams, Google Meet) via ScreenCaptureKit. This permission is not needed for microphone-only recording. Video content is not captured or stored (the screen capture uses a minimal 2x2 pixel configuration solely to enable the audio pipeline).</li>
+        </ul>
+
+        <p>You can revoke these permissions at any time in <strong>System Settings &gt; Privacy &amp; Security</strong>.</p>
+
+        <h2>9. Children's Privacy</h2>
+        <p>Tagalong is not directed at children under 13. We do not knowingly collect information from children.</p>
+
+        <h2>10. Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. Material changes will be communicated via our website and, where possible, through in-app notification. The "Effective date" at the top of this page indicates when the policy was last revised.</p>
+
+        <h2>11. Contact</h2>
+        <p>If you have questions about this Privacy Policy or your data, contact us at:</p>
+        <p><a href="mailto:support@tagalongai.com">support@tagalongai.com</a></p>
+
+        <div class="footer">
+            <p>&copy; 2026 Tagalong. All rights reserved.</p>
+            <p><a href="privacy.html">Privacy Policy</a> &middot; <a href="terms.html">Terms of Service</a></p>
+        </div>
+    </div>
+</body>
+</html>
