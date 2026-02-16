@@ -459,6 +459,54 @@
       font-size: 14px;
     }
 
+    /* EXPANDABLE DETAIL ROWS */
+    tbody tr.expandable { cursor: pointer }
+    tbody tr.expandable:hover { background: rgba(245,158,11,0.06) }
+    tbody tr.expandable td:first-child::before {
+      content: '\25B6';
+      display: inline-block;
+      font-size: 9px;
+      margin-right: 6px;
+      transition: transform .2s;
+      color: var(--text-tertiary);
+    }
+    tbody tr.expandable.expanded td:first-child::before {
+      transform: rotate(90deg);
+    }
+    tr.detail-row { display: none }
+    tr.detail-row.visible { display: table-row }
+    tr.detail-row td {
+      padding: 0 16px 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 8px;
+      padding: 12px 0 4px 0;
+    }
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .detail-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text-tertiary);
+    }
+    .detail-value {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      word-break: break-all;
+    }
+    .detail-value.copyable { cursor: pointer }
+    .detail-value.copyable:hover { color: var(--accent) }
+
     /* TOAST */
     .toast {
       position: fixed;
@@ -790,11 +838,12 @@
             tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No devices registered yet.</td></tr>';
             return;
           }
-          tbody.innerHTML = devices.map(function (d) {
+          tbody.innerHTML = devices.map(function (d, i) {
             var isActive = d.subscriptionActive === 'true';
             var tierClass = d.tier === 'pro' ? 'badge-pro' : 'badge-free';
-            return '<tr>' +
-              '<td><span class="mono truncate copyable" onclick="copyText(\'' + escAttr(d.deviceId) + '\')" title="' + escAttr(d.deviceId) + '">' + esc(d.deviceId.substring(0, 12)) + '...</span></td>' +
+            var rowId = 'sub-detail-' + i;
+            var mainRow = '<tr class="expandable" onclick="toggleDetail(\'' + rowId + '\', this)">' +
+              '<td><span class="mono truncate copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(d.deviceId) + '\')" title="' + escAttr(d.deviceId) + '">' + esc(d.deviceId.substring(0, 12)) + '...</span></td>' +
               '<td>' + esc(d.email || '--') + '</td>' +
               '<td><span class="badge ' + (isActive ? 'badge-active' : 'badge-inactive') + '">' + (isActive ? 'Active' : 'Inactive') + '</span></td>' +
               '<td><span class="badge ' + tierClass + '">' + esc(d.tier || 'free') + '</span></td>' +
@@ -802,6 +851,10 @@
               '<td>' + formatDate(d.registeredAt) + '</td>' +
               '<td>' + formatDate(d.lastSeenAt) + '</td>' +
             '</tr>';
+
+            var detailItems = buildDetailItems(d, ['deviceId', 'email', 'subscriptionActive', 'tier', 'stripeCustomerId', 'subscriptionId', 'registeredAt', 'lastSeenAt']);
+            var detailRow = '<tr class="detail-row" id="' + rowId + '"><td colspan="7"><div class="detail-grid">' + detailItems + '</div></td></tr>';
+            return mainRow + detailRow;
           }).join('');
         })
         .catch(function () {
@@ -823,15 +876,20 @@
             tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No licenses generated yet.</td></tr>';
             return;
           }
-          tbody.innerHTML = licenses.map(function (l) {
-            return '<tr>' +
-              '<td><span class="mono copyable" onclick="copyText(\'' + escAttr(l.licenseKey) + '\')" title="Click to copy">' + esc(l.licenseKey) + '</span></td>' +
+          tbody.innerHTML = licenses.map(function (l, i) {
+            var rowId = 'lic-detail-' + i;
+            var mainRow = '<tr class="expandable" onclick="toggleDetail(\'' + rowId + '\', this)">' +
+              '<td><span class="mono copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(l.licenseKey) + '\')" title="Click to copy">' + esc(l.licenseKey) + '</span></td>' +
               '<td><span class="badge badge-pro">' + esc(l.tier) + '</span></td>' +
               '<td>' + formatDate(l.createdAt) + '</td>' +
               '<td>' + esc(l.maxDevices || '1') + '</td>' +
               '<td>' + esc(l.note || '--') + '</td>' +
-              '<td>' + (l.activatedDeviceId ? '<span class="mono truncate copyable" onclick="copyText(\'' + escAttr(l.activatedDeviceId) + '\')" title="' + escAttr(l.activatedDeviceId) + '">' + esc(l.activatedDeviceId.substring(0, 12)) + '...</span>' : '--') + '</td>' +
+              '<td>' + (l.activatedDeviceId ? '<span class="mono truncate copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(l.activatedDeviceId) + '\')" title="' + escAttr(l.activatedDeviceId) + '">' + esc(l.activatedDeviceId.substring(0, 12)) + '...</span>' : '--') + '</td>' +
             '</tr>';
+
+            var detailItems = buildDetailItems(l, ['licenseKey', 'tier', 'createdAt', 'maxDevices', 'note', 'activatedDeviceId', 'activatedAt']);
+            var detailRow = '<tr class="detail-row" id="' + rowId + '"><td colspan="6"><div class="detail-grid">' + detailItems + '</div></td></tr>';
+            return mainRow + detailRow;
           }).join('');
         })
         .catch(function () {
@@ -854,7 +912,7 @@
       var body = { tier: tier };
       if (note) body.note = note;
 
-      apiFetch('/v1/admin/licenses', { method: 'POST', body: body })
+      apiFetch('/v1/admin/generate-license', { method: 'POST', body: body })
         .then(function (data) {
           showToast('License created: ' + data.licenseKey);
           document.getElementById('licenseNote').value = '';
@@ -906,6 +964,43 @@
           tbody.innerHTML = '<tr><td colspan="2" class="error-state">Failed to load usage data.</td></tr>';
           summary.style.display = 'none';
         });
+    }
+
+    // --- Detail Row Helpers ---
+
+    function toggleDetail(rowId, triggerRow) {
+      var detail = document.getElementById(rowId);
+      if (!detail) return;
+      var isVisible = detail.classList.contains('visible');
+      detail.classList.toggle('visible');
+      triggerRow.classList.toggle('expanded');
+    }
+
+    function buildDetailItems(obj, knownKeys) {
+      var allKeys = knownKeys.slice();
+      // Include any extra fields from the Redis hash that aren't in the known set
+      Object.keys(obj).forEach(function (k) {
+        if (allKeys.indexOf(k) === -1) {
+          allKeys.push(k);
+        }
+      });
+      return allKeys.map(function (key) {
+        var val = obj[key];
+        if (val === undefined || val === null) val = '--';
+        var displayVal = String(val);
+        var isDate = key.toLowerCase().indexOf('at') === key.length - 2 && key.length > 2;
+        if (isDate && displayVal !== '--') {
+          displayVal = formatDate(displayVal) || displayVal;
+        }
+        var isCopyable = displayVal.length > 20 || key.toLowerCase().indexOf('id') !== -1 || key.toLowerCase().indexOf('key') !== -1;
+        var copyAttr = isCopyable && displayVal !== '--' ? ' class="detail-value copyable" onclick="copyText(\'' + escAttr(displayVal) + '\')" title="Click to copy"' : ' class="detail-value"';
+        return '<div class="detail-item"><span class="detail-label">' + esc(formatFieldName(key)) + '</span><span' + copyAttr + '>' + esc(displayVal) + '</span></div>';
+      }).join('');
+    }
+
+    function formatFieldName(key) {
+      // Convert camelCase to Title Case (e.g. "stripeCustomerId" -> "Stripe Customer Id")
+      return key.replace(/([A-Z])/g, ' $1').replace(/^./, function (s) { return s.toUpperCase(); });
     }
 
     // --- Utilities ---
