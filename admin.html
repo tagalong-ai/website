@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Tagalong</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+    :root {
+      --bg: #1C1917;
+      --surface: #292524;
+      --surface-elevated: #352F2B;
+      --border: #3D3835;
+      --border-subtle: #332E2A;
+      --text: #FAF9F6;
+      --text-secondary: #A8A29E;
+      --text-tertiary: #78716C;
+      --accent: #F59E0B;
+      --accent-hover: #D97706;
+      --accent-subtle: rgba(245,158,11,0.1);
+      --cta: #7DA882;
+      --cta-hover: #6B8F71;
+      --cta-subtle: rgba(125,168,130,0.1);
+      --error: #EF4444;
+      --error-subtle: rgba(239,68,68,0.1);
+      --card-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* LOGIN */
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+    }
+
+    .login-card h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -.02em;
+    }
+
+    .login-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .login-card input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .login-card input:focus {
+      border-color: var(--accent);
+    }
+
+    .login-card input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .login-error {
+      color: var(--error);
+      font-size: 13px;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .btn-primary { background: var(--cta); color: #FFFFFF }
+    .btn-primary:hover { background: var(--cta-hover); transform: translateY(-1px) }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border) }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent) }
+    .btn-small { padding: 6px 14px; font-size: 13px }
+    .btn-danger { background: var(--error-subtle); color: var(--error); border: 1px solid rgba(239,68,68,0.2) }
+    .btn-danger:hover { background: rgba(239,68,68,0.2) }
+    .btn-accent { background: var(--accent); color: #1C1917 }
+    .btn-accent:hover { background: var(--accent-hover); transform: translateY(-1px) }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn-full { width: 100%; justify-content: center }
+
+    /* DASHBOARD LAYOUT */
+    .dashboard { display: none; }
+
+    .dashboard-header {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(28,25,23,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .dashboard-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dashboard-header-left img { height: 32px }
+
+    .dashboard-header-left h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .dashboard-header-left h1 span {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .dashboard-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dashboard-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* STATS CARDS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .stat-card-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stat-card-label svg { width: 14px; height: 14px; stroke-width: 2 }
+
+    .stat-card-value {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--accent);
+    }
+
+    .stat-card-value.green { color: var(--cta) }
+
+    /* SECTIONS */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-header-left svg { width: 18px; height: 18px; color: var(--accent); stroke-width: 2 }
+
+    .section-header-left h2 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .section-header-left .count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* TABLES */
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead th {
+      padding: 10px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--text-secondary);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    tbody tr:last-child td { border-bottom: none }
+
+    tbody tr:hover { background: rgba(245,158,11,0.03) }
+
+    .mono {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 12px;
+    }
+
+    .truncate {
+      max-width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .copyable {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .copyable:hover { color: var(--accent) }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+
+    .badge-active { background: var(--cta-subtle); color: var(--cta) }
+    .badge-inactive { background: rgba(120,113,108,0.15); color: var(--text-tertiary) }
+    .badge-pro { background: var(--accent-subtle); color: var(--accent) }
+    .badge-free { background: rgba(120,113,108,0.15); color: var(--text-tertiary) }
+
+    /* USAGE SECTION */
+    .usage-controls {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .usage-controls label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .usage-controls input[type="month"] {
+      padding: 6px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .usage-controls input[type="month"]:focus {
+      border-color: var(--accent);
+    }
+
+    .usage-summary {
+      padding: 12px 20px;
+      background: var(--bg);
+      font-size: 13px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .usage-summary strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* LICENSE FORM */
+    .license-form {
+      display: none;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .license-form.visible { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-group label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--text-secondary);
+    }
+
+    .form-group select,
+    .form-group input[type="text"] {
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      min-width: 140px;
+    }
+
+    .form-group select:focus,
+    .form-group input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+
+    /* LOADING / EMPTY */
+    .loading-row td {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--text-tertiary);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg) } }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-tertiary);
+      font-size: 14px;
+    }
+
+    .error-state {
+      text-align: center;
+      padding: 20px;
+      color: var(--error);
+      font-size: 14px;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      box-shadow: var(--card-shadow);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .3s ease;
+      z-index: 200;
+    }
+
+    .toast.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr) }
+    }
+
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: 1fr }
+      .dashboard-header { padding: 12px 16px }
+      .dashboard-body { padding: 16px }
+      .section-header { flex-direction: column; gap: 10px; align-items: flex-start }
+      .license-form.visible { flex-direction: column; align-items: stretch }
+      .usage-controls { flex-wrap: wrap }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="loginView" class="login-wrapper">
+    <div class="login-card">
+      <div style="margin-bottom: 20px">
+        <img src="assets/logo-dark.png" alt="Tagalong" style="height: 40px">
+      </div>
+      <h1>Admin Dashboard</h1>
+      <p>Enter the admin secret to continue.</p>
+      <div id="loginError" class="login-error"></div>
+      <input type="password" id="secretInput" placeholder="Admin secret" autocomplete="off" autofocus>
+      <button class="btn btn-primary btn-full" id="loginBtn" onclick="handleLogin()">Sign In</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboardView" class="dashboard">
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+      <div class="dashboard-header-left">
+        <img src="assets/logo-dark.png" alt="Tagalong">
+        <h1><span>Admin</span> Dashboard</h1>
+      </div>
+      <div class="dashboard-header-right">
+        <button class="btn btn-outline btn-small" onclick="refreshAll()">
+          <i data-lucide="refresh-cw" style="width:14px;height:14px"></i> Refresh
+        </button>
+        <button class="btn btn-danger btn-small" onclick="handleLogout()">
+          <i data-lucide="log-out" style="width:14px;height:14px"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <div class="dashboard-body">
+
+      <!-- STATS -->
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-card-label"><i data-lucide="monitor-smartphone"></i> Total Devices</div>
+          <div class="stat-card-value" id="statDevices">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label"><i data-lucide="credit-card"></i> Active Subscribers</div>
+          <div class="stat-card-value" id="statSubscribers">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label"><i data-lucide="key"></i> Active Licenses</div>
+          <div class="stat-card-value" id="statLicenses">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label"><i data-lucide="dollar-sign"></i> MRR</div>
+          <div class="stat-card-value green" id="statMRR">--</div>
+        </div>
+      </div>
+
+      <!-- SUBSCRIBERS -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header-left">
+            <i data-lucide="users"></i>
+            <h2>Subscribers</h2>
+            <span class="count" id="subscribersCount">0</span>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Device ID</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Tier</th>
+                <th>Stripe Customer</th>
+                <th>Registered</th>
+                <th>Last Seen</th>
+              </tr>
+            </thead>
+            <tbody id="subscribersBody">
+              <tr class="loading-row"><td colspan="7"><span class="spinner"></span> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LICENSES -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header-left">
+            <i data-lucide="key-round"></i>
+            <h2>Licenses</h2>
+            <span class="count" id="licensesCount">0</span>
+          </div>
+          <button class="btn btn-accent btn-small" id="generateBtn" onclick="toggleLicenseForm()">
+            <i data-lucide="plus" style="width:14px;height:14px"></i> Generate License
+          </button>
+        </div>
+        <div class="license-form" id="licenseForm">
+          <div class="form-group">
+            <label>Tier</label>
+            <select id="licenseTier">
+              <option value="pro">Pro</option>
+              <option value="free">Free</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1;min-width:200px">
+            <label>Note (optional)</label>
+            <input type="text" id="licenseNote" placeholder="e.g. Early adopter gift">
+          </div>
+          <button class="btn btn-accent btn-small" onclick="generateLicense()" id="createLicenseBtn">Create</button>
+          <button class="btn btn-outline btn-small" onclick="toggleLicenseForm()">Cancel</button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>License Key</th>
+                <th>Tier</th>
+                <th>Created</th>
+                <th>Max Devices</th>
+                <th>Note</th>
+                <th>Activated Device</th>
+              </tr>
+            </thead>
+            <tbody id="licensesBody">
+              <tr class="loading-row"><td colspan="6"><span class="spinner"></span> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- USAGE -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header-left">
+            <i data-lucide="bar-chart-3"></i>
+            <h2>Usage</h2>
+          </div>
+        </div>
+        <div class="usage-controls">
+          <label for="usageMonth">Month:</label>
+          <input type="month" id="usageMonth" onchange="fetchUsage()">
+        </div>
+        <div class="usage-summary" id="usageSummary" style="display:none"></div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Device ID</th>
+                <th>API Calls</th>
+              </tr>
+            </thead>
+            <tbody id="usageBody">
+              <tr class="loading-row"><td colspan="2"><span class="spinner"></span> Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    var API_BASE = 'https://api.tagalongai.com';
+
+    // --- Auth ---
+
+    function getSecret() {
+      return sessionStorage.getItem('tagalong_admin_secret') || '';
+    }
+
+    function handleLogin() {
+      var secret = document.getElementById('secretInput').value.trim();
+      if (!secret) {
+        showLoginError('Please enter the admin secret.');
+        return;
+      }
+      var btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+
+      apiFetch('/v1/admin/stats', { secret: secret })
+        .then(function () {
+          sessionStorage.setItem('tagalong_admin_secret', secret);
+          showDashboard();
+        })
+        .catch(function (err) {
+          showLoginError(err.status === 403 || err.status === 401 ? 'Invalid admin secret.' : 'Connection failed. Check the API.');
+        })
+        .finally(function () {
+          btn.disabled = false;
+          btn.textContent = 'Sign In';
+        });
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem('tagalong_admin_secret');
+      document.getElementById('dashboardView').style.display = 'none';
+      document.getElementById('loginView').style.display = 'flex';
+      document.getElementById('secretInput').value = '';
+      document.getElementById('loginError').style.display = 'none';
+    }
+
+    function showLoginError(msg) {
+      var el = document.getElementById('loginError');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function showDashboard() {
+      document.getElementById('loginView').style.display = 'none';
+      document.getElementById('dashboardView').style.display = 'block';
+      lucide.createIcons();
+
+      // Set usage month to current
+      var now = new Date();
+      var month = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+      document.getElementById('usageMonth').value = month;
+
+      refreshAll();
+    }
+
+    // --- API ---
+
+    function apiFetch(path, opts) {
+      opts = opts || {};
+      var secret = opts.secret || getSecret();
+      var fetchOpts = {
+        method: opts.method || 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + secret,
+          'Content-Type': 'application/json'
+        }
+      };
+      if (opts.body) {
+        fetchOpts.body = JSON.stringify(opts.body);
+      }
+      return fetch(API_BASE + path, fetchOpts).then(function (res) {
+        if (!res.ok) {
+          var err = new Error('HTTP ' + res.status);
+          err.status = res.status;
+          throw err;
+        }
+        return res.json();
+      });
+    }
+
+    // --- Refresh ---
+
+    function refreshAll() {
+      fetchStats();
+      fetchSubscribers();
+      fetchLicenses();
+      fetchUsage();
+    }
+
+    // --- Stats ---
+
+    function fetchStats() {
+      var ids = ['statDevices', 'statSubscribers', 'statLicenses', 'statMRR'];
+      ids.forEach(function (id) { document.getElementById(id).textContent = '...'; });
+
+      apiFetch('/v1/admin/stats')
+        .then(function (data) {
+          document.getElementById('statDevices').textContent = data.totalDevices;
+          document.getElementById('statSubscribers').textContent = data.activeSubscribers;
+          document.getElementById('statLicenses').textContent = data.activeLicenses;
+          document.getElementById('statMRR').textContent = '$' + data.mrr;
+        })
+        .catch(function () {
+          ids.forEach(function (id) { document.getElementById(id).textContent = '--'; });
+        });
+    }
+
+    // --- Subscribers ---
+
+    function fetchSubscribers() {
+      var tbody = document.getElementById('subscribersBody');
+      tbody.innerHTML = '<tr class="loading-row"><td colspan="7"><span class="spinner"></span> Loading...</td></tr>';
+
+      apiFetch('/v1/admin/subscribers')
+        .then(function (data) {
+          document.getElementById('subscribersCount').textContent = data.totalDevices;
+          var devices = data.devices || [];
+          if (devices.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No devices registered yet.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = devices.map(function (d) {
+            var isActive = d.subscriptionActive === 'true';
+            var tierClass = d.tier === 'pro' ? 'badge-pro' : 'badge-free';
+            return '<tr>' +
+              '<td><span class="mono truncate copyable" onclick="copyText(\'' + escAttr(d.deviceId) + '\')" title="' + escAttr(d.deviceId) + '">' + esc(d.deviceId.substring(0, 12)) + '...</span></td>' +
+              '<td>' + esc(d.email || '--') + '</td>' +
+              '<td><span class="badge ' + (isActive ? 'badge-active' : 'badge-inactive') + '">' + (isActive ? 'Active' : 'Inactive') + '</span></td>' +
+              '<td><span class="badge ' + tierClass + '">' + esc(d.tier || 'free') + '</span></td>' +
+              '<td class="mono">' + esc(d.stripeCustomerId || '--') + '</td>' +
+              '<td>' + formatDate(d.registeredAt) + '</td>' +
+              '<td>' + formatDate(d.lastSeenAt) + '</td>' +
+            '</tr>';
+          }).join('');
+        })
+        .catch(function () {
+          tbody.innerHTML = '<tr><td colspan="7" class="error-state">Failed to load subscribers.</td></tr>';
+        });
+    }
+
+    // --- Licenses ---
+
+    function fetchLicenses() {
+      var tbody = document.getElementById('licensesBody');
+      tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span> Loading...</td></tr>';
+
+      apiFetch('/v1/admin/licenses')
+        .then(function (data) {
+          document.getElementById('licensesCount').textContent = data.count;
+          var licenses = data.licenses || [];
+          if (licenses.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No licenses generated yet.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = licenses.map(function (l) {
+            return '<tr>' +
+              '<td><span class="mono copyable" onclick="copyText(\'' + escAttr(l.licenseKey) + '\')" title="Click to copy">' + esc(l.licenseKey) + '</span></td>' +
+              '<td><span class="badge badge-pro">' + esc(l.tier) + '</span></td>' +
+              '<td>' + formatDate(l.createdAt) + '</td>' +
+              '<td>' + esc(l.maxDevices || '1') + '</td>' +
+              '<td>' + esc(l.note || '--') + '</td>' +
+              '<td>' + (l.activatedDeviceId ? '<span class="mono truncate copyable" onclick="copyText(\'' + escAttr(l.activatedDeviceId) + '\')" title="' + escAttr(l.activatedDeviceId) + '">' + esc(l.activatedDeviceId.substring(0, 12)) + '...</span>' : '--') + '</td>' +
+            '</tr>';
+          }).join('');
+        })
+        .catch(function () {
+          tbody.innerHTML = '<tr><td colspan="6" class="error-state">Failed to load licenses.</td></tr>';
+        });
+    }
+
+    function toggleLicenseForm() {
+      var form = document.getElementById('licenseForm');
+      form.classList.toggle('visible');
+    }
+
+    function generateLicense() {
+      var tier = document.getElementById('licenseTier').value;
+      var note = document.getElementById('licenseNote').value.trim();
+      var btn = document.getElementById('createLicenseBtn');
+      btn.disabled = true;
+      btn.textContent = 'Creating...';
+
+      var body = { tier: tier };
+      if (note) body.note = note;
+
+      apiFetch('/v1/admin/licenses', { method: 'POST', body: body })
+        .then(function (data) {
+          showToast('License created: ' + data.licenseKey);
+          document.getElementById('licenseNote').value = '';
+          document.getElementById('licenseForm').classList.remove('visible');
+          fetchLicenses();
+        })
+        .catch(function () {
+          showToast('Failed to create license.');
+        })
+        .finally(function () {
+          btn.disabled = false;
+          btn.textContent = 'Create';
+        });
+    }
+
+    // --- Usage ---
+
+    function fetchUsage() {
+      var month = document.getElementById('usageMonth').value;
+      if (!month) return;
+
+      var tbody = document.getElementById('usageBody');
+      var summary = document.getElementById('usageSummary');
+      tbody.innerHTML = '<tr class="loading-row"><td colspan="2"><span class="spinner"></span> Loading...</td></tr>';
+      summary.style.display = 'none';
+
+      apiFetch('/v1/admin/usage?month=' + month)
+        .then(function (data) {
+          var usage = data.usage || [];
+          if (usage.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="2" class="empty-state">No usage data for this month.</td></tr>';
+            summary.style.display = 'none';
+            return;
+          }
+
+          summary.innerHTML = 'Total API calls: <strong>' + (data.totalCalls || 0).toLocaleString() + '</strong> across <strong>' + usage.length + '</strong> device' + (usage.length !== 1 ? 's' : '');
+          summary.style.display = 'block';
+
+          usage.sort(function (a, b) { return b.apiCalls - a.apiCalls; });
+
+          tbody.innerHTML = usage.map(function (u) {
+            return '<tr>' +
+              '<td><span class="mono truncate copyable" onclick="copyText(\'' + escAttr(u.deviceId) + '\')" title="' + escAttr(u.deviceId) + '">' + esc(u.deviceId.substring(0, 12)) + '...</span></td>' +
+              '<td>' + u.apiCalls.toLocaleString() + '</td>' +
+            '</tr>';
+          }).join('');
+        })
+        .catch(function () {
+          tbody.innerHTML = '<tr><td colspan="2" class="error-state">Failed to load usage data.</td></tr>';
+          summary.style.display = 'none';
+        });
+    }
+
+    // --- Utilities ---
+
+    function formatDate(iso) {
+      if (!iso) return '--';
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return '--';
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+        ' ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function esc(str) {
+      if (!str) return '';
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function escAttr(str) {
+      return esc(str).replace(/'/g, "\\'");
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(function () {
+        showToast('Copied to clipboard');
+      });
+    }
+
+    var toastTimer;
+    function showToast(msg) {
+      var el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () {
+        el.classList.remove('visible');
+      }, 2500);
+    }
+
+    // --- Init ---
+
+    document.getElementById('secretInput').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') handleLogin();
+    });
+
+    // Auto-login if secret is still in sessionStorage
+    if (getSecret()) {
+      showDashboard();
+    }
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
