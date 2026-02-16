@@ -38,32 +38,14 @@
       --recording: #EF4444;
       --success: #7DA882;
       --error: #EF4444;
+      --cta: #7DA882;
+      --cta-hover: #6B8F71;
       --hero-gradient: linear-gradient(135deg, #1C1917 0%, #292524 50%, #1C1917 100%);
       --card-shadow: 0 4px 24px rgba(0,0,0,0.3);
       --radius: 12px;
       --radius-sm: 8px;
     }
 
-    html.light {
-      --bg: #FAF9F6;
-      --surface: #F5F0EB;
-      --surface-elevated: #FFFFFF;
-      --border: #E7E5E4;
-      --border-subtle: #F0EEEB;
-      --text: #1C1917;
-      --text-secondary: #78716C;
-      --text-tertiary: #A8A29E;
-      --accent: #D97706;
-      --accent-hover: #B45309;
-      --accent-subtle: rgba(217,119,6,0.08);
-      --secondary: #6B8F71;
-      --secondary-subtle: rgba(107,143,113,0.08);
-      --recording: #DC2626;
-      --success: #6B8F71;
-      --error: #DC2626;
-      --hero-gradient: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 50%, #FAF9F6 100%);
-      --card-shadow: 0 4px 24px rgba(0,0,0,0.06);
-    }
 
     html { scroll-behavior: smooth }
 
@@ -89,27 +71,16 @@
       border-bottom: 1px solid var(--border);
       transition: background .3s;
     }
-    html.light nav { background: rgba(250,249,246,.85) }
     nav .container { display: flex; align-items: center; justify-content: space-between; height: 100px }
 
     .nav-logo { display: flex; align-items: center; gap: 8px }
-    .nav-logo img { height: 54px; display: none }
-    html.dark .nav-logo-dark { display: block }
-    html.light .nav-logo-light { display: block }
+    .nav-logo img { height: 54px }
 
     .nav-links { display: flex; align-items: center; gap: 28px; list-style: none }
     .nav-links a { color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: color .2s }
     .nav-links a:hover { color: var(--accent) }
 
     .nav-right { display: flex; align-items: center; gap: 12px }
-
-    .theme-toggle {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-      width: 36px; height: 36px; cursor: pointer; font-size: 16px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-secondary); transition: all .2s;
-    }
-    .theme-toggle:hover { border-color: var(--accent); color: var(--text) }
 
     /* BUTTONS */
     .btn {
@@ -118,8 +89,8 @@
       font-size: 14px; font-weight: 600; border: none; cursor: pointer;
       transition: all .2s; text-decoration: none; font-family: inherit;
     }
-    .btn-primary { background: var(--accent); color: #1C1917 }
-    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px) }
+    .btn-primary { background: var(--cta); color: #FFFFFF }
+    .btn-primary:hover { background: var(--cta-hover); transform: translateY(-1px) }
     .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border) }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent) }
     .btn-large { padding: 14px 28px; font-size: 16px; border-radius: var(--radius) }
@@ -134,7 +105,7 @@
     .hero::before {
       content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
       width: 800px; height: 800px;
-      background: radial-gradient(circle, rgba(245,158,11,.06) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(125,168,130,.06) 0%, transparent 70%);
       pointer-events: none;
     }
     .hero-badge {
@@ -150,7 +121,7 @@
       max-width: 720px; margin-left: auto; margin-right: auto;
     }
     .hero h1 .gradient-text {
-      background: linear-gradient(135deg, var(--accent), #FBBF24);
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .hero p {
@@ -164,10 +135,8 @@
     }
     .hero-logo img {
       height: 280px; object-fit: contain;
-      filter: drop-shadow(0 0 60px rgba(245,158,11,.15));
+      filter: drop-shadow(0 0 60px rgba(125,168,130,.15));
     }
-    html.light .hero-logo-dark { display: none }
-    html.dark .hero-logo-light { display: none }
     .hero-trust {
       margin-top: 36px; font-size: 18px; font-weight: 600;
       color: var(--text-secondary); letter-spacing: .01em;
@@ -177,7 +146,7 @@
     section { padding: 100px 0 }
     .section-label {
       text-transform: uppercase; font-size: 13px; font-weight: 700;
-      letter-spacing: .08em; color: var(--accent); margin-bottom: 12px;
+      letter-spacing: .08em; color: var(--secondary); margin-bottom: 12px;
     }
     .section-title {
       font-size: 40px; font-weight: 700; line-height: 1.15;
@@ -196,8 +165,8 @@
       border-radius: var(--radius); padding: 28px 24px; transition: all .3s ease;
     }
     .feature-card:hover {
-      border-color: var(--accent); transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(245,158,11,.08);
+      border-color: var(--secondary); transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(125,168,130,.08);
     }
     .feature-icon {
       width: 44px; height: 44px; border-radius: 10px;
@@ -212,7 +181,7 @@
     .feature-tag {
       display: inline-block; font-size: 11px; font-weight: 600;
       padding: 2px 8px; border-radius: 4px; margin-top: 10px;
-      background: var(--accent-subtle); color: var(--accent);
+      background: var(--secondary-subtle); color: var(--secondary);
     }
 
     /* HOW IT WORKS */
@@ -225,9 +194,9 @@
     .step { text-align: center; position: relative }
     .step-number {
       width: 80px; height: 80px; border-radius: 50%;
-      background: var(--bg); border: 2px solid var(--accent);
+      background: var(--bg); border: 2px solid var(--secondary);
       display: flex; align-items: center; justify-content: center;
-      color: var(--accent);
+      color: var(--secondary);
       margin: 0 auto 20px; position: relative; z-index: 1;
     }
     .step-number svg { width: 32px; height: 32px; stroke-width: 1.5 }
@@ -246,12 +215,12 @@
     }
     .pricing-card:hover { transform: translateY(-2px); box-shadow: var(--card-shadow) }
     .pricing-card.popular {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px var(--accent), 0 8px 40px rgba(245,158,11,.12);
+      border-color: var(--cta);
+      box-shadow: 0 0 0 1px var(--cta), 0 8px 40px rgba(125,168,130,.12);
     }
     .popular-badge {
       position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-      background: var(--accent); color: #1C1917;
+      background: var(--cta); color: #FFFFFF;
       font-size: 12px; font-weight: 700; padding: 4px 14px;
       border-radius: 12px; text-transform: uppercase; letter-spacing: .05em;
     }
@@ -269,7 +238,7 @@
 
     .pricing-note {
       max-width: 1080px; margin: 24px auto 0;
-      background: var(--surface); border-left: 3px solid var(--accent);
+      background: var(--surface); border-left: 3px solid var(--secondary);
       border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
       padding: 16px 20px; font-size: 14px; color: var(--text-secondary);
     }
@@ -323,8 +292,6 @@
     .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center }
     .footer-logo { margin-bottom: 4px }
     .footer-logo img { height: 48px }
-    html.dark .footer-logo .footer-logo-light { display: none }
-    html.light .footer-logo .footer-logo-dark { display: none }
     .footer-tagline { font-size: 13px; color: var(--text-tertiary); font-weight: 500; margin-bottom: 8px }
     .footer-bottom {
       display: flex; align-items: center; justify-content: space-between;
@@ -381,7 +348,6 @@
     <div class="container">
       <a href="#" class="nav-logo">
         <img src="assets/logo-dark.png" alt="Tagalong" class="nav-logo-dark">
-        <img src="assets/logo-light.png" alt="Tagalong" class="nav-logo-light">
       </a>
       <ul class="nav-links" id="navLinks">
         <li><a href="#features">Features</a></li>
@@ -390,9 +356,6 @@
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="nav-right">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <span id="themeIcon">&#9790;</span>
-        </button>
         <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-primary">Download</a>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">&#9776;</button>
       </div>
@@ -405,12 +368,11 @@
       <div class="animate-in">
         <div class="hero-logo">
           <img src="assets/logo-stacked-dark.png" alt="Tagalong" class="hero-logo-dark">
-          <img src="assets/logo-light.png" alt="Tagalong" class="hero-logo-light">
         </div>
         <div class="hero-badge">
           <span>Every meeting, remembered.</span>
         </div>
-        <h1>Never write <span class="gradient-text">meeting notes</span> again.</h1>
+        <h1>Focus on the conversation. <span class="gradient-text">Tagalong captures the rest.</span></h1>
         <p>Tagalong lives in your menu bar, captures every word and every speaker, and delivers a summary and infographic before you close the call. No bots. No browser tabs. No note-taking.</p>
         <div class="hero-buttons">
           <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-primary btn-large">
@@ -756,7 +718,6 @@
       <div class="footer-inner">
         <div class="footer-logo">
           <img src="assets/logo-dark.png" alt="Tagalong" class="footer-logo-dark">
-          <img src="assets/logo-light.png" alt="Tagalong" class="footer-logo-light">
         </div>
         <div class="footer-tagline">Every meeting, remembered.</div>
         <div class="footer-bottom">
@@ -772,35 +733,6 @@
   </footer>
 
   <script>
-    // Theme toggle
-    (function () {
-      var html = document.documentElement;
-      var toggle = document.getElementById('themeToggle');
-      var icon = document.getElementById('themeIcon');
-      var stored = localStorage.getItem('theme');
-
-      if (stored === 'light') {
-        html.classList.remove('dark');
-        html.classList.add('light');
-        icon.innerHTML = '\u2600';
-      }
-
-      toggle.addEventListener('click', function () {
-        var isLight = html.classList.contains('light');
-        if (isLight) {
-          html.classList.remove('light');
-          html.classList.add('dark');
-          icon.innerHTML = '\u263E';
-          localStorage.setItem('theme', 'dark');
-        } else {
-          html.classList.remove('dark');
-          html.classList.add('light');
-          icon.innerHTML = '\u2600';
-          localStorage.setItem('theme', 'light');
-        }
-      });
-    })();
-
     // Mobile menu toggle
     (function () {
       var btn = document.getElementById('mobileMenuBtn');
