@@ -774,11 +774,8 @@
             <thead>
               <tr>
                 <th>Customer</th>
-                <th class="right">Whisper</th>
-                <th class="right">Chat</th>
-                <th class="right">AAI Submit</th>
-                <th class="right">AAI Upload</th>
-                <th class="right">AAI Poll</th>
+                <th class="right">OpenAI</th>
+                <th class="right">AssemblyAI</th>
                 <th class="right">Gemini</th>
                 <th class="right">Total</th>
                 <th class="right">Est. Cost</th>
@@ -787,7 +784,7 @@
               </tr>
             </thead>
             <tbody id="usageBody">
-              <tr class="loading-row"><td colspan="11"><span class="spinner"></span> Loading...</td></tr>
+              <tr class="loading-row"><td colspan="8"><span class="spinner"></span> Loading...</td></tr>
             </tbody>
           </table>
         </div>
@@ -1228,14 +1225,16 @@
         var profitClass = u.profit >= 0 ? 'profit-positive' : 'profit-negative';
         var costPrefix = (!u.hasEndpointData && u.totalCalls > 0) ? '~' : '';
 
+        // Group by API provider
+        var openai = (ep.whisper || 0) + (ep.chat || 0);
+        var assemblyai = (ep['assemblyai-submit'] || 0) + (ep['assemblyai-upload'] || 0) + (ep['assemblyai-poll'] || 0);
+        var gemini = ep.gemini || 0;
+
         return '<tr>' +
           '<td>' + customerLabel + '</td>' +
-          '<td class="right mono">' + (ep.whisper || 0) + '</td>' +
-          '<td class="right mono">' + (ep.chat || 0) + '</td>' +
-          '<td class="right mono">' + (ep['assemblyai-submit'] || 0) + '</td>' +
-          '<td class="right mono">' + (ep['assemblyai-upload'] || 0) + '</td>' +
-          '<td class="right mono">' + (ep['assemblyai-poll'] || 0) + '</td>' +
-          '<td class="right mono">' + (ep.gemini || 0) + '</td>' +
+          '<td class="right mono">' + openai + '</td>' +
+          '<td class="right mono">' + assemblyai + '</td>' +
+          '<td class="right mono">' + gemini + '</td>' +
           '<td class="right"><strong>' + u.totalCalls + '</strong></td>' +
           '<td class="right mono">' + costPrefix + '$' + (u.estimatedCost || 0).toFixed(2) + '</td>' +
           '<td class="right mono">$' + (u.revenue || 0).toFixed(2) + '</td>' +
