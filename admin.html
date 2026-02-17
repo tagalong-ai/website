@@ -977,6 +977,7 @@
           document.getElementById('statDevicesSub').textContent = data.activeDevices + ' active device' + (data.activeDevices !== 1 ? 's' : '');
           document.getElementById('statLicenses').textContent = data.activeLicenses;
           document.getElementById('statMRR').textContent = '$' + data.mrr;
+          document.getElementById('statMRRSub').textContent = data.mrrSource === 'stripe' ? 'From Stripe' : 'From Redis (verify with Stripe)';
         })
         .catch(function () {
           ids.forEach(function (id) { document.getElementById(id).textContent = '--'; });
@@ -1208,11 +1209,14 @@
 
       // Summary bar
       var t = usageTotals;
+      var hasAnyLegacy = usage.some(function (u) { return !u.hasEndpointData && u.totalCalls > 0; });
+      var costLabel = hasAnyLegacy ? 'Est. API Cost' : 'API Cost';
       summary.innerHTML =
-        '<span>API Cost: <strong class="cost">$' + (t.estimatedCost || 0).toFixed(2) + '</strong></span>' +
+        '<span>' + costLabel + ': <strong class="cost">$' + (t.estimatedCost || 0).toFixed(2) + '</strong>' + (hasAnyLegacy ? ' *' : '') + '</span>' +
         '<span>Revenue: <strong class="revenue">$' + (t.revenue || 0).toFixed(2) + '</strong></span>' +
         '<span>Net: <strong class="profit">$' + (t.profit || 0).toFixed(2) + '</strong> (' + (t.marginPercent || 0) + '%)</span>' +
-        '<span>Devices: <strong>' + usage.length + '</strong></span>';
+        '<span>Devices: <strong>' + usage.length + '</strong></span>' +
+        (hasAnyLegacy ? '<span style="color:var(--text-tertiary);font-size:11px">* Costs estimated from blended avg — endpoint tracking starts now</span>' : '');
       summary.style.display = 'flex';
 
       tbody.innerHTML = usage.map(function (u) {
@@ -1222,6 +1226,7 @@
           : '<span class="mono truncate copyable" onclick="copyText(\'' + escAttr(u.deviceId) + '\')" title="' + escAttr(u.deviceId) + '">' + esc(u.deviceId.substring(0, 14)) + '...</span>';
 
         var profitClass = u.profit >= 0 ? 'profit-positive' : 'profit-negative';
+        var costPrefix = (!u.hasEndpointData && u.totalCalls > 0) ? '~' : '';
 
         return '<tr>' +
           '<td>' + customerLabel + '</td>' +
@@ -1232,9 +1237,9 @@
           '<td class="right mono">' + (ep['assemblyai-poll'] || 0) + '</td>' +
           '<td class="right mono">' + (ep.gemini || 0) + '</td>' +
           '<td class="right"><strong>' + u.totalCalls + '</strong></td>' +
-          '<td class="right mono">$' + (u.estimatedCost || 0).toFixed(2) + '</td>' +
+          '<td class="right mono">' + costPrefix + '$' + (u.estimatedCost || 0).toFixed(2) + '</td>' +
           '<td class="right mono">$' + (u.revenue || 0).toFixed(2) + '</td>' +
-          '<td class="right mono ' + profitClass + '">$' + (u.profit || 0).toFixed(2) + '</td>' +
+          '<td class="right mono ' + profitClass + '">' + costPrefix + '$' + (u.profit || 0).toFixed(2) + '</td>' +
         '</tr>';
       }).join('');
     }
