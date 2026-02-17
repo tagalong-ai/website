@@ -157,6 +157,7 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       z-index: 100;
+      gap: 12px;
     }
 
     .dashboard-header-left {
@@ -178,6 +179,30 @@
       font-weight: 700;
     }
 
+    .dashboard-header-center {
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px 14px 8px 36px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2378716C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 10px center;
+    }
+
+    .search-input:focus { border-color: var(--accent) }
+    .search-input::placeholder { color: var(--text-tertiary) }
+
     .dashboard-header-right {
       display: flex;
       align-items: center;
@@ -185,7 +210,7 @@
     }
 
     .dashboard-body {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 24px;
     }
@@ -193,7 +218,7 @@
     /* STATS CARDS */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
       margin-bottom: 32px;
     }
@@ -203,6 +228,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 20px;
+      position: relative;
     }
 
     .stat-card-label {
@@ -227,6 +253,25 @@
     }
 
     .stat-card-value.green { color: var(--cta) }
+    .stat-card-value.red { color: var(--error) }
+
+    .stat-card-sub {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 4px;
+    }
+
+    .stat-card-action {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+    }
+
+    .btn-tiny {
+      padding: 4px 10px;
+      font-size: 11px;
+      border-radius: 6px;
+    }
 
     /* SECTIONS */
     .section {
@@ -267,6 +312,26 @@
       border-radius: 10px;
     }
 
+    .section-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-select {
+      padding: 5px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .filter-select:focus { border-color: var(--accent) }
+
     /* TABLES */
     .table-wrapper {
       overflow-x: auto;
@@ -291,12 +356,16 @@
       white-space: nowrap;
     }
 
+    thead th.right { text-align: right }
+
     tbody td {
       padding: 10px 16px;
       border-bottom: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       white-space: nowrap;
     }
+
+    tbody td.right { text-align: right }
 
     tbody tr:last-child td { border-bottom: none }
 
@@ -339,6 +408,11 @@
     .badge-pro { background: var(--accent-subtle); color: var(--accent) }
     .badge-free { background: rgba(120,113,108,0.15); color: var(--text-tertiary) }
 
+    /* Customer cell — email primary, device secondary */
+    .customer-cell { display: flex; flex-direction: column; gap: 2px }
+    .customer-email { color: var(--text); font-weight: 500 }
+    .customer-device { font-size: 11px; color: var(--text-tertiary); font-family: 'SF Mono', 'Fira Code', monospace }
+
     /* USAGE SECTION */
     .usage-controls {
       padding: 16px 20px;
@@ -375,12 +449,21 @@
       font-size: 13px;
       color: var(--text-secondary);
       border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
     }
 
     .usage-summary strong {
-      color: var(--accent);
       font-weight: 700;
     }
+
+    .usage-summary .cost { color: var(--error) }
+    .usage-summary .revenue { color: var(--cta) }
+    .usage-summary .profit { color: var(--accent) }
+
+    .profit-positive { color: var(--cta) }
+    .profit-negative { color: var(--error) }
 
     /* LICENSE FORM */
     .license-form {
@@ -532,7 +615,13 @@
     }
 
     /* RESPONSIVE */
-    @media (max-width: 900px) {
+    @media (max-width: 1100px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr) }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header { flex-wrap: wrap }
+      .dashboard-header-center { max-width: none; order: 3; width: 100% }
       .stats-grid { grid-template-columns: repeat(2, 1fr) }
     }
 
@@ -571,6 +660,9 @@
         <img src="assets/logo-dark.png" alt="Tagalong">
         <h1><span>Admin</span> Dashboard</h1>
       </div>
+      <div class="dashboard-header-center">
+        <input type="text" class="search-input" id="globalSearch" placeholder="Search by email, device ID, or Stripe ID..." oninput="handleGlobalSearch()">
+      </div>
       <div class="dashboard-header-right">
         <button class="btn btn-outline btn-small" onclick="refreshAll()">
           <i data-lucide="refresh-cw" style="width:14px;height:14px"></i> Refresh
@@ -590,8 +682,9 @@
           <div class="stat-card-value" id="statDevices">--</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-label"><i data-lucide="credit-card"></i> Active Subscribers</div>
+          <div class="stat-card-label"><i data-lucide="users"></i> Unique Subscribers</div>
           <div class="stat-card-value" id="statSubscribers">--</div>
+          <div class="stat-card-sub" id="statDevicesSub"></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-label"><i data-lucide="key"></i> Active Licenses</div>
@@ -600,6 +693,20 @@
         <div class="stat-card">
           <div class="stat-card-label"><i data-lucide="dollar-sign"></i> MRR</div>
           <div class="stat-card-value green" id="statMRR">--</div>
+          <div class="stat-card-action">
+            <button class="btn btn-outline btn-tiny" onclick="verifyWithStripe()" id="stripeVerifyBtn">Verify with Stripe</button>
+          </div>
+          <div class="stat-card-sub" id="statMRRSub"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label"><i data-lucide="trending-down"></i> Est. API Cost</div>
+          <div class="stat-card-value red" id="statApiCost">--</div>
+          <div class="stat-card-sub" id="statApiCostSub">This month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label"><i data-lucide="trending-up"></i> Net Margin</div>
+          <div class="stat-card-value green" id="statNetMargin">--</div>
+          <div class="stat-card-sub" id="statNetMarginSub"></div>
         </div>
       </div>
 
@@ -611,13 +718,24 @@
             <h2>Subscribers</h2>
             <span class="count" id="subscribersCount">0</span>
           </div>
+          <div class="section-header-right">
+            <select class="filter-select" id="subscriberStatusFilter" onchange="renderSubscribers()">
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+            <select class="filter-select" id="subscriberTierFilter" onchange="renderSubscribers()">
+              <option value="all">All Tiers</option>
+              <option value="pro">Pro</option>
+              <option value="free">Free</option>
+            </select>
+          </div>
         </div>
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
-                <th>Device ID</th>
-                <th>Email</th>
+                <th>Customer</th>
                 <th>Status</th>
                 <th>Tier</th>
                 <th>Stripe Customer</th>
@@ -626,7 +744,7 @@
               </tr>
             </thead>
             <tbody id="subscribersBody">
-              <tr class="loading-row"><td colspan="7"><span class="spinner"></span> Loading...</td></tr>
+              <tr class="loading-row"><td colspan="6"><span class="spinner"></span> Loading...</td></tr>
             </tbody>
           </table>
         </div>
@@ -688,19 +806,28 @@
         </div>
         <div class="usage-controls">
           <label for="usageMonth">Month:</label>
-          <input type="month" id="usageMonth" onchange="fetchUsage()">
+          <input type="month" id="usageMonth" onchange="fetchUsageDetailed()">
         </div>
         <div class="usage-summary" id="usageSummary" style="display:none"></div>
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
-                <th>Device ID</th>
-                <th>API Calls</th>
+                <th>Customer</th>
+                <th class="right">Whisper</th>
+                <th class="right">Chat</th>
+                <th class="right">AAI Submit</th>
+                <th class="right">AAI Upload</th>
+                <th class="right">AAI Poll</th>
+                <th class="right">Gemini</th>
+                <th class="right">Total</th>
+                <th class="right">Est. Cost</th>
+                <th class="right">Revenue</th>
+                <th class="right">Profit</th>
               </tr>
             </thead>
             <tbody id="usageBody">
-              <tr class="loading-row"><td colspan="2"><span class="spinner"></span> Loading...</td></tr>
+              <tr class="loading-row"><td colspan="11"><span class="spinner"></span> Loading...</td></tr>
             </tbody>
           </table>
         </div>
@@ -714,6 +841,13 @@
 
   <script>
     var API_BASE = 'https://api.tagalongai.com';
+
+    // --- Data stores for client-side filtering ---
+    var subscribersData = [];
+    var licensesData = [];
+    var usageData = [];
+    var usageTotals = {};
+    var globalSearchQuery = '';
 
     // --- Auth ---
 
@@ -797,13 +931,35 @@
       });
     }
 
+    // --- Global Search ---
+
+    function handleGlobalSearch() {
+      globalSearchQuery = document.getElementById('globalSearch').value.trim().toLowerCase();
+      renderSubscribers();
+      renderLicenses();
+      renderUsage();
+    }
+
+    function matchesSearch(item) {
+      if (!globalSearchQuery) return true;
+      var q = globalSearchQuery;
+      var fields = [
+        item.email, item.deviceId, item.stripeCustomerId,
+        item.licenseKey, item.note, item.activatedDeviceId
+      ];
+      for (var i = 0; i < fields.length; i++) {
+        if (fields[i] && fields[i].toLowerCase().indexOf(q) !== -1) return true;
+      }
+      return false;
+    }
+
     // --- Refresh ---
 
     function refreshAll() {
       fetchStats();
       fetchSubscribers();
       fetchLicenses();
-      fetchUsage();
+      fetchUsageDetailed();
     }
 
     // --- Stats ---
@@ -811,11 +967,14 @@
     function fetchStats() {
       var ids = ['statDevices', 'statSubscribers', 'statLicenses', 'statMRR'];
       ids.forEach(function (id) { document.getElementById(id).textContent = '...'; });
+      document.getElementById('statApiCost').textContent = '...';
+      document.getElementById('statNetMargin').textContent = '...';
 
       apiFetch('/v1/admin/stats')
         .then(function (data) {
           document.getElementById('statDevices').textContent = data.totalDevices;
-          document.getElementById('statSubscribers').textContent = data.activeSubscribers;
+          document.getElementById('statSubscribers').textContent = data.uniqueSubscribers;
+          document.getElementById('statDevicesSub').textContent = data.activeDevices + ' active device' + (data.activeDevices !== 1 ? 's' : '');
           document.getElementById('statLicenses').textContent = data.activeLicenses;
           document.getElementById('statMRR').textContent = '$' + data.mrr;
         })
@@ -824,42 +983,87 @@
         });
     }
 
+    function verifyWithStripe() {
+      var btn = document.getElementById('stripeVerifyBtn');
+      btn.disabled = true;
+      btn.textContent = 'Checking...';
+
+      apiFetch('/v1/admin/stats/stripe')
+        .then(function (data) {
+          document.getElementById('statMRRSub').textContent =
+            'Stripe: ' + data.stripeActiveSubscriptions + ' subs, $' + data.stripeMRR + ' MRR';
+          showToast('Stripe: ' + data.stripeActiveSubscriptions + ' active subs, $' + data.stripeMRR + ' MRR');
+        })
+        .catch(function (err) {
+          document.getElementById('statMRRSub').textContent = 'Stripe verification failed';
+          showToast('Stripe verification failed');
+        })
+        .finally(function () {
+          btn.disabled = false;
+          btn.textContent = 'Verify with Stripe';
+        });
+    }
+
     // --- Subscribers ---
 
     function fetchSubscribers() {
       var tbody = document.getElementById('subscribersBody');
-      tbody.innerHTML = '<tr class="loading-row"><td colspan="7"><span class="spinner"></span> Loading...</td></tr>';
+      tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span> Loading...</td></tr>';
 
       apiFetch('/v1/admin/subscribers')
         .then(function (data) {
-          document.getElementById('subscribersCount').textContent = data.totalDevices;
-          var devices = data.devices || [];
-          if (devices.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No devices registered yet.</td></tr>';
-            return;
-          }
-          tbody.innerHTML = devices.map(function (d, i) {
-            var isActive = d.subscriptionActive === 'true';
-            var tierClass = d.tier === 'pro' ? 'badge-pro' : 'badge-free';
-            var rowId = 'sub-detail-' + i;
-            var mainRow = '<tr class="expandable" onclick="toggleDetail(\'' + rowId + '\', this)">' +
-              '<td><span class="mono truncate copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(d.deviceId) + '\')" title="' + escAttr(d.deviceId) + '">' + esc(d.deviceId.substring(0, 12)) + '...</span></td>' +
-              '<td>' + esc(d.email || '--') + '</td>' +
-              '<td><span class="badge ' + (isActive ? 'badge-active' : 'badge-inactive') + '">' + (isActive ? 'Active' : 'Inactive') + '</span></td>' +
-              '<td><span class="badge ' + tierClass + '">' + esc(d.tier || 'free') + '</span></td>' +
-              '<td class="mono">' + esc(d.stripeCustomerId || '--') + '</td>' +
-              '<td>' + formatDate(d.registeredAt) + '</td>' +
-              '<td>' + formatDate(d.lastSeenAt) + '</td>' +
-            '</tr>';
-
-            var detailItems = buildDetailItems(d, ['deviceId', 'email', 'subscriptionActive', 'tier', 'stripeCustomerId', 'subscriptionId', 'registeredAt', 'lastSeenAt']);
-            var detailRow = '<tr class="detail-row" id="' + rowId + '"><td colspan="7"><div class="detail-grid">' + detailItems + '</div></td></tr>';
-            return mainRow + detailRow;
-          }).join('');
+          subscribersData = data.devices || [];
+          renderSubscribers();
         })
         .catch(function () {
-          tbody.innerHTML = '<tr><td colspan="7" class="error-state">Failed to load subscribers.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="6" class="error-state">Failed to load subscribers.</td></tr>';
         });
+    }
+
+    function renderSubscribers(filtered) {
+      var tbody = document.getElementById('subscribersBody');
+      var devices = filtered || subscribersData;
+
+      // Apply filters
+      var statusFilter = document.getElementById('subscriberStatusFilter').value;
+      var tierFilter = document.getElementById('subscriberTierFilter').value;
+
+      devices = devices.filter(function (d) {
+        if (!matchesSearch(d)) return false;
+        if (statusFilter === 'active' && d.subscriptionActive !== 'true') return false;
+        if (statusFilter === 'inactive' && d.subscriptionActive === 'true') return false;
+        if (tierFilter !== 'all' && (d.tier || 'free') !== tierFilter) return false;
+        return true;
+      });
+
+      document.getElementById('subscribersCount').textContent = devices.length;
+
+      if (devices.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No devices match the current filters.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = devices.map(function (d, i) {
+        var isActive = d.subscriptionActive === 'true';
+        var tierClass = (d.tier || 'free') === 'pro' ? 'badge-pro' : 'badge-free';
+        var rowId = 'sub-detail-' + i;
+        var customerDisplay = d.email
+          ? '<div class="customer-cell"><span class="customer-email">' + esc(d.email) + '</span><span class="customer-device">' + esc(d.deviceId.substring(0, 12)) + '...</span></div>'
+          : '<div class="customer-cell"><span class="customer-email" style="color:var(--text-tertiary)">No email</span><span class="customer-device copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(d.deviceId) + '\')" title="' + escAttr(d.deviceId) + '">' + esc(d.deviceId.substring(0, 16)) + '...</span></div>';
+
+        var mainRow = '<tr class="expandable" onclick="toggleDetail(\'' + rowId + '\', this)">' +
+          '<td>' + customerDisplay + '</td>' +
+          '<td><span class="badge ' + (isActive ? 'badge-active' : 'badge-inactive') + '">' + (isActive ? 'Active' : 'Inactive') + '</span></td>' +
+          '<td><span class="badge ' + tierClass + '">' + esc(d.tier || 'free') + '</span></td>' +
+          '<td class="mono">' + esc(d.stripeCustomerId || '--') + '</td>' +
+          '<td>' + formatDate(d.registeredAt) + '</td>' +
+          '<td>' + formatDate(d.lastSeenAt) + '</td>' +
+        '</tr>';
+
+        var detailItems = buildDetailItems(d, ['deviceId', 'email', 'subscriptionActive', 'tier', 'stripeCustomerId', 'subscriptionId', 'registeredAt', 'lastSeenAt']);
+        var detailRow = '<tr class="detail-row" id="' + rowId + '"><td colspan="6"><div class="detail-grid">' + detailItems + '</div></td></tr>';
+        return mainRow + detailRow;
+      }).join('');
     }
 
     // --- Licenses ---
@@ -870,31 +1074,44 @@
 
       apiFetch('/v1/admin/licenses')
         .then(function (data) {
-          document.getElementById('licensesCount').textContent = data.count;
-          var licenses = data.licenses || [];
-          if (licenses.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No licenses generated yet.</td></tr>';
-            return;
-          }
-          tbody.innerHTML = licenses.map(function (l, i) {
-            var rowId = 'lic-detail-' + i;
-            var mainRow = '<tr class="expandable" onclick="toggleDetail(\'' + rowId + '\', this)">' +
-              '<td><span class="mono copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(l.licenseKey) + '\')" title="Click to copy">' + esc(l.licenseKey) + '</span></td>' +
-              '<td><span class="badge badge-pro">' + esc(l.tier) + '</span></td>' +
-              '<td>' + formatDate(l.createdAt) + '</td>' +
-              '<td>' + esc(l.maxDevices || '1') + '</td>' +
-              '<td>' + esc(l.note || '--') + '</td>' +
-              '<td>' + (l.activatedDeviceId ? '<span class="mono truncate copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(l.activatedDeviceId) + '\')" title="' + escAttr(l.activatedDeviceId) + '">' + esc(l.activatedDeviceId.substring(0, 12)) + '...</span>' : '--') + '</td>' +
-            '</tr>';
-
-            var detailItems = buildDetailItems(l, ['licenseKey', 'tier', 'createdAt', 'maxDevices', 'note', 'activatedDeviceId', 'activatedAt']);
-            var detailRow = '<tr class="detail-row" id="' + rowId + '"><td colspan="6"><div class="detail-grid">' + detailItems + '</div></td></tr>';
-            return mainRow + detailRow;
-          }).join('');
+          licensesData = data.licenses || [];
+          renderLicenses();
         })
         .catch(function () {
           tbody.innerHTML = '<tr><td colspan="6" class="error-state">Failed to load licenses.</td></tr>';
         });
+    }
+
+    function renderLicenses(filtered) {
+      var tbody = document.getElementById('licensesBody');
+      var licenses = filtered || licensesData;
+
+      licenses = licenses.filter(function (l) {
+        return matchesSearch(l);
+      });
+
+      document.getElementById('licensesCount').textContent = licenses.length;
+
+      if (licenses.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No licenses match the current filters.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = licenses.map(function (l, i) {
+        var rowId = 'lic-detail-' + i;
+        var mainRow = '<tr class="expandable" onclick="toggleDetail(\'' + rowId + '\', this)">' +
+          '<td><span class="mono copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(l.licenseKey) + '\')" title="Click to copy">' + esc(l.licenseKey) + '</span></td>' +
+          '<td><span class="badge badge-pro">' + esc(l.tier) + '</span></td>' +
+          '<td>' + formatDate(l.createdAt) + '</td>' +
+          '<td>' + esc(l.maxDevices || '1') + '</td>' +
+          '<td>' + esc(l.note || '--') + '</td>' +
+          '<td>' + (l.activatedDeviceId ? '<span class="mono truncate copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(l.activatedDeviceId) + '\')" title="' + escAttr(l.activatedDeviceId) + '">' + esc(l.activatedDeviceId.substring(0, 12)) + '...</span>' : '--') + '</td>' +
+        '</tr>';
+
+        var detailItems = buildDetailItems(l, ['licenseKey', 'tier', 'createdAt', 'maxDevices', 'note', 'activatedDeviceId', 'activatedAt']);
+        var detailRow = '<tr class="detail-row" id="' + rowId + '"><td colspan="6"><div class="detail-grid">' + detailItems + '</div></td></tr>';
+        return mainRow + detailRow;
+      }).join('');
     }
 
     function toggleLicenseForm() {
@@ -928,42 +1145,113 @@
         });
     }
 
-    // --- Usage ---
+    // --- Usage (Detailed) ---
 
-    function fetchUsage() {
+    function fetchUsageDetailed() {
       var month = document.getElementById('usageMonth').value;
       if (!month) return;
 
       var tbody = document.getElementById('usageBody');
       var summary = document.getElementById('usageSummary');
-      tbody.innerHTML = '<tr class="loading-row"><td colspan="2"><span class="spinner"></span> Loading...</td></tr>';
+      tbody.innerHTML = '<tr class="loading-row"><td colspan="11"><span class="spinner"></span> Loading...</td></tr>';
       summary.style.display = 'none';
 
-      apiFetch('/v1/admin/usage?month=' + month)
+      apiFetch('/v1/admin/usage/detailed?month=' + month)
         .then(function (data) {
-          var usage = data.usage || [];
-          if (usage.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="2" class="empty-state">No usage data for this month.</td></tr>';
-            summary.style.display = 'none';
-            return;
-          }
-
-          summary.innerHTML = 'Total API calls: <strong>' + (data.totalCalls || 0).toLocaleString() + '</strong> across <strong>' + usage.length + '</strong> device' + (usage.length !== 1 ? 's' : '');
-          summary.style.display = 'block';
-
-          usage.sort(function (a, b) { return b.apiCalls - a.apiCalls; });
-
-          tbody.innerHTML = usage.map(function (u) {
-            return '<tr>' +
-              '<td><span class="mono truncate copyable" onclick="copyText(\'' + escAttr(u.deviceId) + '\')" title="' + escAttr(u.deviceId) + '">' + esc(u.deviceId.substring(0, 12)) + '...</span></td>' +
-              '<td>' + u.apiCalls.toLocaleString() + '</td>' +
-            '</tr>';
-          }).join('');
+          usageData = data.usage || [];
+          usageTotals = data.totals || {};
+          renderUsage();
+          updateCostStats();
         })
         .catch(function () {
-          tbody.innerHTML = '<tr><td colspan="2" class="error-state">Failed to load usage data.</td></tr>';
-          summary.style.display = 'none';
+          // Fall back to legacy endpoint
+          apiFetch('/v1/admin/usage?month=' + month)
+            .then(function (data) {
+              // Map legacy format to detailed format
+              usageData = (data.usage || []).map(function (u) {
+                return {
+                  deviceId: u.deviceId,
+                  email: null,
+                  endpoints: {},
+                  totalCalls: u.apiCalls,
+                  estimatedCost: 0,
+                  revenue: 0,
+                  profit: 0,
+                  isActiveSubscriber: false,
+                };
+              });
+              usageTotals = { totalCalls: data.totalCalls, estimatedCost: 0, revenue: 0, profit: 0, marginPercent: 0 };
+              renderUsage();
+              updateCostStats();
+            })
+            .catch(function () {
+              tbody.innerHTML = '<tr><td colspan="11" class="error-state">Failed to load usage data.</td></tr>';
+              summary.style.display = 'none';
+            });
         });
+    }
+
+    function renderUsage(filtered) {
+      var tbody = document.getElementById('usageBody');
+      var summary = document.getElementById('usageSummary');
+      var usage = filtered || usageData;
+
+      usage = usage.filter(function (u) {
+        return matchesSearch(u);
+      });
+
+      if (usage.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No usage data for this month.</td></tr>';
+        summary.style.display = 'none';
+        return;
+      }
+
+      // Summary bar
+      var t = usageTotals;
+      summary.innerHTML =
+        '<span>API Cost: <strong class="cost">$' + (t.estimatedCost || 0).toFixed(2) + '</strong></span>' +
+        '<span>Revenue: <strong class="revenue">$' + (t.revenue || 0).toFixed(2) + '</strong></span>' +
+        '<span>Net: <strong class="profit">$' + (t.profit || 0).toFixed(2) + '</strong> (' + (t.marginPercent || 0) + '%)</span>' +
+        '<span>Devices: <strong>' + usage.length + '</strong></span>';
+      summary.style.display = 'flex';
+
+      tbody.innerHTML = usage.map(function (u) {
+        var ep = u.endpoints || {};
+        var customerLabel = u.email
+          ? esc(u.email)
+          : '<span class="mono truncate copyable" onclick="copyText(\'' + escAttr(u.deviceId) + '\')" title="' + escAttr(u.deviceId) + '">' + esc(u.deviceId.substring(0, 14)) + '...</span>';
+
+        var profitClass = u.profit >= 0 ? 'profit-positive' : 'profit-negative';
+
+        return '<tr>' +
+          '<td>' + customerLabel + '</td>' +
+          '<td class="right mono">' + (ep.whisper || 0) + '</td>' +
+          '<td class="right mono">' + (ep.chat || 0) + '</td>' +
+          '<td class="right mono">' + (ep['assemblyai-submit'] || 0) + '</td>' +
+          '<td class="right mono">' + (ep['assemblyai-upload'] || 0) + '</td>' +
+          '<td class="right mono">' + (ep['assemblyai-poll'] || 0) + '</td>' +
+          '<td class="right mono">' + (ep.gemini || 0) + '</td>' +
+          '<td class="right"><strong>' + u.totalCalls + '</strong></td>' +
+          '<td class="right mono">$' + (u.estimatedCost || 0).toFixed(2) + '</td>' +
+          '<td class="right mono">$' + (u.revenue || 0).toFixed(2) + '</td>' +
+          '<td class="right mono ' + profitClass + '">$' + (u.profit || 0).toFixed(2) + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    function updateCostStats() {
+      var t = usageTotals;
+      if (t && t.estimatedCost !== undefined) {
+        document.getElementById('statApiCost').textContent = '$' + (t.estimatedCost || 0).toFixed(2);
+        document.getElementById('statApiCostSub').textContent = 'This month';
+
+        var profit = t.profit || 0;
+        var margin = t.marginPercent || 0;
+        document.getElementById('statNetMargin').textContent = '$' + profit.toFixed(2);
+        var marginEl = document.getElementById('statNetMargin');
+        marginEl.className = 'stat-card-value ' + (profit >= 0 ? 'green' : 'red');
+        document.getElementById('statNetMarginSub').textContent = margin + '% margin';
+      }
     }
 
     // --- Detail Row Helpers ---
@@ -971,7 +1259,6 @@
     function toggleDetail(rowId, triggerRow) {
       var detail = document.getElementById(rowId);
       if (!detail) return;
-      var isVisible = detail.classList.contains('visible');
       detail.classList.toggle('visible');
       triggerRow.classList.toggle('expanded');
     }
