@@ -778,7 +778,7 @@
                 <th class="right">AssemblyAI</th>
                 <th class="right">Gemini</th>
                 <th class="right">Total</th>
-                <th class="right">Est. Cost</th>
+                <th class="right">Cost</th>
                 <th class="right">Revenue</th>
                 <th class="right">Profit</th>
               </tr>
@@ -1199,21 +1199,22 @@
       });
 
       if (usage.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No usage data for this month.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No usage data for this month.</td></tr>';
         summary.style.display = 'none';
         return;
       }
 
       // Summary bar
       var t = usageTotals;
-      var hasAnyLegacy = usage.some(function (u) { return !u.hasEndpointData && u.totalCalls > 0; });
-      var costLabel = hasAnyLegacy ? 'Est. API Cost' : 'API Cost';
+      var hasEnhanced = usage.some(function (u) { return u.costSource === 'enhanced'; });
+      var hasLegacy = usage.some(function (u) { return u.costSource === 'blended'; });
       summary.innerHTML =
-        '<span>' + costLabel + ': <strong class="cost">$' + (t.estimatedCost || 0).toFixed(2) + '</strong>' + (hasAnyLegacy ? ' *' : '') + '</span>' +
+        '<span>API Cost: <strong class="cost">$' + (t.estimatedCost || 0).toFixed(2) + '</strong></span>' +
         '<span>Revenue: <strong class="revenue">$' + (t.revenue || 0).toFixed(2) + '</strong></span>' +
         '<span>Net: <strong class="profit">$' + (t.profit || 0).toFixed(2) + '</strong> (' + (t.marginPercent || 0) + '%)</span>' +
         '<span>Devices: <strong>' + usage.length + '</strong></span>' +
-        (hasAnyLegacy ? '<span style="color:var(--text-tertiary);font-size:11px">* Costs estimated from blended avg — endpoint tracking starts now</span>' : '');
+        (hasEnhanced ? '<span style="color:var(--accent);font-size:11px">&#9679; enhanced = real tokens + estimated whisper/gemini</span>' : '') +
+        (hasLegacy ? '<span style="color:var(--text-tertiary);font-size:11px">~est = blended average (no endpoint data)</span>' : '');
       summary.style.display = 'flex';
 
       tbody.innerHTML = usage.map(function (u) {
@@ -1223,12 +1224,32 @@
           : '<span class="mono truncate copyable" onclick="copyText(\'' + escAttr(u.deviceId) + '\')" title="' + escAttr(u.deviceId) + '">' + esc(u.deviceId.substring(0, 14)) + '...</span>';
 
         var profitClass = u.profit >= 0 ? 'profit-positive' : 'profit-negative';
-        var costPrefix = (!u.hasEndpointData && u.totalCalls > 0) ? '~' : '';
 
         // Group by API provider
         var openai = (ep.whisper || 0) + (ep.chat || 0);
         var assemblyai = (ep['assemblyai-submit'] || 0) + (ep['assemblyai-upload'] || 0) + (ep['assemblyai-poll'] || 0);
         var gemini = ep.gemini || 0;
+
+        // Cost display with source indicator
+        var displayCost = u.cost !== undefined ? u.cost : (u.estimatedCost || 0);
+        var costBadge = '';
+        var costTooltip = '';
+        if (u.costSource === 'enhanced') {
+          costBadge = ' <span style="color:var(--accent);font-size:10px;font-weight:600" title="Real token/duration data from API responses">&#9679;</span>';
+          if (u.realCostBreakdown) {
+            var rb = u.realCostBreakdown;
+            costTooltip = 'Chat: $' + rb.realCostChat.toFixed(4) + ' (' + rb.tokensInputChat + ' in / ' + rb.tokensOutputChat + ' out)' +
+              '\\nAAI: $' + rb.realCostAssemblyai.toFixed(4) + ' (' + rb.audioDurationSeconds.toFixed(0) + 's audio)' +
+              '\\nWhisper est: $' + rb.whisperEstimate.toFixed(4) +
+              '\\nGemini est: $' + rb.geminiEstimate.toFixed(4) +
+              (rb.lastModelChat ? '\\nModel: ' + rb.lastModelChat : '');
+          }
+        } else if (u.costSource === 'blended') {
+          costBadge = ' <span style="color:var(--text-tertiary);font-size:10px">~est</span>';
+          costTooltip = 'Blended average — no per-endpoint data';
+        }
+
+        var costCell = '<td class="right mono"' + (costTooltip ? ' title="' + costTooltip + '" style="cursor:help"' : '') + '>$' + displayCost.toFixed(2) + costBadge + '</td>';
 
         return '<tr>' +
           '<td>' + customerLabel + '</td>' +
@@ -1236,9 +1257,9 @@
           '<td class="right mono">' + assemblyai + '</td>' +
           '<td class="right mono">' + gemini + '</td>' +
           '<td class="right"><strong>' + u.totalCalls + '</strong></td>' +
-          '<td class="right mono">' + costPrefix + '$' + (u.estimatedCost || 0).toFixed(2) + '</td>' +
+          costCell +
           '<td class="right mono">$' + (u.revenue || 0).toFixed(2) + '</td>' +
-          '<td class="right mono ' + profitClass + '">' + costPrefix + '$' + (u.profit || 0).toFixed(2) + '</td>' +
+          '<td class="right mono ' + profitClass + '">$' + (u.profit || 0).toFixed(2) + '</td>' +
         '</tr>';
       }).join('');
     }
