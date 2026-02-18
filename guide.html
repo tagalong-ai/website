@@ -46,7 +46,7 @@
       color: var(--text);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      overflow-x: clip;
     }
 
     a { color: var(--accent); text-decoration: none; transition: opacity .2s }
@@ -132,7 +132,6 @@
 
     /* ─── LAYOUT ─── */
     .guide-layout {
-      display: flex;
       max-width: 1200px; margin: 64px auto 0;
       padding: 0 24px;
       min-height: calc(100vh - 64px);
@@ -140,14 +139,16 @@
 
     /* ─── SIDEBAR ─── */
     .guide-sidebar {
-      flex: 0 0 var(--sidebar-width);
-      position: sticky;
+      position: fixed;
       top: 64px;
-      align-self: flex-start;
+      left: max(24px, calc(50vw - 576px));
+      width: var(--sidebar-width);
       height: calc(100vh - 64px);
       overflow-y: auto;
       border-right: 1px solid var(--border);
       padding: 32px 0 48px;
+      background: var(--bg);
+      z-index: 40;
       scrollbar-width: thin;
       scrollbar-color: var(--border) transparent;
     }
@@ -190,8 +191,7 @@
 
     /* ─── CONTENT ─── */
     .guide-content {
-      flex: 1;
-      min-width: 0;
+      margin-left: var(--sidebar-width);
       padding: 48px 0 48px 48px;
       max-width: 760px;
     }
@@ -280,19 +280,21 @@
       counter-reset: step-counter;
     }
     .guide-steps li {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+      padding: 10px 0 10px 38px;
+      border-bottom: 1px solid var(--border-subtle);
       font-size: 14px; color: var(--text-secondary); line-height: 1.6;
       counter-increment: step-counter;
     }
     .guide-steps li:last-child { border-bottom: none }
     .guide-steps li::before {
       content: counter(step-counter);
-      flex-shrink: 0; width: 24px; height: 24px;
+      position: absolute; left: 0; top: 12px;
+      width: 24px; height: 24px;
       background: var(--surface-elevated); border: 1px solid var(--border);
       border-radius: 50%; font-size: 12px; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
-      color: var(--accent); margin-top: 2px;
+      color: var(--accent);
     }
     .guide-steps li strong { color: var(--text); font-weight: 600 }
 
@@ -406,13 +408,10 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
-      .guide-layout {
-        flex-direction: column;
-        margin-top: 0;
-      }
+      .guide-layout { margin-top: 64px }
       .guide-sidebar { display: none }
       .mobile-toc-bar { display: block }
-      .guide-content { padding: 24px 0 48px }
+      .guide-content { margin-left: 0; padding: 24px 0 48px }
     }
 
     @media (max-width: 768px) {
@@ -491,7 +490,7 @@
 
     <!-- SIDEBAR -->
     <aside class="guide-sidebar">
-      <nav class="sidebar-nav" id="sidebarNav">
+      <div class="sidebar-nav" id="sidebarNav">
         <div class="sidebar-label">Getting Started</div>
         <a href="#getting-started">Overview</a>
         <a href="#system-requirements" class="sub">System Requirements</a>
@@ -538,7 +537,7 @@
         <div class="sidebar-label">Reference</div>
         <a href="#keyboard-shortcuts">Keyboard Shortcuts</a>
         <a href="#faq-guide">FAQ</a>
-      </nav>
+      </div>
     </aside>
 
     <!-- CONTENT -->
