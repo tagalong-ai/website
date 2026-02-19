@@ -597,7 +597,7 @@
         </table>
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>Conference Mode</strong> (system audio capture) uses ScreenCaptureKit, which requires macOS 14 or later and Screen Recording permission. Standard mic-only recording does not need this permission.</div>
+          <div><strong>Conference Mode</strong> captures system audio using Core Audio. When you first enable Conference Mode, macOS will ask for System Audio Recording permission. Standard mic-only recording does not need this permission.</div>
         </div>
       </div>
 
@@ -627,7 +627,7 @@
 
         <div class="guide-callout warning animate-in">
           <i data-lucide="alert-triangle"></i>
-          <div><strong>Screen Recording permission</strong> is only needed if you plan to use Conference Mode (which captures system audio from apps like Zoom or Google Meet). You can skip this for now and grant it later when you first enable Conference Mode.</div>
+          <div><strong>System Audio Recording permission</strong> is only needed for Conference Mode. macOS requests this automatically when you first enable it.</div>
         </div>
       </div>
 
@@ -785,12 +785,12 @@
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>Conference Mode requirements:</strong> macOS 14 or later, plus Screen Recording permission (System Settings &rarr; Privacy &amp; Security &rarr; Screen Recording). Grant the permission to Tagalong and restart the app if prompted. Video overhead is negligible — Tagalong captures a 2&times;2 pixel stream at 1 fps solely to activate the audio pipeline.</div>
+          <div><strong>Conference Mode requirements:</strong> System Audio Recording permission (System Settings &rarr; Privacy &amp; Security &rarr; Screen &amp; System Audio Recording). No app restart required.</div>
         </div>
 
         <div class="guide-callout warning animate-in">
           <i data-lucide="alert-triangle"></i>
-          <div><strong>System audio not being captured?</strong> Verify that Screen Recording permission is granted in System Settings, then quit and reopen Tagalong. Make sure you selected "Conference Mode" before clicking Start Recording.</div>
+          <div><strong>System audio not being captured?</strong> Verify that System Audio Recording permission is granted in System Settings &gt; Privacy &amp; Security. Make sure you selected "Conference Mode" before clicking Start Recording.</div>
         </div>
       </div>
 
@@ -1791,7 +1791,7 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              Conference Mode requires Screen Recording permission in System Settings → Privacy &amp; Security → Screen Recording. Grant permission to Tagalong, then restart it. If audio still isn't captured, ensure you selected "Conference Mode" in the audio mode toggle before clicking Start Recording.
+              Conference Mode requires System Audio Recording permission in System Settings &rarr; Privacy &amp; Security &rarr; Screen &amp; System Audio Recording. No app restart required. If audio still isn't captured, ensure you selected "Conference Mode" in the audio mode toggle before clicking Start Recording.
             </div>
           </div>
         </div>
