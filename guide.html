@@ -597,7 +597,7 @@
         </table>
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>Conference Mode</strong> captures system audio using Core Audio. When you first enable Conference Mode, macOS will ask for System Audio Recording permission. Standard mic-only recording does not need this permission.</div>
+          <div><strong>Conference Mode</strong> captures system audio using macOS Core Audio Process Taps — a native, low-level API that reads the audio stream directly without interfering with your call. It works seamlessly alongside Zoom, Google Meet, Teams, and other apps. When you first enable Conference Mode, macOS will ask for System Audio Recording permission. Standard mic-only recording does not need this permission.</div>
         </div>
       </div>
 
@@ -779,7 +779,7 @@
           </div>
           <div class="guide-col-card">
             <h4>Conference Mode <span class="badge-pro">PRO</span></h4>
-            <p>Captures both your microphone and system audio simultaneously — perfect for Zoom, Google Meet, Microsoft Teams, and other virtual meeting apps. No browser extension, no bot, and no meeting URL needed.</p>
+            <p>Captures both your microphone and system audio simultaneously — perfect for Zoom, Google Meet, Microsoft Teams, and other virtual meeting apps. No browser extension, no bot, no virtual audio driver, and no meeting URL needed. Tagalong reads the audio stream directly using macOS Core Audio Process Taps without interfering with your call or other apps.</p>
           </div>
         </div>
 
@@ -1791,7 +1791,7 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              Conference Mode requires System Audio Recording permission in System Settings &rarr; Privacy &amp; Security &rarr; Screen &amp; System Audio Recording. No app restart required. If audio still isn't captured, ensure you selected "Conference Mode" in the audio mode toggle before clicking Start Recording.
+              Conference Mode requires System Audio Recording permission in System Settings &rarr; Privacy &amp; Security &rarr; Screen &amp; System Audio Recording. No app restart required. If audio still isn't captured, ensure you selected "Conference Mode" in the audio mode toggle before clicking Start Recording. Note that system audio is only captured when something is actively playing — if no one is speaking on the call, mix skips are normal and expected.
             </div>
           </div>
         </div>
