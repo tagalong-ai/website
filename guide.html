@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,81 +9,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
+    /* ─── Guide-specific overrides (light theme) ─── */
     :root {
-      --bg: #1C1917;
-      --surface: #292524;
-      --surface-elevated: #352F2B;
-      --border: #3D3835;
-      --border-subtle: #332E2A;
-      --text: #FAF9F6;
-      --text-secondary: #A8A29E;
-      --text-tertiary: #78716C;
-      --accent: #F59E0B;
-      --accent-hover: #D97706;
-      --accent-subtle: rgba(245,158,11,0.1);
-      --secondary: #7DA882;
-      --secondary-subtle: rgba(125,168,130,0.1);
-      --recording: #EF4444;
-      --success: #7DA882;
-      --error: #EF4444;
-      --cta: #7DA882;
-      --cta-hover: #6B8F71;
-      --card-shadow: 0 4px 24px rgba(0,0,0,0.3);
-      --radius: 12px;
-      --radius-sm: 8px;
       --sidebar-width: 256px;
     }
 
-    html { scroll-behavior: smooth; scroll-padding-top: 88px }
-
-    body {
-      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: clip;
-    }
-
-    a { color: var(--accent); text-decoration: none; transition: opacity .2s }
-    a:hover { opacity: .85 }
-
-    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px }
-
-    /* ─── NAV ─── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(28,25,23,.85);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    nav .container { display: flex; align-items: center; justify-content: space-between; height: 64px }
-
-    .nav-logo { display: flex; align-items: center; gap: 8px }
-    .nav-logo img { height: 36px }
-
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none }
-    .nav-links a { color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: color .2s }
-    .nav-links a:hover, .nav-links a.active { color: var(--accent) }
-
-    .nav-right { display: flex; align-items: center; gap: 12px }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 16px; border-radius: var(--radius-sm);
-      font-size: 14px; font-weight: 600; border: none; cursor: pointer;
-      transition: all .2s; text-decoration: none; font-family: inherit;
-    }
-    .btn-primary { background: var(--cta); color: #FFFFFF }
-    .btn-primary:hover { background: var(--cta-hover); opacity: 1 }
-    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border) }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); opacity: 1 }
-
-    .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 22px; cursor: pointer; padding: 4px }
+    html { scroll-padding-top: 88px }
 
     /* ─── GUIDE PAGE HEADER (inside content column) ─── */
     .guide-page-header {
@@ -108,7 +42,7 @@
     /* ─── MOBILE TOC TOGGLE ─── */
     .mobile-toc-bar {
       display: none;
-      position: sticky; top: 64px; z-index: 50;
+      position: sticky; top: 72px; z-index: 50;
       background: var(--surface); border-bottom: 1px solid var(--border);
       padding: 12px 24px;
     }
@@ -147,7 +81,7 @@
       overflow-y: auto;
       border-right: 1px solid var(--border);
       padding: 32px 0 48px;
-      background: var(--bg);
+      background: var(--surface-secondary);
       z-index: 40;
       scrollbar-width: thin;
       scrollbar-color: var(--border) transparent;
@@ -166,13 +100,13 @@
     .sidebar-nav a {
       display: flex; align-items: center; gap: 8px;
       padding: 7px 20px; font-size: 13px; font-weight: 500;
-      color: var(--text-secondary); border-right: 2px solid transparent;
+      color: var(--text-secondary); border-left: 2px solid transparent;
       transition: color .15s, border-color .15s, background .15s;
       line-height: 1.3;
     }
     .sidebar-nav a:hover { color: var(--text); opacity: 1 }
     .sidebar-nav a.active {
-      color: var(--accent); border-right-color: var(--accent);
+      color: var(--accent); border-left-color: var(--accent);
       background: var(--accent-subtle); opacity: 1;
     }
     .sidebar-nav a.sub {
@@ -185,7 +119,7 @@
       display: inline-block; font-size: 10px; font-weight: 700;
       padding: 1px 6px; border-radius: 4px; letter-spacing: .04em;
       background: var(--accent-subtle); color: var(--accent);
-      border: 1px solid rgba(245,158,11,.3);
+      border: 1px solid rgba(45,125,70,.3);
       vertical-align: middle; margin-left: 4px;
     }
 
@@ -230,34 +164,6 @@
       margin: 64px 0 0;
     }
 
-    /* ─── SCREENSHOT PLACEHOLDER ─── */
-    .screenshot-placeholder {
-      position: relative; width: 100%;
-      border: 2px dashed var(--border); border-radius: var(--radius);
-      background: var(--surface); margin: 24px 0; overflow: hidden;
-    }
-    .screenshot-placeholder.portrait { padding-bottom: 138% }
-    .screenshot-placeholder.landscape { padding-bottom: 56.25% }
-    .screenshot-placeholder.square { padding-bottom: 100% }
-    .screenshot-placeholder.tall-portrait { padding-bottom: 100% }
-
-    .placeholder-inner {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 10px; padding: 20px; text-align: center; color: var(--text-tertiary);
-    }
-    .placeholder-inner svg { width: 32px; height: 32px; stroke-width: 1.5 }
-    .placeholder-inner span {
-      font-size: 12px; font-weight: 600; font-family: monospace;
-      color: var(--text-secondary);
-    }
-
-    /* Centered narrow screenshots (app window width) */
-    .screenshot-app {
-      max-width: 420px; margin-left: auto; margin-right: auto;
-    }
-
     /* ─── CALLOUTS ─── */
     .guide-callout {
       display: flex; align-items: flex-start; gap: 12px;
@@ -267,11 +173,11 @@
     .guide-callout svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; stroke-width: 2 }
     .guide-callout div { flex: 1 }
     .guide-callout strong { font-weight: 700 }
-    .guide-callout.tip { background: var(--secondary-subtle); border: 1px solid rgba(125,168,130,.25); color: var(--text-secondary) }
-    .guide-callout.tip svg { color: var(--secondary) }
-    .guide-callout.warning { background: var(--accent-subtle); border: 1px solid rgba(245,158,11,.25); color: var(--text-secondary) }
-    .guide-callout.warning svg { color: var(--accent) }
-    .guide-callout.info { background: rgba(125,168,130,.05); border: 1px solid var(--border); color: var(--text-secondary) }
+    .guide-callout.tip { background: var(--accent-subtle); border-left: 3px solid var(--accent); color: var(--text-secondary) }
+    .guide-callout.tip svg { color: var(--accent) }
+    .guide-callout.warning { background: var(--secondary-subtle); border-left: 3px solid var(--secondary); color: var(--text-secondary) }
+    .guide-callout.warning svg { color: var(--secondary) }
+    .guide-callout.info { background: var(--surface-secondary); border: 1px solid var(--border); color: var(--text-secondary) }
     .guide-callout.info svg { color: var(--text-tertiary) }
 
     /* ─── STEPS ─── */
@@ -291,7 +197,7 @@
       content: counter(step-counter);
       position: absolute; left: 0; top: 12px;
       width: 24px; height: 24px;
-      background: var(--surface-elevated); border: 1px solid var(--border);
+      background: var(--surface-secondary); border: 1px solid var(--border);
       border-radius: 50%; font-size: 12px; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
       color: var(--accent);
@@ -307,8 +213,8 @@
       font-size: 14px; color: var(--text-secondary); line-height: 1.55;
     }
     .guide-checklist li::before {
-      content: '✓'; position: absolute; left: 0;
-      color: var(--secondary); font-weight: 700;
+      content: '\2713'; position: absolute; left: 0;
+      color: var(--accent); font-weight: 700;
     }
 
     /* ─── TWO-COLUMN ─── */
@@ -335,7 +241,7 @@
     .guide-table th {
       padding: 10px 16px; text-align: left; font-weight: 700;
       font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
-      background: var(--surface); color: var(--text-secondary);
+      background: var(--surface-secondary); color: var(--text-secondary);
       border-bottom: 1px solid var(--border);
     }
     .guide-table td {
@@ -344,18 +250,6 @@
     }
     .guide-table tr:last-child td { border-bottom: none }
     .guide-table td:first-child { color: var(--text); font-weight: 500; font-family: monospace; font-size: 13px }
-
-    /* ─── TAB DEMO ─── */
-    .guide-tabs-demo {
-      display: flex; gap: 4px; flex-wrap: wrap; margin: 16px 0;
-    }
-    .guide-tab-pill {
-      padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500;
-      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
-    }
-    .guide-tab-pill.active {
-      background: var(--accent-subtle); border-color: var(--accent); color: var(--accent);
-    }
 
     /* ─── KEYBOARD SHORTCUTS TABLE ─── */
     .shortcut-row {
@@ -368,11 +262,19 @@
     .shortcut-keys { display: flex; gap: 4px; align-items: center; flex-shrink: 0 }
     kbd {
       display: inline-flex; align-items: center; justify-content: center;
-      background: var(--surface-elevated); border: 1px solid var(--border);
+      background: var(--surface-secondary); border: 1px solid var(--border);
       border-radius: 5px; padding: 3px 8px; font-size: 12px; font-weight: 600;
       font-family: inherit; color: var(--text); min-width: 28px;
     }
     .shortcut-plus { color: var(--text-tertiary); font-size: 12px }
+
+    /* ─── CODE ─── */
+    .guide-content code,
+    .guide-subsection code {
+      font-family: 'SF Mono', Monaco, monospace;
+      background: var(--surface-secondary); padding: 2px 6px;
+      border-radius: 4px; font-size: 13px; color: var(--accent);
+    }
 
     /* ─── FAQ ─── */
     .guide-faq { max-width: 720px }
@@ -395,16 +297,8 @@
     .animate-in { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease }
     .animate-in.visible { opacity: 1; transform: translateY(0) }
 
-    /* ─── FOOTER ─── */
-    footer { border-top: 1px solid var(--border); padding: 40px 0; margin-top: 64px }
-    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center }
-    .footer-logo img { height: 40px }
-    .footer-tagline { font-size: 13px; color: var(--text-tertiary); font-weight: 500 }
-    .footer-bottom { display: flex; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap; gap: 16px }
-    .footer-left { font-size: 14px; color: var(--text-secondary) }
-    .footer-links { display: flex; gap: 24px; list-style: none }
-    .footer-links a { color: var(--text-secondary); font-size: 14px }
-    .footer-links a:hover { color: var(--accent) }
+    /* ─── NAV HEIGHT OVERRIDE (64px) ─── */
+    nav .container { height: 64px }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
@@ -415,16 +309,7 @@
     }
 
     @media (max-width: 768px) {
-      .nav-links { display: none }
-      .mobile-menu-btn { display: block }
-      .nav-links.mobile-open {
-        display: flex; flex-direction: column;
-        position: absolute; top: 64px; left: 0; right: 0;
-        background: var(--bg); border-bottom: 1px solid var(--border);
-        padding: 16px 24px; gap: 16px; z-index: 99;
-      }
       .guide-two-col { grid-template-columns: 1fr }
-      .footer-bottom { flex-direction: column; text-align: center }
       .guide-section-title { font-size: 24px }
     }
   </style>
@@ -435,7 +320,7 @@
   <nav>
     <div class="container">
       <a href="/" class="nav-logo">
-        <img src="assets/logo-dark.png" alt="Tagalong">
+        <img src="assets/logo-light.png" alt="Tagalong">
       </a>
       <ul class="nav-links" id="navLinks">
         <li><a href="/#features">Features</a></li>
@@ -459,28 +344,39 @@
   </div>
   <div class="mobile-toc-panel" id="mobileTocPanel">
     <a href="#getting-started">Getting Started</a>
+    <a href="#sidebar-navigation" class="toc-sub">Sidebar Navigation</a>
     <a href="#system-requirements" class="toc-sub">System Requirements</a>
     <a href="#installation" class="toc-sub">Installation</a>
     <a href="#setup-api-keys" class="toc-sub">Setup &amp; API Keys</a>
+    <a href="#tier-system" class="toc-sub">Tier System</a>
     <a href="#first-recording" class="toc-sub">First Recording</a>
     <a href="#recording">Recording a Meeting</a>
+    <a href="#starting-recording" class="toc-sub">Starting a Recording</a>
     <a href="#mic-vs-conference" class="toc-sub">Mic vs Conference Mode</a>
     <a href="#during-recording" class="toc-sub">During Recording</a>
+    <a href="#compact-recording" class="toc-sub">Compact Recording Mode</a>
     <a href="#recording-start-sound" class="toc-sub">Recording Start Sound</a>
     <a href="#meeting-notes-recording" class="toc-sub">Meeting Notes</a>
     <a href="#live-chat-recording" class="toc-sub">Live AI Chat</a>
     <a href="#results">Your Results</a>
-    <a href="#transcript-tab" class="toc-sub">Transcript Tab</a>
-    <a href="#summary-tab" class="toc-sub">Summary Tab</a>
-    <a href="#infographic-tab" class="toc-sub">Infographic Tab</a>
-    <a href="#notes-tab" class="toc-sub">Notes Tab</a>
+    <a href="#processing-overview" class="toc-sub">Processing Steps</a>
+    <a href="#background-processing" class="toc-sub">Background Processing</a>
+    <a href="#results-view-overview" class="toc-sub">Results View</a>
+    <a href="#transcript-tab" class="toc-sub">Transcript</a>
+    <a href="#summary-tab" class="toc-sub">Summary</a>
+    <a href="#visual-notes" class="toc-sub">Visual Notes</a>
+    <a href="#notes-tab" class="toc-sub">Notes</a>
     <a href="#sessions">Managing Sessions</a>
-    <a href="#session-history" class="toc-sub">Session History</a>
-    <a href="#cross-meeting-search" class="toc-sub">Cross-Meeting Search</a>
+    <a href="#session-history" class="toc-sub">Meetings in the Sidebar</a>
+    <a href="#spaces" class="toc-sub">Spaces</a>
+    <a href="#cross-meeting-search" class="toc-sub">Search</a>
     <a href="#file-import" class="toc-sub">File Import</a>
+    <a href="#open-previous" class="toc-sub">Open Previous Session</a>
     <a href="#settings">Settings</a>
     <a href="#licensing-modes" class="toc-sub">Licensing Modes</a>
-    <a href="#private-license-setup" class="toc-sub">Private License</a>
+    <a href="#license-mode-selection" class="toc-sub">License Mode Selection</a>
+    <a href="#subscription-auth" class="toc-sub">Subscription Auth Flow</a>
+    <a href="#model-selection" class="toc-sub">Model Selection</a>
     <a href="#integrations" class="toc-sub">Integrations</a>
     <a href="#keyboard-shortcuts">Keyboard Shortcuts</a>
     <a href="#faq-guide">FAQ</a>
@@ -494,44 +390,55 @@
       <div class="sidebar-nav" id="sidebarNav">
         <div class="sidebar-label">Getting Started</div>
         <a href="#getting-started">Overview</a>
+        <a href="#sidebar-navigation" class="sub">Sidebar Navigation</a>
         <a href="#system-requirements" class="sub">System Requirements</a>
         <a href="#installation" class="sub">Installation</a>
         <a href="#setup-api-keys" class="sub">Setup &amp; API Keys</a>
+        <a href="#tier-system" class="sub">Tier System &amp; Gating</a>
         <a href="#first-recording" class="sub">First Recording</a>
 
         <div class="sidebar-label">Recording</div>
         <a href="#recording">Recording a Meeting</a>
+        <a href="#starting-recording" class="sub">Starting a Recording</a>
         <a href="#mic-vs-conference" class="sub">Mic vs Conference Mode</a>
         <a href="#during-recording" class="sub">During Recording</a>
+        <a href="#compact-recording" class="sub">Compact Recording Mode</a>
         <a href="#recording-start-sound" class="sub">Recording Start Sound</a>
         <a href="#meeting-notes-recording" class="sub">Meeting Notes</a>
         <a href="#live-chat-recording" class="sub">Live AI Chat <span class="badge-pro">PRO</span></a>
         <a href="#calendar-autofill" class="sub">Calendar Auto-fill <span class="badge-pro">PRO</span></a>
         <a href="#switch-mic" class="sub">Switching Microphones</a>
+        <a href="#stopping-recording" class="sub">Stopping &amp; Cancelling</a>
 
         <div class="sidebar-label">Results</div>
         <a href="#results">Your Results</a>
-        <a href="#transcript-tab" class="sub">Transcript Tab</a>
+        <a href="#processing-overview" class="sub">Processing Steps</a>
+        <a href="#background-processing" class="sub">Background Processing</a>
+        <a href="#results-view-overview" class="sub">Results View</a>
+        <a href="#transcript-tab" class="sub">Transcript</a>
         <a href="#speaker-editing" class="sub">Speaker Editing</a>
-        <a href="#summary-tab" class="sub">Summary Tab</a>
+        <a href="#summary-tab" class="sub">Summary</a>
         <a href="#summary-recipes" class="sub">Summary Recipes <span class="badge-pro">PRO</span></a>
-        <a href="#infographic-tab" class="sub">Infographic Tab <span class="badge-pro">PRO</span></a>
-        <a href="#notes-tab" class="sub">Notes Tab</a>
-        <a href="#ai-chat-tab" class="sub">AI Chat Tab <span class="badge-pro">PRO</span></a>
+        <a href="#visual-notes" class="sub">Visual Notes <span class="badge-pro">PRO</span></a>
+        <a href="#notes-tab" class="sub">Notes</a>
+        <a href="#ai-chat-tab" class="sub">AI Chat <span class="badge-pro">PRO</span></a>
         <a href="#exporting" class="sub">Exporting</a>
 
         <div class="sidebar-label">Sessions &amp; Settings</div>
         <a href="#sessions">Managing Sessions</a>
-        <a href="#session-history" class="sub">Session History <span class="badge-pro">PRO</span></a>
-        <a href="#cross-meeting-search" class="sub">Cross-Meeting Search <span class="badge-pro">PRO</span></a>
+        <a href="#session-history" class="sub">Meetings in the Sidebar</a>
+        <a href="#spaces" class="sub">Spaces</a>
+        <a href="#cross-meeting-search" class="sub">Search <span class="badge-pro">PRO</span></a>
         <a href="#file-import" class="sub">File Import <span class="badge-pro">PRO</span></a>
         <a href="#open-previous" class="sub">Open Previous Session</a>
         <a href="#audio-playback" class="sub">Audio Playback <span class="badge-pro">PRO</span></a>
         <a href="#output-folder" class="sub">Output Folder</a>
         <a href="#settings">Settings</a>
         <a href="#licensing-modes" class="sub">Licensing Modes</a>
-        <a href="#private-license-setup" class="sub">Private License</a>
-        <a href="#subscription-setup" class="sub">Subscription</a>
+        <a href="#license-mode-selection" class="sub">License Mode Selection</a>
+        <a href="#subscription-auth" class="sub">Subscription Auth Flow</a>
+        <a href="#private-license-setup" class="sub">Private License Setup</a>
+        <a href="#model-selection" class="sub">Model Selection</a>
         <a href="#custom-vocabulary" class="sub">Custom Vocabulary</a>
         <a href="#infographic-settings" class="sub">Infographic Options</a>
         <a href="#integrations" class="sub">Integrations</a>
@@ -556,10 +463,38 @@
       </div>
 
       <!-- ═══════════════════════════════════════════
-           GETTING STARTED — filled by Writer-A
+           GETTING STARTED
            ═══════════════════════════════════════════ -->
       <h2 class="guide-section-title animate-in" id="getting-started">Getting Started</h2>
-      <p class="guide-section-intro animate-in">Get Tagalong up and running on your Mac in just a few minutes. This section walks you through system requirements, installation, licensing setup, and your very first recording.</p>
+      <p class="guide-section-intro animate-in">Get Tagalong up and running on your Mac in just a few minutes. This section walks you through the app layout, system requirements, installation, licensing setup, and your very first recording.</p>
+
+      <!-- NEW: Sidebar Navigation -->
+      <div class="guide-subsection animate-in" id="sidebar-navigation">
+        <h3>Sidebar Navigation</h3>
+        <p>Tagalong v2.0 uses a sidebar-based layout built on <code>NavigationSplitView</code>. The sidebar is your central hub for navigating between meetings, starting recordings, and accessing every feature in the app.</p>
+
+        <p>The sidebar is organized into three areas:</p>
+        <ul class="guide-checklist">
+          <li><strong>Pinned items</strong> at the top: Home, Search, and Visual Notes. These are always visible and give you quick access to the most common views.</li>
+          <li><strong>Calendar card</strong> below the pinned items: shows your next upcoming calendar event (if Calendar access is granted). Tap it to auto-populate the meeting name.</li>
+          <li><strong>Meeting list</strong> grouped by date: Today, Yesterday, This Week, Last Week, This Month, Last Month, and Older. Every meeting you have recorded or imported appears here.</li>
+        </ul>
+
+        <p>At the bottom of the sidebar is a persistent bar with four controls:</p>
+        <ul class="guide-checklist">
+          <li><strong>Settings gear</strong> — opens the Settings view</li>
+          <li><strong>Record shortcut</strong> — starts a new recording directly</li>
+          <li><strong>Sync button</strong> — refreshes the meeting list</li>
+          <li><strong>Tier badge</strong> — shows your current tier (Free or Pro)</li>
+        </ul>
+
+        <p>Selecting <strong>Home</strong> opens the Home view in the detail pane, where you can start a recording, import files, or see your calendar next meeting. Selecting any <strong>meeting</strong> in the list opens MeetingDetailView in the detail pane, showing that meeting's transcript, summary, visual notes, and notes as collapsible sections.</p>
+
+        <div class="guide-callout tip animate-in">
+          <i data-lucide="lightbulb"></i>
+          <div><strong>Tip:</strong> The sidebar collapses automatically when you start a recording, giving the recording view the full width of the popover. It reappears when you stop or cancel.</div>
+        </div>
+      </div>
 
       <!-- System Requirements -->
       <div class="guide-subsection animate-in" id="system-requirements">
@@ -606,19 +541,12 @@
         <h3>Installation</h3>
         <p>Tagalong is distributed as a notarized DMG disk image. There is no installer to run — just drag and drop.</p>
         <ol class="guide-steps">
-          <li><strong>Download Tagalong</strong> — Visit <a href="https://tagalongai.com">tagalongai.com</a> and click the Download button. Your browser will download <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">Tagalong.dmg</code>.</li>
+          <li><strong>Download Tagalong</strong> — Visit <a href="https://tagalongai.com">tagalongai.com</a> and click the Download button. Your browser will download <code>Tagalong.dmg</code>.</li>
           <li><strong>Open the DMG</strong> — Double-click the downloaded file. A Finder window will appear showing the Tagalong app icon and an arrow pointing to your Applications folder.</li>
           <li><strong>Drag to Applications</strong> — Drag <strong>Tagalong.app</strong> onto the Applications folder alias. This copies the app to your Mac.</li>
           <li><strong>Launch Tagalong</strong> — Open Tagalong from your Applications folder (or use Spotlight: press <kbd>⌘</kbd> + <kbd>Space</kbd>, type "Tagalong", and press Enter). You will see a microphone icon appear in your menu bar.</li>
           <li><strong>Grant Microphone permission</strong> — On first launch, macOS will ask for Microphone access. Click <strong>Allow</strong> — this is required for recording to work. You can also grant this later in System Settings &rarr; Privacy &amp; Security &rarr; Microphone.</li>
         </ol>
-
-        <div class="screenshot-placeholder landscape animate-in" data-label="getting-started-permissions">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: getting-started-permissions]</span>
-          </div>
-        </div>
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
@@ -636,13 +564,6 @@
         <h3>Setup &amp; API Keys</h3>
         <p>When you first open Tagalong, you will see the onboarding screen. Tagalong offers two ways to unlock Pro features — choose whichever fits your workflow best.</p>
 
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="getting-started-onboarding">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: getting-started-onboarding]</span>
-          </div>
-        </div>
-
         <div class="guide-two-col animate-in">
           <div class="guide-col-card">
             <h4>Subscription — $9.99/mo</h4>
@@ -658,36 +579,52 @@
 
         <h4 style="margin-top: 28px; margin-bottom: 12px; font-size: 16px; color: var(--text);">Setting up a Subscription</h4>
         <ol class="guide-steps">
-          <li><strong>Open Settings</strong> — Click the gear icon in the Tagalong popover.</li>
+          <li><strong>Open Settings</strong> — Click the gear icon in the sidebar bottom bar.</li>
           <li><strong>Select Subscription mode</strong> — Under Licensing Mode, choose "Subscription."</li>
           <li><strong>Complete checkout</strong> — Tagalong will open a Stripe checkout page in your browser. After payment, the app activates automatically.</li>
         </ol>
 
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="getting-started-settings-subscription">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: getting-started-settings-subscription]</span>
-          </div>
-        </div>
-
         <h4 style="margin-top: 28px; margin-bottom: 12px; font-size: 16px; color: var(--text);">Setting up a Private License</h4>
         <ol class="guide-steps">
-          <li><strong>Get your API keys</strong> — You will need an <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">OpenAI API key</a> (for Whisper transcription and GPT summaries) and an <a href="https://www.assemblyai.com/dashboard/signup" target="_blank" rel="noopener">AssemblyAI API key</a> (for speaker diarization). A <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google Gemini API key</a> is optional and only needed for infographic generation.</li>
-          <li><strong>Open Settings</strong> — Click the gear icon in the Tagalong popover.</li>
+          <li><strong>Get your API keys</strong> — You will need an <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">OpenAI API key</a> (for Whisper transcription and GPT summaries) and an <a href="https://www.assemblyai.com/dashboard/signup" target="_blank" rel="noopener">AssemblyAI API key</a> (for speaker diarization). A <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google Gemini API key</a> is optional and only needed for visual notes generation.</li>
+          <li><strong>Open Settings</strong> — Click the gear icon in the sidebar bottom bar.</li>
           <li><strong>Select Private License mode</strong> — Under Licensing Mode, choose "Private License."</li>
           <li><strong>Enter your keys</strong> — Paste each API key into the corresponding field. Keys are stored securely in macOS Keychain and are never sent to Tagalong servers.</li>
         </ol>
 
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="getting-started-settings-private">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: getting-started-settings-private]</span>
-          </div>
-        </div>
-
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
           <div><strong>Tip:</strong> You can switch between Subscription and Private License at any time in Settings. Both modes unlock the full set of Pro features.</div>
+        </div>
+      </div>
+
+      <!-- NEW: Tier System & Feature Gating -->
+      <div class="guide-subsection animate-in" id="tier-system">
+        <h3>Tier System &amp; Feature Gating</h3>
+        <p>Tagalong has two tiers: Free and Pro. The Free tier lets you try the core experience without a credit card. Pro unlocks everything.</p>
+
+        <div class="guide-two-col animate-in">
+          <div class="guide-col-card">
+            <h4>Free Tier</h4>
+            <p>5 meetings per month. Includes microphone recording, speaker identification, a basic AI summary, markdown export, and speaker name editing. No credit card required.</p>
+          </div>
+          <div class="guide-col-card">
+            <h4>Pro Tier</h4>
+            <p>Unlimited meetings with all 25 features: conference mode, visual notes, AI chat, summary recipes, cross-meeting search, Slack and Notion export, file import, audio playback, custom vocabulary, and more.</p>
+          </div>
+        </div>
+
+        <p>To upgrade from Free to Pro, open Settings and choose either licensing mode:</p>
+        <ul class="guide-checklist">
+          <li><strong>Subscription ($9.99/mo)</strong> — zero setup, API keys managed by Tagalong</li>
+          <li><strong>Private License ($199 one-time)</strong> — bring your own API keys for maximum privacy</li>
+        </ul>
+
+        <p>Your usage counter is displayed in the sidebar and on the Home view. On the Free tier, you will see a message like "3 of 5 meetings remaining this month." The counter resets automatically at the start of each calendar month.</p>
+
+        <div class="guide-callout info animate-in">
+          <i data-lucide="info"></i>
+          <div><strong>Feature gating:</strong> Pro-only features are marked with a <span class="badge-pro">PRO</span> badge throughout the app. If you try to use a gated feature on the Free tier, Tagalong will prompt you to upgrade.</div>
         </div>
       </div>
 
@@ -698,19 +635,13 @@
 
         <ol class="guide-steps">
           <li><strong>Click the menu bar icon</strong> — Click the microphone icon in your Mac's menu bar to open Tagalong's popover.</li>
+          <li><strong>Go to Home</strong> — Select Home in the sidebar if it is not already selected. The Home view shows your recording controls and calendar card.</li>
           <li><strong>Name your meeting</strong> — Type a name in the meeting name field (e.g., "Weekly Standup"). This is optional — Tagalong will use a timestamp if you leave it blank. If you have Calendar integration enabled, it may auto-fill the name of your current or upcoming meeting.</li>
           <li><strong>Click Start Recording</strong> — Tagalong begins listening through your selected microphone. You will see a pulsing red dot and a live waveform. Speak normally — the app transcribes in the background every 10 seconds.</li>
         </ol>
 
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="getting-started-idle">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: getting-started-idle]</span>
-          </div>
-        </div>
-
         <p>When your meeting ends, click <strong>Stop Recording</strong>. Tagalong will process the audio — uploading it for speaker diarization, identifying who said what, and generating an AI summary. This typically takes 30 seconds to a couple of minutes depending on meeting length.</p>
-        <p>Your results are saved automatically to <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">~/Documents/Tagalong/{meeting-name}/</code> and you can review the transcript, summary, infographic, and notes right inside the app.</p>
+        <p>Your results are saved automatically to <code>~/Documents/Tagalong/{meeting-name}/</code> and the meeting appears in the sidebar. Click it to review the transcript, summary, visual notes, and notes.</p>
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
@@ -735,35 +666,27 @@
       <hr class="guide-section-divider animate-in">
 
       <!-- ═══════════════════════════════════════════
-           RECORDING — filled by Writer-B
+           RECORDING
            ═══════════════════════════════════════════ -->
-      <!-- ── RECORDING SECTION ── -->
-
       <h2 class="guide-section-title animate-in" id="recording">Recording a Meeting</h2>
       <p class="guide-section-intro animate-in">Tagalong captures your meetings right from the macOS menu bar. Choose between microphone-only mode for in-person meetings or conference mode for virtual calls — then let Tagalong handle the rest.</p>
 
-      <!-- Starting a Recording -->
+      <!-- Starting a Recording (REWRITTEN) -->
       <div class="guide-subsection animate-in" id="starting-recording">
         <h3>Starting a Recording</h3>
-        <p>Click the microphone icon in your macOS menu bar to open Tagalong's popover. From the idle screen you can name your meeting, choose an audio mode, and start recording in seconds.</p>
+        <p>Open Tagalong from the menu bar. From the Home view in the sidebar, select your audio mode (Microphone or Conference) and input device. Enter a meeting name or let the calendar auto-populate it. Click Start Recording. The sidebar collapses and the recording view takes over the full width.</p>
 
         <ol class="guide-steps">
-          <li><strong>Open Tagalong</strong> — Click the mic icon in the menu bar. A 420&times;580 popover appears.</li>
+          <li><strong>Open Tagalong</strong> — Click the mic icon in the menu bar to open the popover.</li>
+          <li><strong>Select Home</strong> — If not already selected, click Home in the sidebar to see your recording controls.</li>
           <li><strong>Name your meeting</strong> — Type a meeting name or leave it blank (Tagalong will use a timestamp). If you have a Pro license and have granted calendar access, the name auto-fills from your next calendar event.</li>
           <li><strong>Choose your audio mode</strong> — Select <strong>Microphone</strong> (default) or <strong>Conference Mode</strong> <span class="badge-pro">PRO</span> using the mode toggle.</li>
-          <li><strong>Click Start Recording</strong> — Tagalong begins capturing audio immediately. The menu bar icon turns into a red recording indicator.</li>
+          <li><strong>Click Start Recording</strong> — Tagalong begins capturing audio immediately. The sidebar collapses and the recording view fills the popover. The menu bar icon turns into a red recording indicator.</li>
         </ol>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="recording-start-screen">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: recording-start-screen]</span>
-          </div>
-        </div>
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> You can also press <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>R</kbd> from anywhere on your Mac to start or stop a recording — no need to open the popover first.</div>
+          <div><strong>Tip:</strong> You can also press <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>R</kbd> from anywhere on your Mac to start or stop a recording — no need to open the popover first. You can also use the record shortcut button in the sidebar bottom bar.</div>
         </div>
       </div>
 
@@ -807,20 +730,32 @@
           <li><strong>Meeting name</strong> — An editable text field. You can rename the meeting at any time during recording.</li>
           <li><strong>Microphone selector</strong> — A dropdown to switch input devices mid-recording.</li>
           <li><strong>Meeting Notes area</strong> — A text input for capturing timestamped notes (see below).</li>
+          <li><strong>AI Chat panel</strong> — A collapsible "Ask AI" panel for asking questions during recording (Pro only).</li>
           <li><strong>Stop Recording</strong> — Saves the audio and starts processing.</li>
-          <li><strong>Cancel</strong> — Discards the recording entirely and returns to the idle screen.</li>
+          <li><strong>Cancel</strong> — Discards the recording entirely and returns to the Home view.</li>
         </ol>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="recording-active">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: recording-active]</span>
-          </div>
-        </div>
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
           <div><strong>Tip:</strong> The "Last Heard" preview is cosmetic — it shows quick Whisper chunks for your awareness. The final transcript comes from AssemblyAI's speaker diarization pipeline after you stop recording, which is far more accurate.</div>
+        </div>
+      </div>
+
+      <!-- NEW: Compact Recording Mode -->
+      <div class="guide-subsection animate-in" id="compact-recording">
+        <h3>Compact Recording Mode</h3>
+        <p>If you need to check other meetings or navigate the sidebar while recording, you can minimize the recording view to a compact strip.</p>
+
+        <ul class="guide-checklist">
+          <li>The compact strip shows a pulsing red dot, the elapsed timer, and a stop button</li>
+          <li>Your full recording continues uninterrupted in the background — no audio is lost</li>
+          <li>Click the compact strip to expand back to the full recording view at any time</li>
+          <li>While in compact mode, the sidebar reappears so you can browse meetings or access settings</li>
+        </ul>
+
+        <div class="guide-callout tip animate-in">
+          <i data-lucide="lightbulb"></i>
+          <div><strong>Tip:</strong> Compact mode is useful for long meetings where you want to reference notes from a previous session while still recording the current one.</div>
         </div>
       </div>
 
@@ -849,17 +784,10 @@
         <ol class="guide-steps">
           <li><strong>Type your note</strong> — Enter text in the notes area at the bottom of the recording view.</li>
           <li><strong>Send it</strong> — Press <kbd>⌘</kbd> + <kbd>Return</kbd> or click the send button. The note is saved with a timestamp like "[0:04:32] Agreed on Q3 launch date".</li>
-          <li><strong>View your notes</strong> — Submitted notes appear in a collapsible list below the input. After recording, they show up in the Notes tab of your results.</li>
+          <li><strong>View your notes</strong> — Submitted notes appear in a collapsible list below the input. After recording, they show up in the Meeting Notes section of your results.</li>
         </ol>
 
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="recording-notes">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: recording-notes]</span>
-          </div>
-        </div>
-
-        <p>Notes are included in the AI summary prompt, so important context you capture is reflected in the final output. They are also saved to a plain-text file (<code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">{meeting-name}_notes.txt</code>) that you can edit by hand at any time.</p>
+        <p>Notes are included in the AI summary prompt, so important context you capture is reflected in the final output. They are also saved to a plain-text file (<code>{meeting-name}_notes.txt</code>) that you can edit by hand at any time.</p>
       </div>
 
       <!-- Live AI Chat -->
@@ -872,13 +800,6 @@
           <li><strong>Ask a question</strong> — Type something like "What was the main concern raised?" or "Summarize the last 5 minutes."</li>
           <li><strong>Read the response</strong> — Answers stream in as they are generated. The chat does not interfere with or pause your recording.</li>
         </ol>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="recording-chat">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: recording-chat]</span>
-          </div>
-        </div>
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
@@ -893,16 +814,9 @@
 
         <ol class="guide-steps">
           <li><strong>Grant permission</strong> — The first time you use this feature, Tagalong asks for Calendar access (System Settings &rarr; Privacy &amp; Security &rarr; Calendars).</li>
-          <li><strong>See your next meeting</strong> — A card on the idle screen shows your next upcoming calendar event, refreshing every 30 seconds.</li>
+          <li><strong>See your next meeting</strong> — A calendar card appears in the sidebar below the pinned items, showing your next upcoming event. It refreshes every 30 seconds.</li>
           <li><strong>Click to auto-fill</strong> — Tap the calendar card to populate the meeting name field instantly.</li>
         </ol>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="recording-calendar-card">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: recording-calendar-card]</span>
-          </div>
-        </div>
       </div>
 
       <!-- Switching Microphones -->
@@ -918,7 +832,7 @@
         </div>
       </div>
 
-      <!-- Stopping a Recording -->
+      <!-- Stopping a Recording (REWRITTEN) -->
       <div class="guide-subsection animate-in" id="stopping-recording">
         <h3>Stopping &amp; Cancelling</h3>
         <p>When your meeting is over, you have two choices:</p>
@@ -926,72 +840,86 @@
         <div class="guide-two-col animate-in">
           <div class="guide-col-card">
             <h4>Stop Recording</h4>
-            <p>Saves the captured audio and moves to the processing stage. Tagalong runs speaker diarization via AssemblyAI, then generates your summary and infographic. You will see a progress screen while this happens.</p>
+            <p>Saves the captured audio and begins processing. Tagalong runs speaker diarization via AssemblyAI, then generates your summary. Processing continues in the background — you can navigate to other meetings, start a new recording, or close the detail pane while it works.</p>
           </div>
           <div class="guide-col-card">
             <h4>Cancel</h4>
-            <p>Discards the recording entirely — no audio is saved and no processing occurs. You return to the idle screen. Use this if you started a recording by accident.</p>
+            <p>Discards the recording entirely — no audio is saved and no processing occurs. You return to the Home view. Use this if you started a recording by accident.</p>
           </div>
         </div>
 
+        <p>You can also minimize the recording to <strong>compact mode</strong> before stopping. The compact strip keeps the recording running while you browse other meetings. See <a href="#compact-recording">Compact Recording Mode</a> for details.</p>
+
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> You can also stop a recording with the global shortcut <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>R</kbd>. This behaves the same as clicking Stop Recording — it saves your audio and begins processing.</div>
+          <div><strong>Tip:</strong> You can also stop a recording with the global shortcut <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>R</kbd>. This behaves the same as clicking Stop Recording — it saves your audio and begins background processing.</div>
         </div>
       </div>
 
       <hr class="guide-section-divider animate-in">
 
       <!-- ═══════════════════════════════════════════
-           RESULTS — filled by Writer-C
+           RESULTS
            ═══════════════════════════════════════════ -->
-      <!-- ── RESULTS SECTION ── -->
-
       <h2 class="guide-section-title animate-in" id="results">Your Results</h2>
-      <p class="guide-section-intro animate-in">After you stop recording (or import a file), Tagalong processes the audio and presents your meeting as an interactive, tab-based results view. Here you can review who said what, read an AI-generated summary, view an infographic, browse your notes, and ask follow-up questions about the discussion.</p>
+      <p class="guide-section-intro animate-in">After you stop recording (or import a file), Tagalong processes the audio and presents your meeting in the MeetingDetailView. Here you can review who said what, read an AI-generated summary, view visual notes, browse your meeting notes, and ask follow-up questions about the discussion.</p>
 
-      <!-- Processing Overview -->
+      <!-- Processing Overview (REWRITTEN) -->
       <div class="guide-subsection animate-in" id="processing-overview">
         <h3>Processing Steps</h3>
-        <p>When you stop a recording, Tagalong runs through a series of steps automatically. You will see each step displayed in sequence so you always know where things stand.</p>
+        <p>When you stop a recording or import a file, Tagalong runs through a series of steps automatically. You will see each step displayed in sequence so you always know where things stand.</p>
         <ol class="guide-steps">
+          <li><strong>Importing</strong> — For file imports, Tagalong copies and prepares the file. For live recordings, this step is skipped.</li>
           <li><strong>Uploading audio</strong> — Your recorded WAV file is uploaded for processing.</li>
-          <li><strong>Transcribing</strong> — OpenAI Whisper converts the audio to text.</li>
-          <li><strong>Identifying speakers</strong> — AssemblyAI diarization figures out who said what, labeling each segment by speaker.</li>
+          <li><strong>Transcribing &amp; identifying speakers</strong> — AssemblyAI diarization converts the audio to text and figures out who said what, labeling each segment by speaker.</li>
           <li><strong>Generating summary</strong> — GPT reads the full transcript and produces a structured summary with key decisions, action items, and takeaways.</li>
-          <li><strong>Done</strong> — Results are saved to your output folder and the results view opens.</li>
+          <li><strong>Done</strong> — Results are saved to your output folder and the meeting appears in the sidebar.</li>
         </ol>
+
+        <p>Processing continues in the background. You can navigate to other meetings, start a new recording, or close the detail pane — your meeting will appear in the sidebar when ready.</p>
+
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
           <div><strong>Processing time</strong> depends on meeting length. A 30-minute meeting typically takes 1 to 3 minutes. The menu bar icon shows a spinning arrow while processing is in progress.</div>
         </div>
       </div>
 
-      <!-- Results View Overview -->
+      <!-- NEW: Background Processing -->
+      <div class="guide-subsection animate-in" id="background-processing">
+        <h3>Background Processing</h3>
+        <p>One of the key improvements in Tagalong v2.0 is background processing. After you stop a recording or import a file, you do not have to wait on a progress screen — processing runs independently while you use the rest of the app.</p>
+
+        <ul class="guide-checklist">
+          <li>Processing continues even if you navigate away from the meeting in the sidebar</li>
+          <li>The meeting shows a spinning icon in the sidebar while processing is in progress</li>
+          <li>When processing completes, the meeting appears in the sidebar with its full results available</li>
+          <li>You can start a new recording while a previous meeting is still processing</li>
+          <li>If you close and reopen the popover, processing resumes where it left off</li>
+        </ul>
+
+        <div class="guide-callout tip animate-in">
+          <i data-lucide="lightbulb"></i>
+          <div><strong>Tip:</strong> Background processing means you never have to wait between meetings. Stop one recording, let it process in the background, and start your next meeting immediately.</div>
+        </div>
+      </div>
+
+      <!-- Results View Overview (REWRITTEN) -->
       <div class="guide-subsection animate-in" id="results-view-overview">
         <h3>The Results View</h3>
-        <p>Once processing completes, Tagalong opens the results view with five tabs. Each tab gives you a different perspective on the meeting.</p>
-        <div class="guide-tabs-demo animate-in">
-          <span class="guide-tab-pill active">Transcript</span>
-          <span class="guide-tab-pill">Summary</span>
-          <span class="guide-tab-pill">Infographic</span>
-          <span class="guide-tab-pill">Notes</span>
-          <span class="guide-tab-pill">Chat</span>
+        <p>After processing, your meeting appears in the sidebar list and the detail pane shows MeetingDetailView. Content is organized as collapsible sections: Meeting Notes (timestamped notes you took during recording), Summary (AI-generated with recipe selection), Transcript (speaker-labeled entries with search), and Visual Notes (AI-generated infographic). Each section can be expanded or collapsed independently.</p>
+
+        <p>Click any meeting in the sidebar to view its results. The collapsible sections let you focus on what matters — expand the Summary to quickly read key takeaways, or expand the Transcript to find a specific quote.</p>
+
+        <div class="guide-callout info animate-in">
+          <i data-lucide="info"></i>
+          <div><strong>Note:</strong> The results view replaces the old tab-based layout. All content is now in a single scrollable view with collapsible sections, so you can see multiple sections at once without switching tabs.</div>
         </div>
-        <p>Switch between tabs by clicking the pill at the top of the results view. The Transcript tab is shown by default.</p>
       </div>
 
       <!-- Transcript Tab -->
       <div class="guide-subsection animate-in" id="transcript-tab">
-        <h3>Transcript Tab</h3>
-        <p>The transcript tab shows every segment of the conversation, labeled by speaker. Each entry displays a colored speaker pill, a timestamp, and the spoken text.</p>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="results-transcript">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: results-transcript]</span>
-          </div>
-        </div>
+        <h3>Transcript</h3>
+        <p>The Transcript section shows every segment of the conversation, labeled by speaker. Each entry displays a colored speaker pill, a timestamp, and the spoken text.</p>
 
         <ul class="guide-checklist">
           <li>Speaker pills use a 5-color rotation so each speaker is visually distinct</li>
@@ -1009,38 +937,24 @@
       <!-- Speaker Editing -->
       <div class="guide-subsection animate-in" id="speaker-editing">
         <h3>Speaker Editing</h3>
-        <p>Diarization labels speakers generically as "Speaker A," "Speaker B," and so on. You can replace these with real names so the transcript, summary, and infographic all reflect who actually said what.</p>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="results-speaker-edit">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: results-speaker-edit]</span>
-          </div>
-        </div>
+        <p>Diarization labels speakers generically as "Speaker A," "Speaker B," and so on. You can replace these with real names so the transcript, summary, and visual notes all reflect who actually said what.</p>
 
         <ol class="guide-steps">
           <li><strong>Click the pencil icon</strong> — Next to any speaker name (e.g., "Speaker A"), click the edit icon.</li>
           <li><strong>Type the real name</strong> — Enter the person's actual name in the text field.</li>
-          <li><strong>Save</strong> — The name change propagates immediately through the entire transcript, the AI summary, and the infographic.</li>
+          <li><strong>Save</strong> — The name change propagates immediately through the entire transcript, the AI summary, and the visual notes.</li>
         </ol>
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> Edit speaker names before generating the summary or infographic. The AI uses the names you provide, so "Alice" and "Bob" will produce much more readable output than "Speaker A" and "Speaker B."</div>
+          <div><strong>Tip:</strong> Edit speaker names before generating the summary or visual notes. The AI uses the names you provide, so "Alice" and "Bob" will produce much more readable output than "Speaker A" and "Speaker B."</div>
         </div>
       </div>
 
       <!-- Summary Tab -->
       <div class="guide-subsection animate-in" id="summary-tab">
-        <h3>Summary Tab</h3>
-        <p>The summary tab displays a markdown-rendered AI summary generated by GPT. It is structured into clear sections — typically key decisions, action items, and key takeaways — so you can quickly grasp what happened without rereading the full transcript.</p>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="results-summary">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: results-summary]</span>
-          </div>
-        </div>
+        <h3>Summary</h3>
+        <p>The Summary section displays a markdown-rendered AI summary generated by GPT. It is structured into clear sections — typically key decisions, action items, and key takeaways — so you can quickly grasp what happened without rereading the full transcript.</p>
 
         <p>If you want a different format, choose a <strong>summary recipe</strong> before generating. You can also refine the summary after it has been created using AI editing.</p>
       </div>
@@ -1049,13 +963,6 @@
       <div class="guide-subsection animate-in" id="summary-recipes">
         <h3>Summary Recipes <span class="badge-pro">PRO</span></h3>
         <p>Recipes let you control the format and focus of the AI summary. Select a recipe before clicking Generate Summary — the recipe's system prompt replaces the default one, so the AI tailors the output accordingly.</p>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="results-recipes">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: results-recipes]</span>
-          </div>
-        </div>
 
         <table class="guide-table animate-in">
           <thead>
@@ -1105,26 +1012,14 @@
         </div>
       </div>
 
-      <!-- Infographic Tab -->
-      <div class="guide-subsection animate-in" id="infographic-tab">
-        <h3>Infographic Tab <span class="badge-pro">PRO</span></h3>
-        <p>Tagalong uses Google Gemini to generate a 4K visual summary of your meeting — a shareable infographic that captures the key points at a glance. If you took meeting notes, they are included in the prompt for richer content.</p>
+      <!-- NEW: Visual Notes (replaces Infographic Tab) -->
+      <div class="guide-subsection animate-in" id="visual-notes">
+        <h3>Visual Notes <span class="badge-pro">PRO</span></h3>
+        <p>Visual Notes are AI-generated visual summaries of your meetings — shareable images that capture the key points at a glance. Tagalong uses Google Gemini to create 4K images in a variety of styles. If you took meeting notes, they are included in the prompt for richer content.</p>
 
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="results-infographic">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: results-infographic]</span>
-          </div>
-        </div>
+        <p>Visual Notes is also a pinned item in the sidebar, giving you quick access to browse visual notes across all your meetings.</p>
 
-        <div class="screenshot-placeholder landscape animate-in" data-label="results-infographic-sample">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: results-infographic-sample]</span>
-          </div>
-        </div>
-
-        <p>You can customize the infographic's appearance before generating.</p>
+        <p>You can customize the appearance before generating:</p>
 
         <table class="guide-table animate-in">
           <thead>
@@ -1149,50 +1044,36 @@
           </tbody>
         </table>
 
-        <p>Click <strong>Regenerate</strong> to get a fresh version with the same settings. The infographic is saved automatically to your meeting folder as <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">{meeting-name}_infographic.jpg</code>.</p>
+        <p>Click <strong>Regenerate</strong> to get a fresh version with the same settings, or change settings and regenerate for a different look. The visual note is saved automatically to your meeting folder as <code>{meeting-name}_infographic.jpg</code>. You can also download it directly from the app.</p>
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>Custom palettes:</strong> In Settings, you can define your own hex color palette. When selected, Gemini will use your brand colors in the infographic.</div>
+          <div><strong>Custom palettes:</strong> In Settings, you can define your own hex color palette. When selected, Gemini will use your brand colors in the visual note. There are also 6+ built-in presets to choose from.</div>
         </div>
       </div>
 
       <!-- Notes Tab -->
       <div class="guide-subsection animate-in" id="notes-tab">
-        <h3>Notes Tab</h3>
-        <p>The notes tab collects all the notes you captured during and after the meeting in one place.</p>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="results-notes">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: results-notes]</span>
-          </div>
-        </div>
+        <h3>Notes</h3>
+        <p>The Meeting Notes section collects all the notes you captured during and after the meeting in one place.</p>
 
         <ul class="guide-checklist">
           <li>Notes taken during recording include a timestamp (e.g., "[0:02:15] Budget confirmed at $50k")</li>
           <li>Notes added after recording are labeled "Post-meeting"</li>
           <li>Click any note to edit it inline</li>
-          <li>Notes are also saved to a separate text file: <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">{meeting-name}_notes.txt</code></li>
+          <li>Notes are also saved to a separate text file: <code>{meeting-name}_notes.txt</code></li>
         </ul>
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> Your notes are included in the AI summary and infographic prompts. Taking notes during a meeting about key decisions or follow-ups will produce better, more targeted output.</div>
+          <div><strong>Tip:</strong> Your notes are included in the AI summary and visual notes prompts. Taking notes during a meeting about key decisions or follow-ups will produce better, more targeted output.</div>
         </div>
       </div>
 
       <!-- AI Chat Tab -->
       <div class="guide-subsection animate-in" id="ai-chat-tab">
-        <h3>AI Chat Tab <span class="badge-pro">PRO</span></h3>
-        <p>The Chat tab lets you ask any question about the meeting and get an AI-powered answer based on the full transcript. Think of it as a research assistant who was in the room and remembers everything.</p>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="results-chat">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: results-chat]</span>
-          </div>
-        </div>
+        <h3>AI Chat <span class="badge-pro">PRO</span></h3>
+        <p>The Chat panel lets you ask any question about the meeting and get an AI-powered answer based on the full transcript. Think of it as a research assistant who was in the room and remembers everything.</p>
 
         <p>Some examples of questions you might ask:</p>
         <ul class="guide-checklist">
@@ -1218,7 +1099,7 @@
         <div class="guide-two-col animate-in">
           <div class="guide-col-card">
             <h4>Markdown Export</h4>
-            <p>Always available, even on the Free tier. Saves the transcript with speaker labels and a Meeting Notes section to a <code style="font-family:monospace;font-size:12px">.md</code> file in your output folder.</p>
+            <p>Always available, even on the Free tier. Saves the transcript with speaker labels and a Meeting Notes section to a <code>.md</code> file in your output folder.</p>
           </div>
           <div class="guide-col-card">
             <h4>PDF Export <span class="badge-pro">PRO</span></h4>
@@ -1246,68 +1127,75 @@
       <hr class="guide-section-divider animate-in">
 
       <!-- ═══════════════════════════════════════════
-           MANAGING SESSIONS + SETTINGS — filled by Writer-D
+           MANAGING SESSIONS
            ═══════════════════════════════════════════ -->
-      <!-- ═══ MANAGING SESSIONS ═══ -->
       <h2 class="guide-section-title animate-in" id="sessions">Managing Sessions</h2>
-      <p class="guide-section-intro animate-in">Tagalong saves every meeting locally on your Mac. Browse past sessions, search across all your meetings, import recordings from other tools, and revisit any previous session whenever you need it.</p>
+      <p class="guide-section-intro animate-in">All your meetings are accessible from the sidebar. Meetings are automatically grouped by recording date. Use Spaces to organize meetings into custom folders. The Search view lets you find content across all meetings.</p>
 
-      <!-- Session History -->
+      <!-- Session History (REWRITTEN as "Meetings in the Sidebar") -->
       <div class="guide-subsection animate-in" id="session-history">
-        <h3>Session History <span class="badge-pro">PRO</span></h3>
-        <p>The Session History view gives you a chronological list of every meeting Tagalong has processed. Each entry shows the meeting name, date, and duration so you can quickly find the session you need.</p>
-        <ol class="guide-steps">
-          <li><strong>Open Session History</strong> — Click the "Session History" button on the idle screen.</li>
-          <li><strong>Browse sessions</strong> — Sessions are sorted by date with the most recent at the top. Each row shows the meeting name and the date it was recorded.</li>
-          <li><strong>Open a session</strong> — Click any session to load it into the Results view, where you can review the transcript, summary, infographic, and notes just as you did when the meeting ended.</li>
-        </ol>
+        <h3>Meetings in the Sidebar</h3>
+        <p>Previously recorded meetings appear automatically in the sidebar, grouped by date: Today, Yesterday, This Week, Last Week, This Month, Last Month, and Older. Click any meeting to view its transcript, summary, and visual notes in the detail pane.</p>
 
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="sessions-history">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: sessions-history]</span>
-          </div>
-        </div>
+        <ul class="guide-checklist">
+          <li>Meetings are sorted chronologically with the most recent at the top of each group</li>
+          <li>Each entry shows the meeting name and recording date</li>
+          <li>Meetings currently processing show a spinning icon until results are ready</li>
+          <li>Click the sync button in the sidebar bottom bar to refresh the list</li>
+          <li>You can also import sessions from older versions of Tagalong using the import button</li>
+        </ul>
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> Session History reads from your output folder at <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">~/Documents/Tagalong/</code>. If you move or rename session folders in Finder, Session History will reflect those changes the next time you open it.</div>
+          <div><strong>Tip:</strong> The meeting list reads from your output folder at <code>~/Documents/Tagalong/</code>. If you move or rename session folders in Finder, the sidebar will reflect those changes the next time you sync.</div>
         </div>
       </div>
 
-      <!-- Cross-Meeting Search -->
-      <div class="guide-subsection animate-in" id="cross-meeting-search">
-        <h3>Cross-Meeting Search <span class="badge-pro">PRO</span></h3>
-        <p>Need to find something a colleague said three weeks ago? Cross-Meeting Search lets you search keywords across every transcript and notes file in your Tagalong output folder.</p>
-        <ol class="guide-steps">
-          <li><strong>Open Search</strong> — Click the "Search" button on the idle screen.</li>
-          <li><strong>Enter a keyword</strong> — Type any word or phrase. Search is case-insensitive.</li>
-          <li><strong>Browse results</strong> — Each result shows the meeting name, the matched line with your keyword highlighted, the speaker who said it, and the date. Results are sorted newest first, with a maximum of 100 results.</li>
-          <li><strong>Open a result</strong> — Click any result to open that session in the Results view.</li>
-        </ol>
+      <!-- NEW: Spaces -->
+      <div class="guide-subsection animate-in" id="spaces">
+        <h3>Spaces</h3>
+        <p>Spaces let you organize related meetings into custom groups — like folders for your meetings. Use them to keep projects, teams, or topics neatly organized.</p>
 
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="sessions-search">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: sessions-search]</span>
-          </div>
-        </div>
+        <ul class="guide-checklist">
+          <li>Create a new Space from the sidebar to group related meetings (e.g., "Q1 Planning," "Client Calls," "Product Standups")</li>
+          <li>Drag meetings into a Space or assign a Space during or after recording</li>
+          <li>Spaces appear as collapsible folders in the sidebar, making it easy to find what you need</li>
+          <li>A meeting can belong to one Space at a time</li>
+        </ul>
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>Note:</strong> Search scans both <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">.md</code> transcript files and <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">_notes.txt</code> files, so your meeting notes are searchable too.</div>
+          <div><strong>Note:</strong> Spaces are an organizational layer within the app — they do not move files on disk. Your meeting files stay in <code>~/Documents/Tagalong/</code> regardless of which Space they belong to.</div>
+        </div>
+      </div>
+
+      <!-- Cross-Meeting Search (REWRITTEN for sidebar integration) -->
+      <div class="guide-subsection animate-in" id="cross-meeting-search">
+        <h3>Search <span class="badge-pro">PRO</span></h3>
+        <p>Search is a pinned item in the sidebar. Click it to open the SearchView in the detail pane, where you can search across all meetings — transcripts, summaries, and notes.</p>
+
+        <ol class="guide-steps">
+          <li><strong>Click Search</strong> — Select the Search item in the sidebar's pinned section.</li>
+          <li><strong>Enter a keyword</strong> — Type any word or phrase in the search bar. Search is case-insensitive.</li>
+          <li><strong>Browse results</strong> — Each result shows the meeting name, date, matched text with your keyword highlighted in context, a speaker badge, and a source type badge (transcript or notes). Results are sorted newest first, with a maximum of 100 results.</li>
+          <li><strong>Jump to a meeting</strong> — Click any result to navigate to that meeting in the sidebar and open it in the detail pane.</li>
+        </ol>
+
+        <div class="guide-callout info animate-in">
+          <i data-lucide="info"></i>
+          <div><strong>Note:</strong> Search scans both <code>.md</code> transcript files and <code>_notes.txt</code> files, so your meeting notes are searchable too.</div>
         </div>
       </div>
 
       <!-- File Import -->
       <div class="guide-subsection animate-in" id="file-import">
         <h3>File Import <span class="badge-pro">PRO</span></h3>
-        <p>Already have recordings or transcripts from Zoom, Otter, or Gong? Import them into Tagalong to get speaker-labeled transcripts, AI summaries, and infographics for meetings you recorded elsewhere.</p>
+        <p>Already have recordings or transcripts from Zoom, Otter, or Gong? Import them into Tagalong to get speaker-labeled transcripts, AI summaries, and visual notes for meetings you recorded elsewhere.</p>
         <ol class="guide-steps">
-          <li><strong>Click Import File</strong> — On the idle screen, click the "Import File" button.</li>
+          <li><strong>Click Import File</strong> — On the Home view, click the "Import File" button.</li>
           <li><strong>Select your file</strong> — Choose an audio file or a transcript file from your Mac.</li>
-          <li><strong>Wait for processing</strong> — Audio files are sent to AssemblyAI for speaker diarization (this may take a minute or two). Transcript files are parsed immediately.</li>
-          <li><strong>Review results</strong> — Once processing is complete, you will see the full Results view with transcript, summary options, and more.</li>
+          <li><strong>Wait for processing</strong> — Audio files are sent to AssemblyAI for speaker diarization (this may take a minute or two). Transcript files are parsed immediately. Processing runs in the background.</li>
+          <li><strong>Review results</strong> — Once processing is complete, the meeting appears in the sidebar. Click it to view the full results.</li>
         </ol>
 
         <table class="guide-table animate-in">
@@ -1337,39 +1225,29 @@
           </tbody>
         </table>
 
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="sessions-import">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: sessions-import]</span>
-          </div>
-        </div>
-
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> The meeting name is derived automatically from the filename. You can rename it in the Results view after import.</div>
+          <div><strong>Tip:</strong> The meeting name is derived automatically from the filename. You can rename it in the results view after import.</div>
         </div>
       </div>
 
-      <!-- Open Previous Session -->
+      <!-- Open Previous Session (REWRITTEN) -->
       <div class="guide-subsection animate-in" id="open-previous">
         <h3>Open Previous Session</h3>
-        <p>Revisit any session you have already recorded or imported. This feature is available on all tiers, including Free.</p>
-        <ol class="guide-steps">
-          <li><strong>Click Open Previous Session</strong> — On the idle screen, click "Open Previous Session." A folder picker opens, starting in <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">~/Documents/Tagalong/</code>.</li>
-          <li><strong>Select a session folder</strong> — Choose the folder for the meeting you want to reopen.</li>
-          <li><strong>View results</strong> — Tagalong loads the transcript, speaker names, summary, notes, and infographic back into the Results view.</li>
-        </ol>
+        <p>Previously recorded meetings appear automatically in the sidebar, grouped by date: Today, Yesterday, This Week, Last Week, This Month, Last Month, Older. Click any meeting to view its transcript, summary, and visual notes. You can also import sessions from older versions using the import button.</p>
+
+        <p>If you have session folders from an earlier version of Tagalong that do not appear in the sidebar, use the import function on the Home view to bring them in. Tagalong will scan the folder for markdown, audio, notes, and visual note files and load whatever it finds.</p>
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>How it works:</strong> If the folder contains a <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">.md</code> file, Tagalong parses it to restore the full session. If only an audio file is present (no markdown), it runs diarization to create the transcript from scratch.</div>
+          <div><strong>How it works:</strong> If the folder contains a <code>.md</code> file, Tagalong parses it to restore the full session — entries, speakers, speaker names, summary, notes, and visual note path. If only an audio file is present (no markdown), it runs diarization to create the transcript from scratch.</div>
         </div>
       </div>
 
       <!-- Audio Playback -->
       <div class="guide-subsection animate-in" id="audio-playback">
         <h3>Audio Playback <span class="badge-pro">PRO</span></h3>
-        <p>If a session includes an audio file (from a live recording or an imported audio file), a player bar appears in the Results view so you can listen back.</p>
+        <p>If a session includes an audio file (from a live recording or an imported audio file), a player bar appears in the results view so you can listen back.</p>
         <ul class="guide-checklist">
           <li>Scrubable progress bar — drag to any point in the recording</li>
           <li>Volume control slider</li>
@@ -1385,7 +1263,7 @@
       <!-- Output Folder Structure -->
       <div class="guide-subsection animate-in" id="output-folder">
         <h3>Output Folder Structure</h3>
-        <p>Every session is saved to a dedicated folder inside <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">~/Documents/Tagalong/</code>. Here is what each folder contains.</p>
+        <p>Every session is saved to a dedicated folder inside <code>~/Documents/Tagalong/</code>. Here is what each folder contains.</p>
 
         <table class="guide-table animate-in">
           <thead>
@@ -1405,7 +1283,7 @@
             </tr>
             <tr>
               <td>{name}_infographic.jpg</td>
-              <td>4K generated infographic (if created)</td>
+              <td>4K generated visual note (if created)</td>
             </tr>
             <tr>
               <td>{name}.wav</td>
@@ -1416,22 +1294,17 @@
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>Note:</strong> These are standard files on your Mac. You can open the markdown in any text editor, share the infographic as an image, or back up the entire folder to cloud storage.</div>
+          <div><strong>Note:</strong> These are standard files on your Mac. You can open the markdown in any text editor, share the visual note as an image, or back up the entire folder to cloud storage.</div>
         </div>
       </div>
 
       <hr class="guide-section-divider animate-in">
 
-      <!-- ═══ SETTINGS ═══ -->
+      <!-- ═══════════════════════════════════════════
+           SETTINGS
+           ═══════════════════════════════════════════ -->
       <h2 class="guide-section-title animate-in" id="settings">Settings</h2>
-      <p class="guide-section-intro animate-in">Configure your licensing mode, API keys, AI model preferences, integrations, and more. Open Settings by clicking the gear icon in the Tagalong popover.</p>
-
-      <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="settings-main">
-        <div class="placeholder-inner">
-          <i data-lucide="image"></i>
-          <span>[SCREENSHOT: settings-main]</span>
-        </div>
-      </div>
+      <p class="guide-section-intro animate-in">Configure your licensing mode, API keys, AI model preferences, integrations, and more. Open Settings by clicking the gear icon in the sidebar bottom bar.</p>
 
       <!-- Licensing Modes -->
       <div class="guide-subsection animate-in" id="licensing-modes">
@@ -1441,7 +1314,7 @@
         <div class="guide-two-col animate-in">
           <div class="guide-col-card">
             <h4>Subscription — $9.99/mo</h4>
-            <p>Zero setup. Tagalong manages all API access through its own backend proxy at <code style="font-family:monospace;font-size:12px">api.tagalongai.com</code>. You do not need API keys from OpenAI, AssemblyAI, or Google. Just subscribe and start recording.</p>
+            <p>Zero setup. Tagalong manages all API access through its own backend proxy at <code>api.tagalongai.com</code>. You do not need API keys from OpenAI, AssemblyAI, or Google. Just subscribe and start recording.</p>
           </div>
           <div class="guide-col-card">
             <h4>Private License — $199 one-time</h4>
@@ -1452,6 +1325,53 @@
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
           <div><strong>Free tier:</strong> Without either license, Tagalong works in Free mode — mic recording, speaker identification, basic AI summary, and markdown export for up to 5 meetings per month. No credit card required.</div>
+        </div>
+      </div>
+
+      <!-- NEW: License Mode Selection -->
+      <div class="guide-subsection animate-in" id="license-mode-selection">
+        <h3>License Mode Selection</h3>
+        <p>You choose your licensing mode in Settings. Both Subscription and Private License unlock all 25 Pro features — the difference is how API calls are handled and how you pay.</p>
+
+        <div class="guide-two-col animate-in">
+          <div class="guide-col-card">
+            <h4>Subscription ($9.99/mo)</h4>
+            <p>Zero setup. API calls are routed through Tagalong's managed proxy at <code>api.tagalongai.com</code>. You never see or manage API keys. JWT-based authentication handles everything. Best for users who want to get started immediately without creating accounts with AI providers.</p>
+          </div>
+          <div class="guide-col-card">
+            <h4>Private License ($199 one-time)</h4>
+            <p>Bring your own API keys (OpenAI, AssemblyAI, optionally Google Gemini). All API calls go directly from your Mac to the respective providers — your audio and transcripts never touch Tagalong servers. Better privacy, no recurring cost, and you control your own API usage and billing.</p>
+          </div>
+        </div>
+
+        <p>You can switch between modes at any time in Settings. Switching does not affect your existing meetings or recordings — only how future API calls are routed.</p>
+      </div>
+
+      <!-- NEW: Subscription Auth Flow -->
+      <div class="guide-subsection animate-in" id="subscription-auth">
+        <h3>Subscription Auth Flow</h3>
+        <p>Setting up a subscription takes less than two minutes. Here is how the end-to-end flow works.</p>
+
+        <ol class="guide-steps">
+          <li><strong>Download and install Tagalong</strong> — Follow the installation steps above.</li>
+          <li><strong>Open Settings</strong> — Click the gear icon in the sidebar bottom bar.</li>
+          <li><strong>Choose Subscription</strong> — Under Licensing Mode, select "Subscription."</li>
+          <li><strong>Click Subscribe</strong> — Tagalong opens a Stripe checkout page in your default browser. Your device ID is passed along automatically.</li>
+          <li><strong>Complete payment</strong> — Enter your payment details on the Stripe page. Promotion codes are supported at checkout.</li>
+          <li><strong>Return to Tagalong</strong> — After checkout, the app detects your subscription automatically and issues a JWT token for authentication.</li>
+        </ol>
+
+        <p>Authentication details:</p>
+        <ul class="guide-checklist">
+          <li>JWT-based auth with automatic 24-hour token refresh (refreshes 60 seconds before expiry)</li>
+          <li>Device-based licensing — one active subscription per device</li>
+          <li>Token stored securely in macOS Keychain</li>
+          <li>All API calls routed through <code>api.tagalongai.com/v1/proxy</code></li>
+        </ul>
+
+        <div class="guide-callout info animate-in">
+          <i data-lucide="info"></i>
+          <div><strong>Managing your subscription:</strong> To cancel, manage billing, or update payment details, visit the Stripe customer portal linked from Settings.</div>
         </div>
       </div>
 
@@ -1482,25 +1402,18 @@
             <tr>
               <td>Google Gemini</td>
               <td>No</td>
-              <td>Infographic image generation (optional)</td>
+              <td>Visual notes image generation (optional)</td>
             </tr>
           </tbody>
         </table>
 
         <ol class="guide-steps">
-          <li><strong>Open Settings</strong> — Click the gear icon in the Tagalong popover.</li>
+          <li><strong>Open Settings</strong> — Click the gear icon in the sidebar bottom bar.</li>
           <li><strong>Choose Private License</strong> — Under Licensing Mode, select "Private License."</li>
           <li><strong>Enter your OpenAI key</strong> — Get one at <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a> and paste it into the OpenAI field.</li>
           <li><strong>Enter your AssemblyAI key</strong> — Get one at <a href="https://www.assemblyai.com/dashboard/signup" target="_blank" rel="noopener">assemblyai.com</a> and paste it into the AssemblyAI field.</li>
-          <li><strong>Enter your Gemini key (optional)</strong> — Get one at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com</a>. Only needed if you want to generate infographics.</li>
+          <li><strong>Enter your Gemini key (optional)</strong> — Get one at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com</a>. Only needed if you want to generate visual notes.</li>
         </ol>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="settings-private-license">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: settings-private-license]</span>
-          </div>
-        </div>
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
@@ -1508,31 +1421,48 @@
         </div>
       </div>
 
-      <!-- Subscription Setup -->
-      <div class="guide-subsection animate-in" id="subscription-setup">
-        <h3>Subscription Setup</h3>
-        <p>The Subscription option is the quickest way to unlock Pro. No API keys needed — Tagalong handles everything through its backend.</p>
-        <ol class="guide-steps">
-          <li><strong>Open Settings</strong> — Click the gear icon in the Tagalong popover.</li>
-          <li><strong>Choose Subscription</strong> — Under Licensing Mode, select "Subscription."</li>
-          <li><strong>Activate</strong> — Click "Activate Subscription." This opens a Stripe checkout page in your browser.</li>
-          <li><strong>Complete payment</strong> — Enter your payment details on the Stripe page.</li>
-          <li><strong>Return to Tagalong</strong> — After checkout, go back to Tagalong and click "Check Status." Your device is registered and a JWT token is issued for authentication.</li>
-        </ol>
+      <!-- NEW: Model Selection -->
+      <div class="guide-subsection animate-in" id="model-selection">
+        <h3>Model Selection</h3>
+        <p>Tagalong uses several AI models across its pipeline. Some are configurable, while others are fixed for reliability.</p>
+
+        <table class="guide-table animate-in">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Model</th>
+              <th>Configurable?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Summary generation</td>
+              <td>GPT-5.2 (default)</td>
+              <td>Yes — changeable in Settings</td>
+            </tr>
+            <tr>
+              <td>Visual notes</td>
+              <td>Gemini</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <td>Transcription</td>
+              <td>Whisper-1</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <td>Speaker diarization</td>
+              <td>AssemblyAI</td>
+              <td>No</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>To change the summary model, open Settings and look for the Model section. The selected model is stored locally and applies to all future summaries.</p>
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>How it works:</strong> All API calls are routed through <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">api.tagalongai.com/v1/proxy</code> with JWT authentication. Your device is registered once and remains active as long as your subscription is current.</div>
-        </div>
-      </div>
-
-      <!-- Summary Model -->
-      <div class="guide-subsection animate-in" id="summary-model">
-        <h3>Summary Model</h3>
-        <p>By default, Tagalong uses GPT-4o for generating meeting summaries. You can change this in Settings if you prefer a different model for cost or speed reasons. The selected model is stored locally and applies to all future summaries.</p>
-        <div class="guide-callout info animate-in">
-          <i data-lucide="info"></i>
-          <div><strong>Note:</strong> This setting only applies to Private License mode. Subscription users use the model configured on the Tagalong backend.</div>
+          <div><strong>Note:</strong> The summary model setting only applies to Private License mode. Subscription users use the model configured on the Tagalong backend.</div>
         </div>
       </div>
 
@@ -1543,9 +1473,9 @@
         <ol class="guide-steps">
           <li><strong>Open Settings</strong> — Click the gear icon.</li>
           <li><strong>Find Custom Vocabulary</strong> — Scroll to the Custom Vocabulary section.</li>
-          <li><strong>Add your terms</strong> — Enter words separated by commas or newlines. For example: <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">Tagalong, AssemblyAI, OpenAI, Q3 launch, COGS</code></li>
+          <li><strong>Add your terms</strong> — Enter words separated by commas or newlines. For example: <code>Tagalong, AssemblyAI, OpenAI, Q3 launch, COGS</code></li>
         </ol>
-        <p>These terms are sent to AssemblyAI as a <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">word_boost</code> parameter, which biases the speech recognition model toward recognizing these words correctly. "Tagalong" is included by default.</p>
+        <p>These terms are sent to AssemblyAI as a <code>word_boost</code> parameter, which biases the speech recognition model toward recognizing these words correctly. "Tagalong" is included by default.</p>
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
           <div><strong>Tip:</strong> Add the names of meeting participants, your company's product names, and any acronyms or abbreviations that come up frequently. This significantly reduces transcription errors for domain-specific terms.</div>
@@ -1554,8 +1484,8 @@
 
       <!-- Infographic Settings -->
       <div class="guide-subsection animate-in" id="infographic-settings">
-        <h3>Infographic Options</h3>
-        <p>Customize how your AI-generated meeting infographics look. These settings are available in both the Settings view and the Infographic tab in Results.</p>
+        <h3>Visual Notes Options</h3>
+        <p>Customize how your AI-generated visual notes look. These settings are available in both the Settings view and the Visual Notes section in the results view.</p>
 
         <table class="guide-table animate-in">
           <thead>
@@ -1584,7 +1514,7 @@
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> The "Custom" palette option lets you specify your own brand colors. Enter hex values in Settings and they will be applied to every infographic you generate.</div>
+          <div><strong>Tip:</strong> The "Custom" palette option lets you specify your own brand colors. Enter hex values in Settings and they will be applied to every visual note you generate.</div>
         </div>
       </div>
 
@@ -1607,9 +1537,9 @@
         <h4 style="margin-top: 24px; margin-bottom: 12px; font-size: 16px; color: var(--text);">Setting up Slack</h4>
         <ol class="guide-steps">
           <li><strong>Create a webhook</strong> — Go to <a href="https://api.slack.com/apps" target="_blank" rel="noopener">api.slack.com/apps</a>, create or select an app, enable Incoming Webhooks, and add a new webhook to the channel you want.</li>
-          <li><strong>Copy the webhook URL</strong> — It looks like <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">https://hooks.slack.com/services/T.../B.../...</code></li>
+          <li><strong>Copy the webhook URL</strong> — It looks like <code>https://hooks.slack.com/services/T.../B.../...</code></li>
           <li><strong>Paste in Settings</strong> — Open Tagalong Settings, find the Slack section, and paste the URL.</li>
-          <li><strong>Share</strong> — After generating a summary, click the Share to Slack button in the Results view.</li>
+          <li><strong>Share</strong> — After generating a summary, click the Share to Slack button in the results view.</li>
         </ol>
 
         <h4 style="margin-top: 24px; margin-bottom: 12px; font-size: 16px; color: var(--text);">Setting up Notion</h4>
@@ -1618,15 +1548,8 @@
           <li><strong>Share your database</strong> — Open the Notion database where you want meeting pages created, click Share, and invite your integration.</li>
           <li><strong>Get the database ID</strong> — Open the database in Notion. The database ID is the 32-character string in the URL between the workspace name and the question mark.</li>
           <li><strong>Paste in Settings</strong> — Enter both the Notion API key and Database ID in Tagalong Settings.</li>
-          <li><strong>Export</strong> — After a meeting, click the Export to Notion button in the Results view.</li>
+          <li><strong>Export</strong> — After a meeting, click the Export to Notion button in the results view.</li>
         </ol>
-
-        <div class="screenshot-placeholder portrait screenshot-app animate-in" data-label="settings-integrations">
-          <div class="placeholder-inner">
-            <i data-lucide="image"></i>
-            <span>[SCREENSHOT: settings-integrations]</span>
-          </div>
-        </div>
       </div>
 
       <!-- Launch at Login -->
@@ -1731,7 +1654,7 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              All output files go to <code style="font-family:monospace;background:var(--surface);padding:2px 6px;border-radius:4px;font-size:13px">~/Documents/Tagalong/{meeting-name}/</code> on your Mac. Each session folder contains the transcript markdown, notes file, infographic image, and optionally the raw audio WAV. Nothing is uploaded to Tagalong servers.
+              All output files go to <code>~/Documents/Tagalong/{meeting-name}/</code> on your Mac. Each session folder contains the transcript markdown, notes file, visual note image, and optionally the raw audio WAV. Nothing is uploaded to Tagalong servers.
             </div>
           </div>
         </div>
@@ -1803,7 +1726,7 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              Yes — with a Pro license. You can import audio files (mp3, wav, m4a, mp4, aac) for diarization, or transcript files (vtt, srt, txt, md) in Zoom, Otter, and Gong formats. Use the "Import File" button on the main screen.
+              Yes — with a Pro license. You can import audio files (mp3, wav, m4a, mp4, aac) for diarization, or transcript files (vtt, srt, txt, md) in Zoom, Otter, and Gong formats. Use the "Import File" button on the Home view.
             </div>
           </div>
         </div>
@@ -1815,7 +1738,7 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              Open Settings in Tagalong (gear icon) and choose your preferred licensing mode — Subscription or Private License. Follow the setup instructions to activate Pro features.
+              Open Settings in Tagalong (gear icon in the sidebar bottom bar) and choose your preferred licensing mode — Subscription or Private License. Follow the setup instructions to activate Pro features.
             </div>
           </div>
         </div>
@@ -1824,27 +1747,6 @@
 
     </div><!-- /.guide-content -->
   </div><!-- /.guide-layout -->
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-logo">
-          <img src="assets/logo-dark.png" alt="Tagalong">
-        </div>
-        <div class="footer-tagline">Every meeting, remembered.</div>
-        <div class="footer-bottom">
-          <div class="footer-left">&copy; 2026 Tagalong. All rights reserved.</div>
-          <ul class="footer-links">
-            <li><a href="/privacy">Privacy</a></li>
-            <li><a href="/terms">Terms</a></li>
-            <li><a href="/guide">Guide</a></li>
-            <li><a href="https://github.com/tagalong-ai" target="_blank" rel="noopener">GitHub</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <script>
     // Mobile menu toggle

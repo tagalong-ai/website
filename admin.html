@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,49 +10,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
-    :root {
-      --bg: #1C1917;
-      --surface: #292524;
-      --surface-elevated: #352F2B;
-      --border: #3D3835;
-      --border-subtle: #332E2A;
-      --text: #FAF9F6;
-      --text-secondary: #A8A29E;
-      --text-tertiary: #78716C;
-      --accent: #F59E0B;
-      --accent-hover: #D97706;
-      --accent-subtle: rgba(245,158,11,0.1);
-      --cta: #7DA882;
-      --cta-hover: #6B8F71;
-      --cta-subtle: rgba(125,168,130,0.1);
-      --error: #EF4444;
-      --error-subtle: rgba(239,68,68,0.1);
-      --card-shadow: 0 4px 24px rgba(0,0,0,0.3);
-      --radius: 12px;
-      --radius-sm: 8px;
-    }
-
-    html { scroll-behavior: smooth }
-
-    body {
-      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-    }
-
-    /* LOGIN */
+    /* ─── LOGIN ─── */
     .login-wrapper {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
+      background: var(--hero-gradient);
     }
 
     .login-card {
@@ -82,7 +49,7 @@
     .login-card input {
       width: 100%;
       padding: 12px 16px;
-      background: var(--bg);
+      background: var(--surface-secondary);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       color: var(--text);
@@ -108,30 +75,11 @@
       display: none;
     }
 
-    /* BUTTONS */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: var(--radius-sm);
-      font-size: 14px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: all .2s;
-      text-decoration: none;
-      font-family: inherit;
-    }
-
-    .btn-primary { background: var(--cta); color: #FFFFFF }
-    .btn-primary:hover { background: var(--cta-hover); transform: translateY(-1px) }
-    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border) }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent) }
+    /* ─── ADMIN BUTTONS ─── */
     .btn-small { padding: 6px 14px; font-size: 13px }
-    .btn-danger { background: var(--error-subtle); color: var(--error); border: 1px solid rgba(239,68,68,0.2) }
-    .btn-danger:hover { background: rgba(239,68,68,0.2) }
-    .btn-accent { background: var(--accent); color: #1C1917 }
+    .btn-danger { background: rgba(229,62,62,0.08); color: var(--error); border: 1px solid rgba(229,62,62,0.15) }
+    .btn-danger:hover { background: rgba(229,62,62,0.14) }
+    .btn-accent { background: var(--accent); color: #FFFFFF }
     .btn-accent:hover { background: var(--accent-hover); transform: translateY(-1px) }
 
     .btn:disabled {
@@ -141,8 +89,9 @@
     }
 
     .btn-full { width: 100%; justify-content: center }
+    .btn-tiny { padding: 4px 10px; font-size: 11px; border-radius: 6px }
 
-    /* DASHBOARD LAYOUT */
+    /* ─── DASHBOARD LAYOUT ─── */
     .dashboard { display: none; }
 
     .dashboard-header {
@@ -153,7 +102,7 @@
       justify-content: space-between;
       position: sticky;
       top: 0;
-      background: rgba(28,25,23,.92);
+      background: rgba(250,250,247,.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       z-index: 100;
@@ -195,7 +144,7 @@
       font-family: inherit;
       outline: none;
       transition: border-color .2s;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2378716C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239B9B9B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: 10px center;
     }
@@ -215,7 +164,7 @@
       padding: 24px;
     }
 
-    /* STATS CARDS */
+    /* ─── STATS CARDS ─── */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -252,7 +201,7 @@
       color: var(--accent);
     }
 
-    .stat-card-value.green { color: var(--cta) }
+    .stat-card-value.green { color: var(--success) }
     .stat-card-value.red { color: var(--error) }
 
     .stat-card-sub {
@@ -267,14 +216,8 @@
       right: 16px;
     }
 
-    .btn-tiny {
-      padding: 4px 10px;
-      font-size: 11px;
-      border-radius: 6px;
-    }
-
-    /* SECTIONS */
-    .section {
+    /* ─── SECTIONS ─── */
+    .admin-section {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -282,7 +225,7 @@
       overflow: hidden;
     }
 
-    .section-header {
+    .admin-section-header {
       padding: 16px 20px;
       border-bottom: 1px solid var(--border);
       display: flex;
@@ -290,29 +233,29 @@
       justify-content: space-between;
     }
 
-    .section-header-left {
+    .admin-section-header-left {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .section-header-left svg { width: 18px; height: 18px; color: var(--accent); stroke-width: 2 }
+    .admin-section-header-left svg { width: 18px; height: 18px; color: var(--accent); stroke-width: 2 }
 
-    .section-header-left h2 {
+    .admin-section-header-left h2 {
       font-size: 15px;
       font-weight: 700;
     }
 
-    .section-header-left .count {
+    .admin-section-header-left .count {
       font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
-      background: var(--bg);
+      background: var(--surface-secondary);
       padding: 2px 8px;
       border-radius: 10px;
     }
 
-    .section-header-right {
+    .admin-section-header-right {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -320,7 +263,7 @@
 
     .filter-select {
       padding: 5px 10px;
-      background: var(--bg);
+      background: var(--surface-secondary);
       border: 1px solid var(--border);
       border-radius: 6px;
       color: var(--text-secondary);
@@ -332,18 +275,18 @@
 
     .filter-select:focus { border-color: var(--accent) }
 
-    /* TABLES */
+    /* ─── TABLES ─── */
     .table-wrapper {
       overflow-x: auto;
     }
 
-    table {
+    .admin-section table {
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
     }
 
-    thead th {
+    .admin-section thead th {
       padding: 10px 16px;
       text-align: left;
       font-weight: 600;
@@ -351,25 +294,25 @@
       text-transform: uppercase;
       letter-spacing: .05em;
       color: var(--text-secondary);
-      background: var(--bg);
+      background: var(--surface-secondary);
       border-bottom: 1px solid var(--border);
       white-space: nowrap;
     }
 
-    thead th.right { text-align: right }
+    .admin-section thead th.right { text-align: right }
 
-    tbody td {
+    .admin-section tbody td {
       padding: 10px 16px;
       border-bottom: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       white-space: nowrap;
     }
 
-    tbody td.right { text-align: right }
+    .admin-section tbody td.right { text-align: right }
 
-    tbody tr:last-child td { border-bottom: none }
+    .admin-section tbody tr:last-child td { border-bottom: none }
 
-    tbody tr:hover { background: rgba(245,158,11,0.03) }
+    .admin-section tbody tr:hover { background: var(--accent-subtle) }
 
     .mono {
       font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
@@ -403,17 +346,17 @@
       letter-spacing: .03em;
     }
 
-    .badge-active { background: var(--cta-subtle); color: var(--cta) }
-    .badge-inactive { background: rgba(120,113,108,0.15); color: var(--text-tertiary) }
+    .badge-active { background: var(--accent-subtle); color: var(--accent) }
+    .badge-inactive { background: var(--surface-secondary); color: var(--text-tertiary) }
     .badge-pro { background: var(--accent-subtle); color: var(--accent) }
-    .badge-free { background: rgba(120,113,108,0.15); color: var(--text-tertiary) }
+    .badge-free { background: var(--surface-secondary); color: var(--text-tertiary) }
 
-    /* Customer cell — email primary, device secondary */
+    /* Customer cell */
     .customer-cell { display: flex; flex-direction: column; gap: 2px }
     .customer-email { color: var(--text); font-weight: 500 }
     .customer-device { font-size: 11px; color: var(--text-tertiary); font-family: 'SF Mono', 'Fira Code', monospace }
 
-    /* USAGE SECTION */
+    /* ─── USAGE SECTION ─── */
     .usage-controls {
       padding: 16px 20px;
       border-bottom: 1px solid var(--border);
@@ -430,7 +373,7 @@
 
     .usage-controls input[type="month"] {
       padding: 6px 12px;
-      background: var(--bg);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       color: var(--text);
@@ -445,7 +388,7 @@
 
     .usage-summary {
       padding: 12px 20px;
-      background: var(--bg);
+      background: var(--surface-secondary);
       font-size: 13px;
       color: var(--text-secondary);
       border-bottom: 1px solid var(--border);
@@ -459,18 +402,18 @@
     }
 
     .usage-summary .cost { color: var(--error) }
-    .usage-summary .revenue { color: var(--cta) }
-    .usage-summary .profit { color: var(--accent) }
+    .usage-summary .revenue { color: var(--success) }
+    .usage-summary .profit { color: var(--secondary) }
 
-    .profit-positive { color: var(--cta) }
+    .profit-positive { color: var(--success) }
     .profit-negative { color: var(--error) }
 
-    /* LICENSE FORM */
+    /* ─── LICENSE FORM ─── */
     .license-form {
       display: none;
       padding: 16px 20px;
       border-bottom: 1px solid var(--border);
-      background: var(--bg);
+      background: var(--surface-secondary);
     }
 
     .license-form.visible { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap }
@@ -507,7 +450,7 @@
       border-color: var(--accent);
     }
 
-    /* LOADING / EMPTY */
+    /* ─── LOADING / EMPTY ─── */
     .loading-row td {
       text-align: center;
       padding: 32px 16px;
@@ -542,10 +485,10 @@
       font-size: 14px;
     }
 
-    /* EXPANDABLE DETAIL ROWS */
-    tbody tr.expandable { cursor: pointer }
-    tbody tr.expandable:hover { background: rgba(245,158,11,0.06) }
-    tbody tr.expandable td:first-child::before {
+    /* ─── EXPANDABLE DETAIL ROWS ─── */
+    .admin-section tbody tr.expandable { cursor: pointer }
+    .admin-section tbody tr.expandable:hover { background: rgba(45,125,70,0.04) }
+    .admin-section tbody tr.expandable td:first-child::before {
       content: '\25B6';
       display: inline-block;
       font-size: 9px;
@@ -553,7 +496,7 @@
       transition: transform .2s;
       color: var(--text-tertiary);
     }
-    tbody tr.expandable.expanded td:first-child::before {
+    .admin-section tbody tr.expandable.expanded td:first-child::before {
       transform: rotate(90deg);
     }
     tr.detail-row { display: none }
@@ -561,7 +504,7 @@
     tr.detail-row td {
       padding: 0 16px 12px 16px;
       border-bottom: 1px solid var(--border);
-      background: var(--bg);
+      background: var(--surface-secondary);
     }
     .detail-grid {
       display: grid;
@@ -590,12 +533,12 @@
     .detail-value.copyable { cursor: pointer }
     .detail-value.copyable:hover { color: var(--accent) }
 
-    /* TOAST */
+    /* ─── TOAST ─── */
     .toast {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: var(--surface-elevated);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       padding: 10px 16px;
@@ -614,7 +557,7 @@
       opacity: 1;
     }
 
-    /* RESPONSIVE */
+    /* ─── RESPONSIVE ─── */
     @media (max-width: 1100px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr) }
     }
@@ -629,19 +572,19 @@
       .stats-grid { grid-template-columns: 1fr }
       .dashboard-header { padding: 12px 16px }
       .dashboard-body { padding: 16px }
-      .section-header { flex-direction: column; gap: 10px; align-items: flex-start }
+      .admin-section-header { flex-direction: column; gap: 10px; align-items: flex-start }
       .license-form.visible { flex-direction: column; align-items: stretch }
       .usage-controls { flex-wrap: wrap }
     }
   </style>
 </head>
-<body>
+<body class="admin-layout">
 
   <!-- LOGIN -->
   <div id="loginView" class="login-wrapper">
     <div class="login-card">
       <div style="margin-bottom: 20px">
-        <img src="assets/logo-dark.png" alt="Tagalong" style="height: 40px">
+        <img src="assets/logo-light.png" alt="Tagalong" style="height: 40px">
       </div>
       <h1>Admin Dashboard</h1>
       <p>Enter the admin secret to continue.</p>
@@ -657,7 +600,7 @@
     <!-- HEADER -->
     <div class="dashboard-header">
       <div class="dashboard-header-left">
-        <img src="assets/logo-dark.png" alt="Tagalong">
+        <img src="assets/logo-light.png" alt="Tagalong">
         <h1><span>Admin</span> Dashboard</h1>
       </div>
       <div class="dashboard-header-center">
@@ -711,9 +654,9 @@
       </div>
 
       <!-- LICENSES -->
-      <div class="section">
-        <div class="section-header">
-          <div class="section-header-left">
+      <div class="admin-section">
+        <div class="admin-section-header">
+          <div class="admin-section-header-left">
             <i data-lucide="key-round"></i>
             <h2>Licenses</h2>
             <span class="count" id="licensesCount">0</span>
@@ -757,9 +700,9 @@
       </div>
 
       <!-- USAGE -->
-      <div class="section">
-        <div class="section-header">
-          <div class="section-header-left">
+      <div class="admin-section">
+        <div class="admin-section-header">
+          <div class="admin-section-header-left">
             <i data-lucide="bar-chart-3"></i>
             <h2>Usage</h2>
           </div>
@@ -790,15 +733,15 @@
         </div>
       </div>
 
-      <!-- DEVICES (registered devices — includes test devices) -->
-      <div class="section">
-        <div class="section-header">
-          <div class="section-header-left">
+      <!-- DEVICES -->
+      <div class="admin-section">
+        <div class="admin-section-header">
+          <div class="admin-section-header-left">
             <i data-lucide="monitor-smartphone"></i>
             <h2>Devices</h2>
             <span class="count" id="subscribersCount">0</span>
           </div>
-          <div class="section-header-right">
+          <div class="admin-section-header-right">
             <select class="filter-select" id="subscriberStatusFilter" onchange="renderSubscribers()">
               <option value="all">All Statuses</option>
               <option value="active">Active</option>
