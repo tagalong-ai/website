@@ -409,6 +409,9 @@
         <a href="#calendar-autofill" class="sub">Calendar Auto-fill <span class="badge-pro">PRO</span></a>
         <a href="#switch-mic" class="sub">Switching Microphones</a>
         <a href="#stopping-recording" class="sub">Stopping &amp; Cancelling</a>
+        <a href="#pause-resume" class="sub">Pause &amp; Resume</a>
+        <a href="#context-menu" class="sub">Context Menu</a>
+        <a href="#meeting-detection" class="sub">Meeting Detection <span class="badge-pro">PRO</span></a>
 
         <div class="sidebar-label">Results</div>
         <a href="#results">Your Results</a>
@@ -422,12 +425,14 @@
         <a href="#visual-notes" class="sub">Visual Notes <span class="badge-pro">PRO</span></a>
         <a href="#notes-tab" class="sub">Notes</a>
         <a href="#ai-chat-tab" class="sub">AI Chat <span class="badge-pro">PRO</span></a>
+        <a href="#action-items" class="sub">Action Items <span class="badge-pro">PRO</span></a>
         <a href="#exporting" class="sub">Exporting</a>
 
         <div class="sidebar-label">Sessions &amp; Settings</div>
         <a href="#sessions">Managing Sessions</a>
         <a href="#session-history" class="sub">Meetings in the Sidebar</a>
         <a href="#spaces" class="sub">Spaces</a>
+        <a href="#visual-notes-gallery" class="sub">Visual Notes Gallery</a>
         <a href="#cross-meeting-search" class="sub">Search <span class="badge-pro">PRO</span></a>
         <a href="#file-import" class="sub">File Import <span class="badge-pro">PRO</span></a>
         <a href="#open-previous" class="sub">Open Previous Session</a>
@@ -759,6 +764,28 @@
         </div>
       </div>
 
+      <!-- Pause & Resume Recording -->
+      <div class="guide-subsection animate-in" id="pause-resume">
+        <h3>Pause &amp; Resume Recording</h3>
+        <p>Need to take a break, handle a side conversation, or step away? You can pause your recording and resume it when you're ready — without starting a new session.</p>
+
+        <ol class="guide-steps">
+          <li><strong>Pause</strong> — Click the pause button on the recording screen (or right-click the menu bar icon &rarr; Pause Recording). Audio capture stops immediately.</li>
+          <li><strong>Visual feedback</strong> — The menu bar icon changes to an amber pause symbol, and the status label switches from "Recording" to "Paused."</li>
+          <li><strong>Resume</strong> — Click the resume button (or right-click &rarr; Resume Recording). Audio capture picks up right where you left off.</li>
+        </ol>
+
+        <div class="guide-callout info animate-in">
+          <i data-lucide="info"></i>
+          <div><strong>Note:</strong> There will be a gap in the audio during the pause — this is expected. The transcript resumes seamlessly when you unpause, and the final diarized output handles the gap naturally.</div>
+        </div>
+
+        <div class="guide-callout tip animate-in">
+          <i data-lucide="lightbulb"></i>
+          <div><strong>Tip:</strong> Pausing is useful during breaks, off-topic side conversations, or when sensitive information comes up that you don't want captured.</div>
+        </div>
+      </div>
+
       <!-- Recording Start Sound -->
       <div class="guide-subsection animate-in" id="recording-start-sound">
         <h3>Recording Start Sound</h3>
@@ -853,6 +880,68 @@
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
           <div><strong>Tip:</strong> You can also stop a recording with the global shortcut <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>R</kbd>. This behaves the same as clicking Stop Recording — it saves your audio and begins background processing.</div>
+        </div>
+      </div>
+
+      <!-- Context Menu -->
+      <div class="guide-subsection animate-in" id="context-menu">
+        <h3>Smart Context Menu</h3>
+        <p>Right-click (or Control-click) the Tagalong menu bar icon to access a context-aware menu that changes based on the current state of the app.</p>
+
+        <table class="guide-table animate-in">
+          <thead>
+            <tr>
+              <th>App State</th>
+              <th>Menu Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Idle</td>
+              <td>Start Recording</td>
+            </tr>
+            <tr>
+              <td>Recording</td>
+              <td>Pause Recording, Stop Recording</td>
+            </tr>
+            <tr>
+              <td>Paused</td>
+              <td>Resume Recording, Stop Recording</td>
+            </tr>
+            <tr>
+              <td>Processing</td>
+              <td>Shows current processing status</td>
+            </tr>
+            <tr>
+              <td>Results</td>
+              <td>New Meeting</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="guide-callout tip animate-in">
+          <i data-lucide="lightbulb"></i>
+          <div><strong>Tip:</strong> The context menu is especially useful when you are in another app — right-click the menu bar icon to start, pause, or stop recording without opening the Tagalong popover.</div>
+        </div>
+      </div>
+
+      <!-- Meeting Auto-Detection -->
+      <div class="guide-subsection animate-in" id="meeting-detection">
+        <h3>Meeting Auto-Detection <span class="badge-pro">PRO</span></h3>
+        <p>Tagalong can detect when you launch a meeting app and prompt you to start recording — so you never forget to capture an important conversation.</p>
+
+        <p><strong>Supported apps:</strong> Zoom, Microsoft Teams, Webex, FaceTime, and Slack.</p>
+
+        <ol class="guide-steps">
+          <li><strong>Enable the feature</strong> — Open Settings and toggle <strong>Meeting Auto-Detection</strong> under the General section.</li>
+          <li><strong>Launch a meeting app</strong> — When Tagalong detects one of the supported apps starting, it waits 10 seconds (to avoid false triggers from brief app launches) before sending a notification.</li>
+          <li><strong>Respond to the prompt</strong> — The notification asks if you'd like to start recording. If calendar integration is enabled, it also suggests a meeting name based on your next calendar event.</li>
+          <li><strong>Meeting end detection</strong> — When the meeting app quits, Tagalong sends another notification asking if you'd like to stop recording.</li>
+        </ol>
+
+        <div class="guide-callout info animate-in">
+          <i data-lucide="info"></i>
+          <div><strong>Note:</strong> Meeting detection uses macOS process monitoring to observe app launches — it does not access meeting content, URLs, or participant lists. The 10-second debounce prevents notifications when you briefly open and close a meeting app.</div>
         </div>
       </div>
 
@@ -1044,7 +1133,14 @@
           </tbody>
         </table>
 
-        <p>Click <strong>Regenerate</strong> to get a fresh version with the same settings, or change settings and regenerate for a different look. The visual note is saved automatically to your meeting folder as <code>{meeting-name}_infographic.jpg</code>. You can also download it directly from the app.</p>
+        <p>Click <strong>Regenerate</strong> to get a fresh version with the same settings, or change settings and regenerate for a different look. The visual note is saved automatically to your meeting folder as <code>{meeting-name}_infographic.jpg</code>.</p>
+
+        <p>Once generated, you have several ways to use your visual note:</p>
+        <ul class="guide-checklist">
+          <li><strong>Open</strong> — Opens the full-resolution image in Preview</li>
+          <li><strong>Share</strong> — Opens the macOS sharing sheet so you can AirDrop, email, message, or send the visual note to any app that supports sharing</li>
+          <li><strong>Copy to Clipboard</strong> — Copies the image to your clipboard for pasting into Slack, Keynote, Google Docs, or anywhere else</li>
+        </ul>
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
@@ -1088,6 +1184,30 @@
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
           <div><strong>Note:</strong> AI Chat is also available during a live recording via the collapsible "Ask AI" panel at the bottom of the recording view. In that mode, it uses the accumulated live transcript as context.</div>
+        </div>
+      </div>
+
+      <!-- Action Items -->
+      <div class="guide-subsection animate-in" id="action-items">
+        <h3>Action Items <span class="badge-pro">PRO</span></h3>
+        <p>After generating a summary, you can extract structured action items from the meeting. The Action Items section appears as a collapsible panel in the meeting detail view.</p>
+
+        <ol class="guide-steps">
+          <li><strong>Generate a summary first</strong> — Action items are extracted from the AI summary, so you need one before this feature is available.</li>
+          <li><strong>Click "Extract Action Items"</strong> — The AI parses the summary and identifies concrete action items, assigning each an owner and priority level.</li>
+          <li><strong>Review the list</strong> — Each item shows a title, assignee (if identifiable from the discussion), and priority badge: <strong>High</strong>, <strong>Medium</strong>, or <strong>Low</strong>.</li>
+          <li><strong>Select items</strong> — Use the checkboxes to choose which action items you want to export.</li>
+          <li><strong>Export</strong> — Send selected items to <strong>Apple Reminders</strong> (requires Reminders permission) or <strong>Todoist</strong> (requires API token in Settings).</li>
+        </ol>
+
+        <div class="guide-callout tip animate-in">
+          <i data-lucide="lightbulb"></i>
+          <div><strong>Tip:</strong> For best results, use the "Action Items Only" summary recipe before extracting. This produces a summary focused entirely on follow-ups and deliverables, giving the extraction AI cleaner input to work with.</div>
+        </div>
+
+        <div class="guide-callout info animate-in">
+          <i data-lucide="info"></i>
+          <div><strong>Apple Reminders:</strong> The first time you export to Reminders, Tagalong will ask for permission to access your Reminders. Grant access in System Settings &rarr; Privacy &amp; Security &rarr; Reminders.</div>
         </div>
       </div>
 
@@ -1166,6 +1286,24 @@
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
           <div><strong>Note:</strong> Spaces are an organizational layer within the app — they do not move files on disk. Your meeting files stay in <code>~/Documents/Tagalong/</code> regardless of which Space they belong to.</div>
+        </div>
+      </div>
+
+      <!-- Visual Notes Gallery -->
+      <div class="guide-subsection animate-in" id="visual-notes-gallery">
+        <h3>Visual Notes Gallery</h3>
+        <p>The Visual Notes gallery gives you a dedicated view of every visual note you've generated — across all your meetings in one place. It's pinned in the sidebar for quick access.</p>
+
+        <ul class="guide-checklist">
+          <li>Opens as a grid view showing thumbnails of all visual notes across your meetings</li>
+          <li>Search by meeting name or use AI-powered semantic search to find visual notes by topic</li>
+          <li>Paginated display (12 per page) for fast browsing even with hundreds of meetings</li>
+          <li>Click any thumbnail to jump directly to that meeting's detail view</li>
+        </ul>
+
+        <div class="guide-callout tip animate-in">
+          <i data-lucide="lightbulb"></i>
+          <div><strong>Tip:</strong> The gallery is a great way to review past meetings visually. Each visual note captures the key themes and decisions, so scanning the gallery can quickly remind you what was discussed without reading full transcripts.</div>
         </div>
       </div>
 
@@ -1534,6 +1672,17 @@
           </div>
         </div>
 
+        <div class="guide-two-col animate-in" style="margin-top: 16px">
+          <div class="guide-col-card">
+            <h4>Todoist</h4>
+            <p>Export action items directly to Todoist as tasks. Each item's title, assignee, and priority are mapped to Todoist task fields. Requires a Todoist API token in Settings.</p>
+          </div>
+          <div class="guide-col-card">
+            <h4>Apple Reminders</h4>
+            <p>Export action items to the built-in Reminders app on macOS. Requires Reminders permission (System Settings &rarr; Privacy &amp; Security &rarr; Reminders).</p>
+          </div>
+        </div>
+
         <h4 style="margin-top: 24px; margin-bottom: 12px; font-size: 16px; color: var(--text);">Setting up Slack</h4>
         <ol class="guide-steps">
           <li><strong>Create a webhook</strong> — Go to <a href="https://api.slack.com/apps" target="_blank" rel="noopener">api.slack.com/apps</a>, create or select an app, enable Incoming Webhooks, and add a new webhook to the channel you want.</li>
@@ -1549,6 +1698,13 @@
           <li><strong>Get the database ID</strong> — Open the database in Notion. The database ID is the 32-character string in the URL between the workspace name and the question mark.</li>
           <li><strong>Paste in Settings</strong> — Enter both the Notion API key and Database ID in Tagalong Settings.</li>
           <li><strong>Export</strong> — After a meeting, click the Export to Notion button in the results view.</li>
+        </ol>
+
+        <h4 style="margin-top: 24px; margin-bottom: 12px; font-size: 16px; color: var(--text);">Setting up Todoist</h4>
+        <ol class="guide-steps">
+          <li><strong>Get your API token</strong> — Go to <a href="https://todoist.com/app/settings/integrations/developer" target="_blank" rel="noopener">Todoist Settings &rarr; Integrations &rarr; Developer</a> and copy your API token.</li>
+          <li><strong>Paste in Settings</strong> — Open Tagalong Settings, find the Todoist section, and paste the token.</li>
+          <li><strong>Export action items</strong> — After extracting action items from a meeting summary, select the items you want and click "Export to Todoist."</li>
         </ol>
       </div>
 
@@ -1739,6 +1895,54 @@
           <div class="faq-answer">
             <div class="faq-answer-inner">
               Open Settings in Tagalong (gear icon in the sidebar bottom bar) and choose your preferred licensing mode — Subscription or Private License. Follow the setup instructions to activate Pro features.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How do I pause a recording?
+            <span class="faq-arrow">&#9660;</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Click the pause button on the recording screen, or right-click the Tagalong menu bar icon and choose "Pause Recording." The menu bar icon changes to an amber pause symbol, and the label switches from "Recording" to "Paused." Click Resume (or right-click &rarr; Resume Recording) to continue. There will be a brief gap in the audio during the pause — this is expected, and the transcript picks up seamlessly when you resume.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How do I export action items?
+            <span class="faq-arrow">&#9660;</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              First, generate a summary for your meeting. Then open the collapsible Action Items section in the meeting detail view and click "Extract Action Items." The AI parses the summary and lists each action item with an assignee and priority. From there you can export selected items to Apple Reminders or Todoist.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What apps does meeting detection support?
+            <span class="faq-arrow">&#9660;</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Meeting auto-detection currently recognizes Zoom, Microsoft Teams, Webex, FaceTime, and Slack. When one of these apps launches, Tagalong waits 10 seconds (to avoid false triggers), then sends a notification asking if you'd like to start recording. If calendar integration is enabled, the notification also suggests a meeting name from your next event.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How do I share my visual notes?
+            <span class="faq-arrow">&#9660;</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              In the Visual Notes section of any meeting, click the <strong>Share</strong> button to open the macOS sharing sheet — from there you can AirDrop, email, or message the image directly. You can also click <strong>Copy to Clipboard</strong> to paste the image into any app. For a broader view of all your visual notes, use the Visual Notes gallery in the sidebar.
             </div>
           </div>
         </div>
