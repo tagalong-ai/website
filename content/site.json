@@ -1,0 +1,17 @@
+{
+  "name": "Tagalong",
+  "url": "https://tagalongai.com",
+  "description": "AI meeting notes and transcription for Mac, with a meeting library saved on your device.",
+  "support": "support@tagalongai.com",
+  "download": "https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg",
+  "logo": "/assets/logo-light.png",
+  "defaultImage": "/assets/website-preview-image.png",
+  "postsPerPage": 9,
+  "authors": {
+    "tagalong": {
+      "name": "Tagalong",
+      "type": "Organization",
+      "url": "https://tagalongai.com/"
+    }
+  }
+}

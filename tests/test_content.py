@@ -1,0 +1,133 @@
+import contextlib
+from datetime import date
+import importlib.util
+import io
+from pathlib import Path
+import shutil
+import tempfile
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+spec = importlib.util.spec_from_file_location('builder', ROOT / 'scripts/build.py')
+builder = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(builder)
+spec_check = importlib.util.spec_from_file_location('checker', ROOT / 'scripts/check_site.py')
+checker = importlib.util.module_from_spec(spec_check)
+spec_check.loader.exec_module(checker)
+
+class PublishingTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+        for name in builder.STATIC + builder.STYLES:
+            shutil.copy2(ROOT / name, self.root / name)
+        shutil.copytree(ROOT / 'content', self.root / 'content')
+        # Symlink fixture assets to keep tests fast; build copies public assets.
+        (self.root / 'assets').symlink_to(ROOT / 'assets')
+        self.post = self.root / 'content/posts/meeting-data-on-your-mac.md'
+    def tearDown(self):
+        self.temp.cleanup()
+    def build(self, **kwargs):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return builder.build(root=self.root, today=date(2026, 9, 5), **kwargs)
+    def edit(self, old, new):
+        value = self.post.read_text()
+        self.assertIn(old, value)
+        self.post.write_text(value.replace(old, new))
+    def test_complete_site_links_metadata_and_public_output(self):
+        out = self.build()
+        with contextlib.redirect_stdout(io.StringIO()):
+            checker.check(out)
+        home = (out / 'index.html').read_text()
+        self.assertIn('AI Meeting Notes &amp; Transcription for Mac', home)
+        self.assertIn('/blog/', home)
+        self.assertIn('/collections/', home)
+        self.assertNotIn('noindex', home)
+        self.assertIn('noindex', (out / 'admin.html').read_text())
+    def test_drafts_absent_from_pages_sitemap_feed_and_collection(self):
+        self.edit('draft: false', 'draft: true')
+        out = self.build()
+        self.assertFalse((out / 'blog/meeting-data-on-your-mac').exists())
+        for path in ['sitemap.xml', 'feed.xml', 'collections/meeting-notes/index.html']:
+            self.assertNotIn('/blog/meeting-data-on-your-mac/', (out / path).read_text())
+        self.assertIn('noindex', (out / 'blog/index.html').read_text())
+    def test_preview_includes_drafts_but_excludes_search_feeds(self):
+        self.edit('draft: false', 'draft: true')
+        out = self.build(preview=True)
+        self.assertEqual(out.name, '.preview')
+        html = (out / 'blog/meeting-data-on-your-mac/index.html').read_text()
+        self.assertIn('Draft preview', html)
+        self.assertIn('noindex, nofollow', html)
+        self.assertNotIn('/blog/meeting-data-on-your-mac/', (out / 'sitemap.xml').read_text())
+        self.assertEqual((out / 'robots.txt').read_text(), 'User-agent: *\nDisallow: /\n')
+    def test_scheduled_article_waits_until_publication_date(self):
+        self.edit('2026-09-05', '2026-10-01')
+        out = self.build()
+        self.assertFalse((out / 'blog/meeting-data-on-your-mac').exists())
+    def test_unpublishing_removes_stale_output(self):
+        out = self.build()
+        self.assertTrue((out / 'blog/meeting-data-on-your-mac/index.html').is_file())
+        self.edit('draft: false', 'draft: true')
+        self.build()
+        self.assertFalse((out / 'blog/meeting-data-on-your-mac').exists())
+    def test_invalid_collection_preserves_last_good_build(self):
+        out = self.build()
+        old = (out / 'sitemap.xml').read_bytes()
+        self.edit('  - meeting-notes', '  - nonexistent')
+        with self.assertRaisesRegex(builder.ContentError, 'unknown collection'):
+            self.build()
+        self.assertEqual((out / 'sitemap.xml').read_bytes(), old)
+    def test_unknown_author_and_duplicate_metadata_fail(self):
+        self.edit('author: tagalong', 'author: invented')
+        with self.assertRaisesRegex(builder.ContentError, 'unknown author'):
+            self.build()
+        self.edit('author: invented', 'author: tagalong\nauthor: tagalong')
+        with self.assertRaisesRegex(builder.ContentError, 'Duplicate'):
+            self.build()
+    def test_markdown_is_safe_and_duplicate_headings_get_unique_ids(self):
+        rendered, headings = builder.markdown('## Example\n\n<script>alert(1)</script>\n\n[bad](javascript:alert(1))\n\n## Example\n')
+        self.assertNotIn('<script>', rendered)
+        self.assertNotIn('href="javascript:', rendered)
+        self.assertEqual([h[0] for h in headings], ['section-example', 'section-example-2'])
+    def test_date_order_and_missing_draft_flag_fail(self):
+        self.edit('updated: 2026-09-05', 'updated: 2026-09-04')
+        with self.assertRaisesRegex(builder.ContentError, 'before publication'):
+            self.build()
+        self.edit('updated: 2026-09-04', 'updated: 2026-09-05')
+        self.edit('draft: false\n', '')
+        with self.assertRaisesRegex(builder.ContentError, 'explicitly set draft'):
+            self.build()
+    def test_pagination_has_distinct_canonicals_and_crawlable_links(self):
+        import json
+        config = self.root / 'content/site.json'
+        site = json.loads(config.read_text()); site['postsPerPage'] = 1
+        config.write_text(json.dumps(site))
+        (self.post.parent / 'second-article.md').write_text(self.post.read_text().replace('Your meeting files on your Mac:', 'A second article:'))
+        out = self.build()
+        self.assertIn('href="https://tagalongai.com/blog/page/2/"', (out / 'blog/page/2/index.html').read_text())
+        self.assertIn('href="/blog/page/2/"', (out / 'blog/index.html').read_text())
+        with contextlib.redirect_stdout(io.StringIO()):
+            checker.check(out)
+    def test_output_cannot_replace_source(self):
+        with self.assertRaisesRegex(builder.ContentError, 'Output must'):
+            self.build(out=self.root / 'content')
+    def test_unsafe_resource_urls_and_extra_h1_fail(self):
+        with self.assertRaises(builder.ContentError):
+            builder.safe_url('javascript:alert(1)')
+        with self.assertRaises(builder.ContentError):
+            builder.safe_url('//example.com')
+        with self.assertRaises(builder.ContentError):
+            builder.markdown('# Duplicate title\n')
+    def test_schemas_match_visible_author_dates_and_answer(self):
+        out = self.build()
+        html = (out / 'blog/meeting-data-on-your-mac/index.html').read_text()
+        doc = checker.Document(html)
+        posting = next(s for s in doc.structured[0]['@graph'] if s['@type'] == 'BlogPosting')
+        self.assertEqual(posting['author']['name'], 'Tagalong')
+        self.assertEqual(posting['datePublished'], '2026-09-05')
+        self.assertIn('AT A GLANCE', html)
+        self.assertIn('Questions &amp; answers', html)
+        self.assertNotIn('aggregateRating', html)
+
+if __name__ == '__main__':
+    unittest.main()
