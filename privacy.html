@@ -90,6 +90,11 @@
       <li><strong>Local storage</strong> of final outputs (transcripts, summaries, infographics, notes) remains on your Mac, identical to Private License mode.</li>
     </ul>
 
+    <h2>Optional AI assistant connections</h2>
+    <p><strong>Release status:</strong> Claude Desktop and ChatGPT connections are v3.4 release candidates undergoing QA. They are not part of the current public v3.3.2 download.</p>
+    <p>When you enable Claude or ChatGPT sharing, a local permission file records the individual documents you select. The connector searches those documents on demand. It does not replicate the library or create a cloud index, and it does not expose audio or file-editing tools.</p>
+    <p>Search results and retrieved excerpts are sent to the connected AI provider. They may remain in the provider’s conversation history according to your account and workspace policies. Turning sharing off stops future retrieval; it does not remove content already sent to an AI conversation. The ChatGPT private connection uses OpenAI Secure MCP Tunnel and requires the Mac and tunnel client to be available.</p>
+
     <h2>4. Third-Party AI Services</h2>
     <p>Both licensing modes rely on the following third-party services for AI processing. Your use of Tagalong means your audio and text data will be processed by these services according to their respective privacy policies:</p>
 
@@ -112,7 +117,7 @@
       <li><strong>Audio recording:</strong> WAV file (<code>.wav</code>), if recording was used</li>
     </ul>
 
-    <p>You have full control over these files. You can move, copy, delete, or back them up as you see fit. Tagalong does not sync, upload, or access these files beyond the initial creation.</p>
+    <p>You can move, copy, delete, or back up these files. Tagalong reads saved meeting files when you reopen or search them. AI features may send relevant meeting content for processing, and enabled integrations may receive content you choose to share. A folder in iCloud Drive or another storage service may also sync according to that service’s settings. Deleting local files does not remove content already sent to a provider or integration.</p>
 
     <h2>6. Keychain Security</h2>
     <p>API keys and license keys are stored in the macOS Keychain under the service identifier <code>com.tagalongai.tagalong</code>. The Keychain provides:</p>

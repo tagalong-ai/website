@@ -299,6 +299,7 @@
 
     /* ─── NAV HEIGHT OVERRIDE (64px) ─── */
     nav .container { height: 64px }
+    footer { position: relative; z-index: 50 }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
@@ -327,6 +328,7 @@
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="/guide" class="active">Guide</a></li>
         <li><a href="/#faq">FAQ</a></li>
+        <li><a href="/changelog">Changelog</a></li>
       </ul>
       <div class="nav-right">
         <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-primary">Download</a>
@@ -361,8 +363,9 @@
     <a href="#meeting-notes-recording" class="toc-sub">Meeting Notes</a>
     <a href="#live-chat-recording" class="toc-sub">Live AI Chat</a>
     <a href="#calendar-autofill" class="toc-sub">Calendar Auto-fill</a>
+    <a href="#outlook-calendar" class="toc-sub">Outlook / Microsoft 365 Calendar</a>
     <a href="#switch-mic" class="toc-sub">Switching Microphones</a>
-    <a href="#pause-resume" class="toc-sub">Pause &amp; Resume</a>
+    <a href="#pause-resume" class="toc-sub">Stepping Away</a>
     <a href="#context-menu" class="toc-sub">Context Menu</a>
     <a href="#meeting-detection" class="toc-sub">Meeting Detection</a>
     <a href="#results">Your Results</a>
@@ -429,9 +432,10 @@
         <a href="#meeting-notes-recording" class="sub">Meeting Notes</a>
         <a href="#live-chat-recording" class="sub">Live AI Chat <span class="badge-pro">PRO</span></a>
         <a href="#calendar-autofill" class="sub">Calendar Auto-fill <span class="badge-pro">PRO</span></a>
+        <a href="#outlook-calendar" class="sub">Outlook / Microsoft 365 Calendar</a>
         <a href="#switch-mic" class="sub">Switching Microphones</a>
         <a href="#stopping-recording" class="sub">Stopping &amp; Cancelling</a>
-        <a href="#pause-resume" class="sub">Pause &amp; Resume</a>
+        <a href="#pause-resume" class="sub">Stepping Away</a>
         <a href="#context-menu" class="sub">Context Menu</a>
         <a href="#meeting-detection" class="sub">Meeting Detection <span class="badge-pro">PRO</span></a>
 
@@ -489,7 +493,7 @@
           User Guide
         </div>
         <h1>Tagalong Complete Guide</h1>
-        <p>Everything you need to know — from first install to advanced workflows. Covers Tagalong Version 3.1.</p>
+        <p>Everything you need to know — from first install to advanced workflows. Covers Tagalong Version 3.2.</p>
       </div>
 
       <!-- ═══════════════════════════════════════════
@@ -605,7 +609,7 @@
           </div>
         </div>
 
-        <p>You do not have to choose right away. Tagalong works on the <strong>Free tier</strong> without any setup at all — you get 5 meetings per month with mic recording, speaker identification, a basic AI summary, and markdown export. No credit card required.</p>
+        <p>Tagalong has a Free tier with five meetings per month: microphone recording, basic summaries, Markdown export, and speaker editing. A Subscription or Private License unlocks Pro features. Subscription users do not supply their own AI API keys.</p>
 
         <h4 style="margin-top: 28px; margin-bottom: 12px; font-size: 16px; color: var(--text);">Setting up a Subscription</h4>
         <ol class="guide-steps">
@@ -628,29 +632,37 @@
         </div>
       </div>
 
+      <div class="guide-subsection" id="private-ai-connections">
+        <h3>Claude and ChatGPT with your local library</h3>
+        <div class="callout warning"><strong>In QA — v3.4 release candidate.</strong> These connections are not included in the current public v3.3.2 download. Real Claude Desktop and ChatGPT connection tests are required before release. <a href="/#availability">See current feature availability.</a></div>
+        <p>In Settings → Claude &amp; ChatGPT, select individual meeting documents and enable sharing. New meetings are never shared automatically. Your assistant can search those documents and retrieve bounded excerpts; it cannot read audio or edit the library.</p>
+        <p>Save and install the Claude Desktop extension, or save the ChatGPT private-connection setup kit. ChatGPT setup requires developer mode, OpenAI tunnel permissions, a runtime credential and a running Mac. This private connection is separate from a public directory connector.</p>
+        <p>Retrieved text enters the AI provider’s conversation and is subject to its retention policies. Remove a document or disable sharing to stop future access. This does not delete earlier AI conversations.</p>
+      </div>
+
       <!-- NEW: Tier System & Feature Gating -->
       <div class="guide-subsection animate-in" id="tier-system">
         <h3>Tier System &amp; Feature Gating</h3>
-        <p>Tagalong has two tiers: Free and Pro. The Free tier lets you try the core experience without a credit card. Pro unlocks everything.</p>
+        <p>Free includes five meetings per month with microphone recording, basic summaries, Markdown export, and speaker editing. Both paid licensing options unlock Pro features.</p>
 
         <div class="guide-two-col animate-in">
           <div class="guide-col-card">
             <h4>Free Tier</h4>
-            <p>5 meetings per month. Includes microphone recording, speaker identification, a basic AI summary, markdown export, and speaker name editing. No credit card required.</p>
+            <p>Five meetings per month, microphone recording, basic summaries, Markdown export, and editable speaker names.</p>
           </div>
           <div class="guide-col-card">
             <h4>Pro Tier</h4>
-            <p>Unlimited meetings with all ~27 features: conference mode, visual notes, Enhance My Notes, action item export, AI chat, summary recipes, cross-meeting search, Slack and Notion export, file import, audio playback, custom vocabulary, and more.</p>
+            <p>Access to released Pro features, including conference mode, visual notes, Enhance My Notes, action item export, AI chat, summary recipes, cross-meeting search, file import, audio playback, and custom vocabulary. Features marked as release candidates remain in QA.</p>
           </div>
         </div>
 
-        <p>To upgrade from Free to Pro, open Settings and choose either licensing mode:</p>
+        <p>Open Settings and choose either licensing mode:</p>
         <ul class="guide-checklist">
           <li><strong>Subscription ($9.99/mo)</strong> — zero setup, API keys managed by Tagalong</li>
-          <li><strong>Private License ($199 one-time)</strong> — bring your own API keys for maximum privacy</li>
+          <li><strong>Private License ($199 one-time)</strong> — bring your own API keys; provider usage is billed separately</li>
         </ul>
 
-        <p>Your usage counter is displayed in the sidebar and on the Home view. On the Free tier, you will see a message like "3 of 5 meetings remaining this month." The counter resets automatically at the start of each calendar month.</p>
+        <p>Your license status is displayed in Settings. A Subscription includes managed AI access; a Private License uses the provider accounts you configure.</p>
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
@@ -661,13 +673,13 @@
       <!-- First Recording -->
       <div class="guide-subsection animate-in" id="first-recording">
         <h3>Your First Recording</h3>
-        <p>Once Tagalong is installed and you have chosen a licensing mode (or are using the Free tier), you are ready to record your first meeting.</p>
+        <p>Once Tagalong is installed, follow its setup prompts and grant microphone permission before recording your first meeting. Free includes five meetings per month; Pro adds conference audio and the full feature set.</p>
 
         <ol class="guide-steps">
           <li><strong>Open Tagalong</strong> — Launch it from the Dock or Applications folder; the main window opens with the sidebar and Home view visible.</li>
           <li><strong>Go to Home</strong> — Select Home in the sidebar if it is not already selected. The Home view shows your recording controls and, if Calendar access is granted, your next upcoming event.</li>
           <li><strong>Name your meeting</strong> — Type a name in the meeting name field (e.g., "Weekly Standup"). This is optional — Tagalong will use a timestamp if you leave it blank. If you have Calendar integration enabled, it may auto-fill the name of your current or upcoming meeting.</li>
-          <li><strong>Click Start Recording</strong> — A brief pre-flight check confirms your microphone and, for Conference Mode, a calendar match and headphones recommendation. Tap Start and Tagalong begins listening immediately. You will see a pulsing red dot and live audio meters. Speak normally — words appear in the "Last Heard" preview almost instantly, transcribed entirely on-device.</li>
+          <li><strong>Click Start Recording</strong> — A brief pre-flight check confirms your microphone and, for Conference Mode, a calendar match and headphones recommendation. Tap Start and Tagalong begins listening immediately. You will see a pulsing red dot and live audio meters. Speak normally — words appear in the "Last Heard" preview. Live recognition runs on-device where supported, with a cloud fallback when needed.</li>
         </ol>
 
         <p>When your meeting ends, click <strong>Stop Recording</strong>. Tagalong will process the audio — uploading it for speaker diarization, identifying who said what, and generating an AI summary. This typically takes 30 seconds to a couple of minutes depending on meeting length.</p>
@@ -687,7 +699,7 @@
           <li>macOS 15.0 (Sequoia) or later installed</li>
           <li>Tagalong.app dragged to Applications</li>
           <li>Microphone permission granted</li>
-          <li>Licensing mode selected (Subscription, Private License, or Free tier)</li>
+          <li>App setup completed; paid plan activated if using Pro features</li>
           <li>API keys entered if using Private License</li>
           <li>Test recording completed — try a 30-second recording to verify everything works</li>
         </ul>
@@ -772,9 +784,9 @@
         <p>While recording, Tagalong shows a live interface with real-time feedback about the audio it is capturing. The recording view is laid out from top to bottom as follows:</p>
 
         <ol class="guide-steps">
-          <li><strong>Top bar</strong> — A pulsing red dot, "Recording" label, elapsed timer, a mic-selector dropdown, a minimize (compact mode) toggle, and a red "Stop" button.</li>
+          <li><strong>Top bar</strong> — A pulsing red dot, "Recording" label, elapsed timer, a mic-selector dropdown, a mute button, a minimize (compact mode) toggle, and a red "Stop" button.</li>
           <li><strong>Audio meters</strong> — A real audio waveform in Microphone mode, or the two-channel Live Capture card in Conference Mode (see above).</li>
-          <li><strong>"Last Heard" card</strong> — Shows your live transcript, updated near-instantly. Transcription happens on-device by default (Apple's on-device speech recognition), so words appear as you speak and nothing leaves your Mac during the meeting. Displays "Listening..." when waiting for speech, or "Silence detected" when no audio is present.</li>
+          <li><strong>"Last Heard" card</strong> — Shows your live transcript, updated near-instantly. Live transcription uses Apple's on-device speech recognition where supported. A cloud fallback sends audio for transcription when needed; AI questions also send relevant meeting context for processing. Displays "Listening..." when waiting for speech, or "Silence detected" when no audio is present.</li>
           <li><strong>Meeting name</strong> — An editable text field. You can rename the meeting at any time during recording.</li>
           <li><strong>Notes editor</strong> — The full Notepad — the same block-based rich-text editor used on the meeting page — embedded directly in the recording view, so you can take real notes as the meeting happens. See <a href="#notepad">The Notepad</a>.</li>
           <li><strong>AI Chat panel</strong> — A collapsible "Ask AI" panel for asking questions during recording (Pro only).</li>
@@ -782,9 +794,11 @@
           <li><strong>Cancel</strong> — Discards the recording entirely and returns to the Home view.</li>
         </ol>
 
+        <p><strong>Mute yourself</strong> when you need to cough, take another call, or speak without adding your voice to the recording. Click the mute button or press <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>M</kbd>. Tagalong keeps recording the meeting audio, and the transcript timeline stays continuous. Muting never starts the silence countdown or triggers auto-stop.</p>
+
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> "Last Heard" is your live, on-device preview — instant and free, and it never touches the network while you're recording. After you stop, Tagalong runs a full pass in the cloud to polish the transcript and identify who said what, which is what actually powers the summary and the Full Transcript view.</div>
+          <div><strong>Tip:</strong> "Last Heard" uses on-device speech recognition when available. If it is unavailable or fails, Tagalong can use its cloud transcription fallback. After recording, cloud processing produces the speaker-labeled transcript and AI summary.</div>
         </div>
       </div>
 
@@ -806,26 +820,14 @@
         </div>
       </div>
 
-      <!-- Pause & Resume Recording -->
+      <!-- Mute vs Pause -->
       <div class="guide-subsection animate-in" id="pause-resume">
-        <h3>Pause &amp; Resume Recording</h3>
-        <p>Need to take a break, handle a side conversation, or step away? You can pause your recording and resume it when you're ready — without starting a new session.</p>
-
+        <h3>Stepping Away: Mute vs. Pause</h3>
+        <p>Two ways to go quiet, for two different situations:</p>
         <ol class="guide-steps">
-          <li><strong>Pause</strong> — Click the pause button on the recording screen (or right-click the menu bar icon &rarr; Pause Recording). Audio capture stops immediately.</li>
-          <li><strong>Visual feedback</strong> — The menu bar icon changes to an amber pause symbol, and the status label switches from "Recording" to "Paused."</li>
-          <li><strong>Resume</strong> — Click the resume button (or right-click &rarr; Resume Recording). Audio capture picks up right where you left off.</li>
+          <li><strong>Mute yourself</strong> (recommended during meetings) &mdash; Click the mute button on the recording screen or press <strong>&#8984;&#8679;M</strong>. Your microphone goes silent while the meeting keeps recording: the other side&rsquo;s audio and your timeline stay intact, and muting never triggers the silence auto-stop. Perfect for a cough, a side conversation, or sensitive asides.</li>
+          <li><strong>Pause the whole recording</strong> &mdash; Right-click the Tagalong menu bar icon and choose <strong>Pause Recording</strong>. All capture stops (your mic and meeting audio), and the menu bar icon switches to an amber pause symbol. Right-click &rarr; <strong>Resume Recording</strong> to continue &mdash; there will be a gap in the audio for the paused span, which the transcript handles naturally.</li>
         </ol>
-
-        <div class="guide-callout info animate-in">
-          <i data-lucide="info"></i>
-          <div><strong>Note:</strong> There will be a gap in the audio during the pause — this is expected. The transcript resumes seamlessly when you unpause, and the final diarized output handles the gap naturally.</div>
-        </div>
-
-        <div class="guide-callout tip animate-in">
-          <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> Pausing is useful during breaks, off-topic side conversations, or when sensitive information comes up that you don't want captured.</div>
-        </div>
       </div>
 
       <!-- Recording Start Sound -->
@@ -884,12 +886,31 @@
         </ol>
       </div>
 
+      <!-- Outlook / Microsoft 365 Calendar -->
+      <div class="guide-subsection animate-in" id="outlook-calendar">
+        <h3>Connecting your Outlook / Microsoft 365 calendar</h3>
+        <p>Since Version 3.3, Tagalong connects to Outlook directly &mdash; no macOS account setup needed:</p>
+
+        <ol class="guide-steps">
+          <li><strong>Open Settings &rarr; Calendar</strong> — Scroll to the calendar accounts area and click <strong>Connect Microsoft 365</strong>.</li>
+          <li><strong>Sign in</strong> — A Microsoft sign-in window opens. Use your Microsoft 365 work account or a personal Outlook.com account, and accept the calendar permission request.</li>
+          <li><strong>Choose your calendars</strong> — Once connected, an <strong>Outlook calendars</strong> dropdown lets you pick which calendars feed your upcoming meetings. Events refresh every few minutes.</li>
+        </ol>
+
+        <div class="guide-callout info animate-in">
+          <i data-lucide="info"></i>
+          <div><strong>Work account needs approval?</strong> Some organizations require an IT administrator to approve new apps. If sign-in ends without granting access, Tagalong shows an approval link you can send your admin &mdash; once they approve Tagalong, click Connect again. Personal Outlook.com accounts connect without approval.</div>
+        </div>
+
+        <p>Prefer not to sign in through Tagalong? The macOS route still works: add your Microsoft account in System Settings &rarr; <strong>Internet Accounts</strong> (Microsoft Exchange), enable calendar syncing, and its events appear through Apple Calendar. Some organizations must approve Apple Internet Accounts too &mdash; see <a href="https://aka.ms/ConsentAppleApp" target="_blank" rel="noopener">aka.ms/ConsentAppleApp</a>.</p>
+      </div>
+
       <!-- Switching Microphones -->
       <div class="guide-subsection animate-in" id="switch-mic">
         <h3>Switching Microphones Mid-Recording</h3>
         <p>Need to swap from your AirPods to a USB mic? Tagalong handles microphone changes on the fly without losing any audio data.</p>
 
-        <p>Use the microphone selector dropdown on the recording screen to pick a different input device. Tagalong disconnects from the current mic and reconnects to the new one seamlessly — no gap in your recording.</p>
+        <p>Use the microphone selector dropdown on the recording screen to pick a different input device. Every option shows the device's actual name, and a checkmark marks the input currently in use. The list stays current if you change the system default or connect a new device. Tagalong reconnects to the selected microphone. Device changes can create a brief interruption; check the recording status after switching.</p>
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
@@ -1160,7 +1181,7 @@
         <h3>Visual Note <span class="badge-pro">PRO</span></h3>
         <p>The Visual Note card generates an AI visual summary of a meeting — a shareable, sketchnote-style image that captures the key points at a glance. Tagalong uses Google's image generation to create 4K images in a variety of styles. If you took meeting notes, they are included in the prompt for richer content. Once a meeting has one, a gold "Visual Note" chip appears in its header that jumps straight to this card.</p>
 
-        <p>Every visual note you generate also lands in the <a href="#visual-notes-gallery">Visual Notes sketchbook</a>, a dedicated gallery pinned in the sidebar for browsing across all your meetings.</p>
+        <p>Every visual note you generate also lands in the <a href="#visual-notes-gallery">Visual Notes gallery</a>, a searchable thumbnail grid pinned in the sidebar for browsing across all your meetings.</p>
 
         <p>You can customize the appearance before generating:</p>
 
@@ -1355,6 +1376,7 @@
       <!-- Action Items -->
       <div class="guide-subsection animate-in" id="action-items">
         <h3>Action Items <span class="badge-pro">PRO</span></h3>
+        <p><strong>Export availability:</strong> Apple Reminders and Todoist are available in the public release. Asana and monday.com, along with the revised destination picker, are v3.4 release candidates in QA. Task exports are initiated by you and create tasks one way; they do not synchronize later changes.</p>
         <p>Action items are extracted automatically as part of background processing — no button to press first. The Action Items card sits between Notes and AI Summary on the meeting page.</p>
 
         <ol class="guide-steps">
@@ -1424,7 +1446,8 @@
         <ul class="guide-checklist">
           <li>Meetings are sorted chronologically with the most recent at the top of each group</li>
           <li>Each entry shows the meeting name and recording date</li>
-          <li>Meetings currently processing show a progress indicator until results are ready, and open automatically when done</li>
+          <li>Click a meeting name in the recording view, on its meeting page, in the sidebar, or on Home to rename it in place. Click away to save the new name, or press <kbd>Esc</kbd> to cancel.</li>
+          <li>Meetings processing in the background show a progress indicator. When ready, use Open to review them without losing your current page.</li>
           <li>You can also import sessions from older versions of Tagalong using the import button</li>
         </ul>
 
@@ -1455,20 +1478,18 @@
       <!-- Visual Notes Gallery -->
       <div class="guide-subsection animate-in" id="visual-notes-gallery">
         <h3>Visual Notes Gallery</h3>
-        <p>Visual Notes isn't a plain grid of thumbnails — it's bound into an animated <strong>spiral sketchbook lying open on a dark studio desk</strong>. It's pinned in the sidebar for quick access to every visual note across all your meetings.</p>
+        <p>Visual Notes is a searchable thumbnail gallery pinned in the sidebar, giving you one place to browse visual summaries from every meeting.</p>
 
         <ul class="guide-checklist">
-          <li>Each visual note gets a <strong>two-page spread</strong>: the artwork on the left page, and a caption/meta panel on the right with the meeting name, date, and a TL;DR-derived caption</li>
-          <li>Flip through spreads with the on-screen page controls or the keyboard arrow keys</li>
-          <li>A fore-edge of clickable <strong>month tabs</strong> lets you jump straight to a given month, like a real notebook's tabbed edge</li>
-          <li><strong>The drawer</strong> — a horizontal light-table filmstrip of every print, sitting below the book — for fast scanning across your whole history</li>
-          <li>Keyword search, plus an AI-powered natural-language search ("Ask about your visual notes...") that matches meetings by content, not just filename</li>
-          <li>Click any print (in the book or the drawer) to jump directly to that meeting's detail view</li>
+          <li>Scan every visual note in a clean thumbnail grid</li>
+          <li>Search by keyword to narrow the gallery to the meeting you need</li>
+          <li>Click any thumbnail to open a full-size preview</li>
+          <li>Open the related meeting whenever you need the transcript, notes, or full context</li>
         </ul>
 
         <div class="guide-callout tip animate-in">
           <i data-lucide="lightbulb"></i>
-          <div><strong>Tip:</strong> The sketchbook is a great way to review past meetings visually. Each visual note captures the key themes and decisions, so flipping through it — or scanning the drawer — can quickly remind you what was discussed without reading full transcripts.</div>
+          <div><strong>Tip:</strong> The gallery is a fast way to review past meetings visually. Search for a project or topic, then open any thumbnail for a closer look without reading the full transcript.</div>
         </div>
       </div>
 
@@ -1608,6 +1629,11 @@
           <i data-lucide="info"></i>
           <div><strong>Note:</strong> These are standard files on your Mac. You can open the markdown in any text editor, share the visual note as an image, or back up the entire folder to cloud storage.</div>
         </div>
+
+        <div class="guide-callout tip animate-in">
+          <i data-lucide="lightbulb"></i>
+          <div><strong>Save Audio:</strong> Your choice persists across app sessions. When Save Audio is off, Tagalong waits until the transcript has been safely written before deleting the recording, so the source audio is never removed too early.</div>
+        </div>
       </div>
 
       <hr class="guide-section-divider animate-in">
@@ -1636,7 +1662,7 @@
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>Free tier:</strong> Without either license, Tagalong works in Free mode — mic recording, speaker identification, basic AI summary, and markdown export for up to 5 meetings per month. No credit card required.</div>
+          <div><strong>Plans:</strong> Free includes five meetings per month and the core feature set. A Subscription or Private License unlocks Pro features.</div>
         </div>
       </div>
 
@@ -1683,7 +1709,7 @@
 
         <div class="guide-callout info animate-in">
           <i data-lucide="info"></i>
-          <div><strong>Managing your subscription:</strong> To cancel, manage billing, or update payment details, visit the Stripe customer portal linked from Settings.</div>
+          <div><strong>Managing your subscription:</strong> Click <strong>Manage Subscription</strong> in Settings to open your Stripe customer billing portal, where you can update your payment method or cancel your subscription.</div>
         </div>
       </div>
 
@@ -1750,7 +1776,7 @@
             <tr>
               <td>Live transcription (default)</td>
               <td>On-device speech recognition</td>
-              <td>No — instant, free, and offline by default</td>
+              <td>No cloud request for supported on-device speech recognition; cloud fallback is available when needed</td>
             </tr>
             <tr>
               <td>Live transcription (fallback)</td>
@@ -1854,7 +1880,7 @@
         <div class="guide-two-col animate-in" style="margin-top: 16px">
           <div class="guide-col-card">
             <h4>Todoist</h4>
-            <p>Export action items directly to Todoist as tasks. Each item's title, assignee, and priority are mapped to Todoist task fields. Requires a Todoist API token in Settings.</p>
+            <p>Export action items directly to Todoist as tasks. Review the task content before exporting. This creates tasks; later edits and completion do not synchronize with Tagalong. Requires a Todoist API token in Settings.</p>
           </div>
           <div class="guide-col-card">
             <h4>Apple Reminders</h4>
@@ -1914,6 +1940,12 @@
             <span class="shortcut-desc">Start / Stop Recording</span>
             <div class="shortcut-keys">
               <kbd>⌘</kbd><span class="shortcut-plus">+</span><kbd>⇧</kbd><span class="shortcut-plus">+</span><kbd>R</kbd>
+            </div>
+          </div>
+          <div class="shortcut-row">
+            <span class="shortcut-desc">Mute / Unmute Yourself</span>
+            <div class="shortcut-keys">
+              <kbd>⌘</kbd><span class="shortcut-plus">+</span><kbd>⇧</kbd><span class="shortcut-plus">+</span><kbd>M</kbd>
             </div>
           </div>
         </div>
@@ -2122,7 +2154,7 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              Click the pause button on the recording screen, or right-click the Tagalong menu bar icon and choose "Pause Recording." The menu bar icon changes to an amber pause symbol, and the label switches from "Recording" to "Paused." Click Resume (or right-click &rarr; Resume Recording) to continue. There will be a brief gap in the audio during the pause — this is expected, and the transcript picks up seamlessly when you resume.
+              Right-click the Tagalong menu bar icon and choose "Pause Recording." The icon changes to an amber pause symbol; right-click &rarr; Resume Recording to continue. There will be a gap in the audio for the paused span &mdash; that&rsquo;s expected, and the transcript picks up seamlessly. If you just want to silence yourself while the meeting keeps recording, use Mute (&#8984;&#8679;M) on the recording screen instead.
             </div>
           </div>
         </div>
@@ -2134,7 +2166,7 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              First, generate a summary for your meeting. Then open the collapsible Action Items section in the meeting detail view and click "Extract Action Items." The AI parses the summary and lists each action item with an assignee and priority. From there you can export selected items to Apple Reminders or Todoist.
+              Action items are extracted during background processing. Open the Action Items section to review them or re-extract when needed, then select the items you want to create in Apple Reminders or Todoist. Exports are one-way; later changes do not synchronize. Asana and monday.com are v3.4 release candidates.
             </div>
           </div>
         </div>
@@ -2158,7 +2190,7 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              In the Visual Note card of any meeting, click the <strong>Share</strong> button to open the macOS sharing sheet — from there you can AirDrop, email, or message the image directly. You can also click <strong>Copy to Clipboard</strong> to paste the image into any app. For a broader view of all your visual notes, use the Visual Notes sketchbook in the sidebar.
+              In the Visual Note card of any meeting, click the <strong>Share</strong> button to open the macOS sharing sheet — from there you can AirDrop, email, or message the image directly. You can also click <strong>Copy to Clipboard</strong> to paste the image into any app. For a broader view of all your visual notes, use the searchable Visual Notes gallery in the sidebar.
             </div>
           </div>
         </div>
@@ -2191,6 +2223,28 @@
 
     </div><!-- /.guide-content -->
   </div><!-- /.guide-layout -->
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <img src="assets/logo-light.png" alt="Tagalong">
+        </div>
+        <div class="footer-tagline">Every meeting, remembered.</div>
+        <div class="footer-bottom">
+          <div class="footer-left">&copy; 2026 Tagalong. All rights reserved.</div>
+          <ul class="footer-links">
+            <li><a href="/privacy">Privacy</a></li>
+            <li><a href="/terms">Terms</a></li>
+            <li><a href="/guide">Guide</a></li>
+            <li><a href="/changelog">Changelog</a></li>
+            <li><a href="https://github.com/tagalong-ai" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script>
     // Mobile menu toggle

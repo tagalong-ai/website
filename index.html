@@ -2,961 +2,169 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tagalong — Every meeting, remembered.</title>
-  <meta name="description" content="Tagalong is the meeting notepad for your Mac — instant on-device live transcription, automatic speaker identification, AI-enhanced notes, summaries, action items, and Visual Notes. No bots. No browser tabs.">
-  <meta property="og:title" content="Tagalong — Every meeting, remembered.">
-  <meta property="og:description" content="Tagalong is the meeting notepad for your Mac — instant on-device live transcription, automatic speaker identification, AI-enhanced notes, summaries, action items, and Visual Notes. No bots. No browser tabs.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tagalong — Focus on the conversation. Tagalong captures the rest.</title>
+  <meta name="description" content="Your meeting workspace for Mac. Record, transcribe, ask AI, create visual notes, and turn conversations into next steps—with a meeting library saved on your Mac.">
+  <link rel="canonical" href="https://tagalongai.com/">
+  <meta property="og:title" content="Tagalong — Focus on the conversation. Tagalong captures the rest.">
+  <meta property="og:description" content="Live transcription, useful AI, visual notes, and next steps. A meeting workspace with your Mac at its center.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://tagalongai.com">
+  <meta property="og:url" content="https://tagalongai.com/">
   <meta property="og:image" content="https://tagalongai.com/assets/website-preview-image.png">
-  <meta property="og:image:width" content="756">
-  <meta property="og:image:height" content="796">
-  <meta property="og:image:type" content="image/png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tagalong — Every meeting, remembered.">
-  <meta name="twitter:description" content="Tagalong is the meeting notepad for your Mac — instant on-device live transcription, automatic speaker identification, AI-enhanced notes, summaries, action items, and Visual Notes. No bots. No browser tabs.">
   <meta name="twitter:image" content="https://tagalongai.com/assets/website-preview-image.png">
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/dm-sans.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    /* ─── Page-specific: Hero overrides ─── */
-    .hero {
-      padding: 120px 0 80px;
-      background: linear-gradient(180deg, #FAFAF7 0%, #F5F4F0 40%, #FAFAF7 100%);
-    }
-    .hero::before {
-      top: -200px; width: 1000px; height: 600px;
-      background: radial-gradient(ellipse, rgba(45,125,70,.04) 0%, transparent 70%);
-    }
-    .hero-buttons { margin-bottom: 48px }
-    .hero-trust { margin-top: 32px }
-
-    /* ─── APP DEMO (Tagalong 3.1 window, hand-built) ─── */
-    .app-demo-container { max-width:900px; margin:0 auto; }
-      .tgd-viewport { position:relative; width:100%; }
-      .tgd-stage { width:854px; height:936px; transform-origin:top left; position:absolute; top:0; left:0; }
-
-      .tgd-window {
-        position:relative; width:854px; height:936px; background:#FFFFFF;
-        border-radius:14px; overflow:hidden;
-        font-family:'DM Sans',-apple-system,sans-serif;
-        -webkit-font-smoothing:antialiased;
-        box-shadow:0 0 0 1px rgba(0,0,0,.07), 0 24px 70px rgba(0,0,0,.45), 0 6px 18px rgba(0,0,0,.25);
-        text-align:left;
-      }
-      .tgd-window * { box-sizing:border-box; margin:0; padding:0; }
-
-      /* traffic lights + sidebar toggle, on the white window chrome */
-      .tgd-lights { position:absolute; top:15px; left:16px; display:flex; gap:8px; z-index:4; }
-      .tgd-lights i { width:12px; height:12px; border-radius:50%; display:block; }
-      .tgd-lights i:nth-child(1){ background:#FF5F57; } .tgd-lights i:nth-child(2){ background:#FEBC2E; } .tgd-lights i:nth-child(3){ background:#28C840; }
-      .tgd-toggle-btn { position:absolute; top:8px; left:238px; width:34px; height:34px; border-radius:50%; background:#FCFCFA; box-shadow:0 1px 4px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.04); display:flex; align-items:center; justify-content:center; z-index:4; }
-      .tgd-toggle-btn svg { width:16px; height:16px; color:#8A877E; }
-
-      /* floating sidebar card */
-      .tgd-sidebar {
-        position:absolute; left:7px; top:48px; bottom:56px; width:276px;
-        background:#F5F4F0; border-radius:12px; padding:16px 14px 12px;
-        display:flex; flex-direction:column; overflow:hidden;
-      }
-      .tgd-brand { display:flex; align-items:center; gap:10px; padding:2px 6px 14px; }
-      .tgd-brand img { width:32px; height:36px; object-fit:contain; }
-      .tgd-brand span { font-size:19px; font-weight:700; color:#1D1B16; letter-spacing:-.2px; }
-      .tgd-nav { display:flex; flex-direction:column; gap:2px; padding-bottom:6px; }
-      .tgd-nav-item { display:flex; align-items:center; gap:12px; padding:7px 6px; border-radius:8px; font-size:15px; font-weight:500; color:#33322E; }
-      .tgd-nav-item svg { width:17px; height:17px; color:#55534C; }
-      .tgd-group { font-size:13px; font-weight:500; color:#93908A; padding:14px 6px 6px; }
-      .tgd-row { display:flex; gap:10px; padding:6px 6px; border-radius:9px; border:1.5px solid transparent; }
-      .tgd-row > svg { width:15px; height:15px; color:#A19E96; flex-shrink:0; margin-top:2px; }
-      .tgd-row-body { min-width:0; flex:1; }
-      .tgd-row-title { font-size:14.5px; font-weight:500; color:#2A2925; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-      .tgd-row-time { font-size:12.5px; color:#98958D; margin-top:1px; }
-      .tgd-row-glyphs { display:flex; gap:7px; margin-top:4px; }
-      .tgd-row-glyphs svg { width:11px; height:11px; color:#B4B1A9; }
-      .tgd-row.selected { background:#FFFFFF; border-color:#7FA982; }
-      .tgd-side-rows { flex:1; overflow:hidden; }
-
-      /* bottom bar sits below the sidebar card, on the window chrome */
-      .tgd-side-bottom { position:absolute; left:7px; bottom:12px; width:276px; display:flex; align-items:center; gap:12px; padding:0 8px; }
-      .tgd-side-bottom > svg { width:17px; height:17px; color:#8A877E; }
-      .tgd-record { display:flex; align-items:center; gap:7px; background:#F9E3E1; border-radius:999px; padding:6px 13px; }
-      .tgd-record i { width:7px; height:7px; border-radius:50%; background:#D34C46; display:block; }
-      .tgd-record span { font-size:13.5px; font-weight:600; color:#D34C46; }
-      .tgd-pro { margin-left:auto; background:#E7EFE5; color:#4C7A50; font-size:13px; font-weight:600; border-radius:999px; padding:4px 13px; }
-
-      /* main pane */
-      .tgd-main { position:absolute; left:299px; top:0; right:0; bottom:0; padding:52px 10px 8px 0; display:flex; flex-direction:column; }
-      .tgd-titlerow { display:flex; align-items:center; gap:12px; }
-      .tgd-back { width:32px; height:32px; border-radius:50%; background:#F4F3EF; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-      .tgd-back svg { width:15px; height:15px; color:#55534E; }
-      .tgd-title { font-size:25px; font-weight:700; color:#191813; letter-spacing:-.4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; }
-      .tgd-titleicons { display:flex; gap:16px; }
-      .tgd-titleicons svg { width:17px; height:17px; color:#75726B; }
-      .tgd-metarow { display:flex; align-items:center; gap:18px; margin:8px 0 0 2px; }
-      .tgd-meta { display:flex; align-items:center; gap:6px; font-size:13.5px; color:#918E87; }
-      .tgd-meta svg { width:14px; height:14px; }
-      .tgd-meta.gold { color:#BE9A4B; }
-
-      .tgd-notesband { margin:12px 0 0 0; background:#F6F4EA; border-radius:9px; height:37px; display:flex; align-items:center; gap:10px; padding:0 14px; flex-shrink:0; }
-      .tgd-notesband svg:first-child { width:16px; height:16px; color:#C79E3E; }
-      .tgd-notesband b { font-size:15.5px; font-weight:700; color:#23221D; }
-      .tgd-notesband .count { font-size:14px; color:#9A968D; }
-      .tgd-notesband .chev { margin-left:auto; }
-      .tgd-notesband .chev svg { width:15px; height:15px; color:#8A877E; }
-
-      .tgd-editor { margin-top:2px; border:1px solid #E7E5DF; border-radius:10px; flex:1; display:flex; flex-direction:column; overflow:hidden; min-height:0; }
-      .tgd-enhancebar { display:flex; align-items:center; height:0; background:#F4F7F4; border-bottom:none; padding:0 14px; flex-shrink:0; overflow:hidden; transition:height .45s ease; }
-      .tgd-enhancebar.open { height:37px; border-bottom:1px solid #E7E5DF; }
-      .tgd-enhance-left { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:500; color:#2D7D46; }
-      .tgd-enhance-left svg { width:15px; height:15px; }
-      .tgd-seg { margin-left:auto; background:#E9ECE7; border-radius:8px; padding:2px; display:flex; }
-      .tgd-seg span { font-size:13px; padding:3px 12px; border-radius:6px; color:#8A877E; font-weight:500; }
-      .tgd-seg span.on { background:#FFFFFF; color:#22211C; font-weight:600; box-shadow:0 1px 3px rgba(0,0,0,.12); }
-      .tgd-revert { font-size:13.5px; color:#75726B; margin-left:14px; }
-
-      .tgd-toolbar { display:flex; align-items:center; gap:18px; height:36px; background:#F9F8F6; border-bottom:1px solid #E7E5DF; padding:0 16px; color:#6E6B63; flex-shrink:0; }
-      .tgd-toolbar .style { display:flex; align-items:center; gap:5px; font-size:15px; font-weight:600; color:#33322E; }
-      .tgd-toolbar .style svg { width:13px; height:13px; color:#55534E; }
-      .tgd-toolbar b { font-size:15px; font-weight:700; color:#4A4845; }
-      .tgd-toolbar em { font-size:15px; font-style:italic; font-family:Georgia,serif; color:#4A4845; }
-      .tgd-toolbar svg { width:15px; height:15px; }
-      .tgd-toolbar .sep { width:1px; height:16px; background:#E4E2DA; }
-
-      .tgd-notes { flex:1; overflow:hidden; background:#FFFFFF; padding:14px 0 0 0; position:relative; min-height:0; }
-      .tgd-gutter { position:absolute; left:46px; top:14px; bottom:8px; border-left:2px dotted #DBD8CF; }
-      .tgd-notelist { position:absolute; top:14px; left:62px; right:18px; opacity:0; transition:opacity .55s ease, filter .55s ease; }
-      .tgd-notelist.show { opacity:1; }
-      .tgd-notelist.blur { filter:blur(3px); }
-      .tgd-p { position:relative; font-size:16px; line-height:1.5; color:#26251F; margin-bottom:14px; }
-      .tgd-p .dot { position:absolute; left:-27px; top:9px; width:4px; height:4px; border-radius:50%; background:#C9C6BD; }
-      .tgd-p.bullet { padding-left:20px; }
-      .tgd-p.bullet::before { content:''; position:absolute; left:5px; top:10px; width:5px; height:5px; border-radius:50%; background:#8B8880; }
-      .tgd-p.check { padding-left:26px; }
-      .tgd-p.check svg { position:absolute; left:0; top:4px; width:15px; height:15px; color:#2D7D46; }
-      .tgd-h { font-size:17px; font-weight:700; color:#191813; margin:0 0 12px; }
-
-      .tgd-actions { margin:10px 0 0 0; background:#EBF0E9; border-radius:9px; height:38px; display:flex; align-items:center; gap:10px; padding:0 14px; flex-shrink:0; }
-      .tgd-actions svg:first-child { width:16px; height:16px; color:#6F9B72; }
-      .tgd-actions b { font-size:15.5px; font-weight:700; color:#23221D; }
-      .tgd-actions .chev { margin-left:auto; }
-      .tgd-actions .chev svg { width:15px; height:15px; color:#8A877E; }
-
-      .tgd-chat { margin:8px 0 0 0; height:50px; border-radius:14px; border:1px solid #E7E5DF; background:#F5F4F0; display:flex; align-items:center; gap:11px; padding:0 16px; flex-shrink:0; }
-      .tgd-chat svg { width:16px; height:16px; color:#A78BC0; }
-      .tgd-chat span { font-size:15.5px; color:#A5A29A; }
-
-      /* --- recording strip --- */
-      .tgd-recbar { margin:0; background:#F9F8F6; border:0 solid #E7E5DF; border-radius:9px; display:flex; align-items:center; gap:9px; padding:0 14px; height:0; opacity:0; overflow:hidden; transition:height .5s ease, opacity .5s ease, margin .5s ease; flex-shrink:0; }
-      .tgd-recbar.show { height:38px; opacity:1; margin:8px 0 0 0; border-width:1px; }
-      .tgd-recdot { width:8px; height:8px; border-radius:50%; background:#D34C46; animation:tgdPulse 1.2s ease-in-out infinite; flex-shrink:0; }
-      .tgd-reclabel { font-size:13.5px; font-weight:600; color:#D34C46; }
-      .tgd-rectime { font-size:13px; color:#75726B; font-variant-numeric:tabular-nums; }
-      .tgd-meters { margin-left:auto; display:flex; align-items:center; gap:8px; }
-      .tgd-meters .lbl { font-size:11.5px; color:#98958D; }
-      .tgd-meter { display:flex; align-items:flex-end; gap:2px; height:14px; }
-      .tgd-meter i { width:3px; height:100%; border-radius:2px; background:#7FA982; transform-origin:bottom; animation:tgdEq 1s ease-in-out infinite alternate; }
-      .tgd-meter i:nth-child(1){ animation-delay:0s } .tgd-meter i:nth-child(2){ animation-delay:.18s }
-      .tgd-meter i:nth-child(3){ animation-delay:.34s } .tgd-meter i:nth-child(4){ animation-delay:.12s }
-      .tgd-meter i:nth-child(5){ animation-delay:.26s }
-      .tgd-meter.quiet i { background:#C9C6BD; animation-duration:1.6s; }
-      @keyframes tgdEq { 0% { transform:scaleY(.25) } 100% { transform:scaleY(1) } }
-      @keyframes tgdPulse { 50% { opacity:.35 } }
-      .tgd-record .tgd-recpulse { animation:tgdPulse 1.2s ease-in-out infinite; }
-
-      /* --- animation --- */
-      .tgd-enhancebar { position:relative; }
-      .tgd-enhstate { position:absolute; inset:0; display:flex; align-items:center; padding:0 14px; opacity:0; transition:opacity .45s ease; }
-      .tgd-enhstate.show { opacity:1; }
-      .tgd-enhbtn { display:inline-flex; align-items:center; gap:7px; font-size:13.5px; font-weight:600; color:#2D7D46; background:#FFFFFF; border:1px solid #BFD8C2; border-radius:7px; padding:4px 11px; transition:transform .15s ease, background .15s ease; }
-      .tgd-enhbtn svg { width:14px; height:14px; }
-      .tgd-enhbtn.press { transform:scale(.95); background:#EAF4EA; }
-      .tgd-vischip { display:inline-flex; align-items:center; gap:6px; }
-      .tgd-visbtn { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:600; color:#A2801F; background:#FFFFFF; border:1px solid #E3D3AC; border-radius:7px; padding:4px 11px; transition:transform .15s ease, background .15s ease; }
-      .tgd-visbtn svg { width:13px; height:13px; }
-      .tgd-visbtn.press { transform:scale(.95); background:#FAF3E3; }
-      .tgd-visbtn.gen { animation:tgdPulse 1.1s ease-in-out infinite; }
-      .tgd-p.short { color:#33322E; }
-      .tgd-p .dot { opacity:0; transition:opacity .4s ease; }
-      .tgd-p.done .dot, #tgdRich .tgd-p .dot { opacity:1; }
-      .tgd-p.short.typing .txt::after { content:''; display:inline-block; width:2px; height:17px; background:#2D7D46; margin-left:2px; vertical-align:-3px; animation:tgdBlink 1s steps(2) infinite; }
-      @keyframes tgdBlink { 50% { opacity:0; } }
-      .tgd-p.wash { animation:tgdWash 2.2s ease-out both; border-radius:5px; }
-      @keyframes tgdWash { 0% { background:#DEF0DE; } 100% { background:transparent; } }
-      .tgd-meta.gold.active { color:#A2801F; font-weight:600; }
-      .tgd-visual { position:absolute; top:118px; left:0; right:10px; bottom:8px; border-radius:12px; overflow:hidden; opacity:0; transform:scale(.985); transition:opacity .65s ease, transform .65s ease; pointer-events:none; background:#FBFAF7; border:1px solid #EFEDE7; display:flex; align-items:center; justify-content:center; z-index:5; }
-      .tgd-visual.show { opacity:1; transform:none; }
-      .tgd-visual img { max-width:calc(100% - 32px); max-height:calc(100% - 32px); width:auto; height:auto; object-fit:contain; border-radius:10px; box-shadow:0 10px 34px rgba(0,0,0,.16); display:block; }
-      .tgd-below { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 4px 0; }
-      .tgd-caption { font-size:15px; color:#8E8B85; transition:opacity .4s ease; }
-      .tgd-caption.fade { opacity:0; }
-      .tgd-dots { display:flex; gap:7px; flex-shrink:0; }
-      .tgd-dots i { width:7px; height:7px; border-radius:50%; background:#8E8B85; opacity:.35; transition:all .3s ease; }
-      .tgd-dots i.on { opacity:1; background:#7DA882; }
-
-    /* ─── Demo responsive (page rules preserved) ─── */
-    @media (max-width: 768px) {
-      .hero { padding: 100px 0 60px }
-    }
-  </style>
+  <link rel="stylesheet" href="homepage.css">
+  <link rel="stylesheet" href="product-demo.css">
+  <script src="homepage.js" defer></script>
 </head>
-<body>
-
-  <!-- NAV -->
-  <nav>
-    <div class="container">
-      <a href="#" class="nav-logo">
-        <img src="assets/logo-light.png" alt="Tagalong">
-      </a>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#features">Features</a></li>
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="/guide">Guide</a></li>
-      </ul>
-      <div class="nav-right">
-        <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-primary">Download</a>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">&#9776;</button>
-      </div>
-    </div>
+<body class="homepage">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="page-width nav-row" aria-label="Main navigation">
+    <a class="wordmark" href="/" aria-label="Tagalong home"><img src="assets/logo-light.png" alt="Tagalong" width="154" height="69"></a>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="site-links" hidden>Menu <span aria-hidden="true">☰</span></button>
+    <div class="site-links" id="site-links"><a href="#tour">Product tour</a><a href="#visual-notes">Visual notes</a><a href="#pricing">Pricing</a><a href="/guide">Guide</a><a class="button button-small" href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg">Download free for Mac <span aria-hidden="true">↗</span></a></div>
   </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <div class="animate-in">
-        <div class="hero-badge">
-          <span>New in Version 3.1 &mdash; the notepad release</span>
-        </div>
-        <div class="hero-logo"><img src="assets/logo-light-stacked.png" alt="Tagalong"></div>
-        <h1>Focus on the conversation. <span class="gradient-text">Tagalong captures the rest.</span></h1>
-        <p>Tagalong is a real notepad for your meetings. Jot shorthand while it transcribes live on your Mac, then one tap turns your notes into the notes you wish you'd written &mdash; speakers identified, summary and action items ready. No bots. No browser tabs.</p>
-        <div class="hero-buttons">
-          <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-primary btn-large">
-            &#63743; Download for macOS &mdash; Free
-          </a>
-          <a href="#how-it-works" class="btn btn-outline btn-large">See how it works</a>
-        </div>
-      </div>
-
-      <!-- ANIMATED APP DEMO (Tagalong 3.1 window, hand-built) -->
-      <div class="app-demo-container animate-in">
-        <div class="tgd-viewport" id="tgdViewport">
-          <div class="tgd-stage" id="tgdStage">
-            <div class="tgd-window">
-              <div class="tgd-lights"><i></i><i></i><i></i></div>
-              <div class="tgd-toggle-btn"><i data-lucide="panel-left"></i></div>
-
-              <div class="tgd-sidebar">
-                <div class="tgd-brand"><img src="assets/sidebar-dog.png" alt=""><span>Tagalong</span></div>
-                <div class="tgd-nav">
-                  <div class="tgd-nav-item"><i data-lucide="house"></i>Home</div>
-                  <div class="tgd-nav-item"><i data-lucide="search"></i>Search</div>
-                  <div class="tgd-nav-item"><i data-lucide="images"></i>Visual Notes</div>
-                </div>
-                <div class="tgd-side-rows">
-                  <div class="tgd-group">Today</div>
-                  <div class="tgd-row selected"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">Q1-Roadmap-Sprint-Kickoff</div>
-                    <div class="tgd-row-time">24 min ago</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i><i data-lucide="align-left"></i><i data-lucide="image"></i></div>
-                  </div></div>
-                  <div class="tgd-row"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">Meeting-Jul-03-2026-917</div>
-                    <div class="tgd-row-time">1h ago</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i></div>
-                  </div></div>
-                  <div class="tgd-row"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">Croatia-vs-Portugal</div>
-                    <div class="tgd-row-time">2h ago</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i><i data-lucide="align-left"></i></div>
-                  </div></div>
-                  <div class="tgd-row"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">Design-Review-Onboarding</div>
-                    <div class="tgd-row-time">2h ago</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i><i data-lucide="align-left"></i></div>
-                  </div></div>
-                  <div class="tgd-row"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">Pipeline-Review-EMEA</div>
-                    <div class="tgd-row-time">5h ago</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i><i data-lucide="align-left"></i><i data-lucide="image"></i></div>
-                  </div></div>
-                  <div class="tgd-row"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">Outbound-Rules-of-Engage…</div>
-                    <div class="tgd-row-time">6h ago</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i><i data-lucide="align-left"></i></div>
-                  </div></div>
-                  <div class="tgd-group">Yesterday</div>
-                  <div class="tgd-row"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">1-1-with-Maya</div>
-                    <div class="tgd-row-time">Yesterday</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i></div>
-                  </div></div>
-                  <div class="tgd-row"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">Customer-Call-Northwind</div>
-                    <div class="tgd-row-time">Yesterday</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i><i data-lucide="align-left"></i></div>
-                  </div></div>
-                  <div class="tgd-row"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">Release-Planning-3-2</div>
-                    <div class="tgd-row-time">Yesterday</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i><i data-lucide="align-left"></i></div>
-                  </div></div>
-                  <div class="tgd-row"><i data-lucide="file-text"></i><div class="tgd-row-body">
-                    <div class="tgd-row-title">Discuss-Release-Announce…</div>
-                    <div class="tgd-row-time">Yesterday</div>
-                    <div class="tgd-row-glyphs"><i data-lucide="audio-lines"></i><i data-lucide="file-text"></i></div>
-                  </div></div>
-                </div>
-              </div>
-              <div class="tgd-side-bottom">
-                <i data-lucide="settings"></i>
-                <div class="tgd-record"><i id="tgdRecPillDot"></i><span id="tgdRecPillLbl">Record</span></div>
-                <div class="tgd-pro">Pro</div>
-              </div>
-
-              <div class="tgd-main">
-                <div class="tgd-titlerow">
-                  <div class="tgd-back"><i data-lucide="chevron-left"></i></div>
-                  <div class="tgd-title">Q1-Roadmap-Sprint-Kickoff</div>
-                  <div class="tgd-titleicons"><i data-lucide="share"></i><i data-lucide="folder"></i></div>
-                </div>
-                <div class="tgd-metarow">
-                  <div class="tgd-meta"><i data-lucide="users"></i>5 speakers</div>
-                  <div class="tgd-meta gold" id="tgdMetaVis"><span class="tgd-vischip" id="tgdVisChip"><i data-lucide="image"></i>Visual Note</span><span class="tgd-visbtn" id="tgdVisBtn" style="display:none"><i data-lucide="sparkles"></i><span class="lbl">Generate Visual Note</span></span></div>
-                </div>
-
-                <div class="tgd-notesband"><i data-lucide="notebook-text"></i><b>Notes</b><span class="count">12</span><span class="chev"><i data-lucide="chevron-down"></i></span></div>
-
-                <div class="tgd-recbar" id="tgdRecbar">
-                  <span class="tgd-recdot"></span><span class="tgd-reclabel">Recording</span><span class="tgd-rectime" id="tgdRecTime">21:32</span>
-                  <div class="tgd-meters">
-                    <span class="lbl">You</span>
-                    <span class="tgd-meter"><i></i><i></i><i></i><i></i><i></i></span>
-                    <span class="lbl">Meeting</span>
-                    <span class="tgd-meter quiet"><i></i><i></i><i></i><i></i><i></i></span>
-                  </div>
-                </div>
-                <div class="tgd-editor">
-      <div class="tgd-enhancebar">
-                  <div class="tgd-enhstate" id="tgdEnhCta"><span class="tgd-enhbtn" id="tgdEnhBtn"><i data-lucide="sparkles"></i>Enhance my notes</span></div>
-                  <div class="tgd-enhstate show" id="tgdEnhDone">
-                    <div class="tgd-enhance-left"><i data-lucide="sparkles"></i>5 additions from the transcript</div>
-                    <div class="tgd-seg"><span class="on" id="tgdSegEnh">Enhanced</span><span id="tgdSegOrig">Original</span></div>
-                    <span class="tgd-revert">Revert</span>
-                  </div>
-                </div>
-
-                <div class="tgd-toolbar">
-                  <span class="style"><i data-lucide="chevron-down"></i>Body</span>
-                  <b>B</b><em>I</em>
-                  <i data-lucide="list"></i><i data-lucide="list-todo"></i>
-                  <span class="sep"></span>
-                  <i data-lucide="flag"></i><i data-lucide="minus"></i>
-                </div>
-
-                <div class="tgd-notes">
-                  <div class="tgd-gutter"></div>
-                  <div class="tgd-notelist orig" id="tgdOrig">
-                    <div class="tgd-p short" data-line="roadmap owners locked — 3 leads"><span class="dot"></span><span class="txt"></span></div>
-                    <div class="tgd-p short" data-line="sprint cadence bi-weekly, starts mon"><span class="dot"></span><span class="txt"></span></div>
-                    <div class="tgd-p short" data-line="john: onboarding designs ready, wireframes next wk"><span class="dot"></span><span class="txt"></span></div>
-                    <div class="tgd-p short" data-line="alex: api migration ~2 sprints, v2 endpoints"><span class="dot"></span><span class="txt"></span></div>
-                    <div class="tgd-p short" data-line="f/u tues — sprint assignments"><span class="dot"></span><span class="txt"></span></div>
-                  </div>
-                  <div class="tgd-notelist show" id="tgdRich">
-                    <div class="tgd-h">Q1 Roadmap &amp; Sprint Kickoff</div>
-                    <div class="tgd-p bullet"><span class="dot"></span>Roadmap ownership finalized across <b>three team leads</b>; bi-weekly sprint planning confirmed, <b>starting Monday</b>.</div>
-                    <div class="tgd-p bullet"><span class="dot"></span><b>John — customer onboarding:</b> designs are ready; wireframes start <b>next week</b>.</div>
-                    <div class="tgd-p bullet"><span class="dot"></span><b>Alex — API migration:</b> leads the migration, <b>two sprints from Monday</b>, targeting v2 endpoints.</div>
-                    <div class="tgd-p bullet"><span class="dot"></span><b>Sarah — roadmap doc</b> continues as owner; draft due <b>EOD Friday</b>.</div>
-                    <div class="tgd-p check"><i data-lucide="flag"></i>Follow-up Tuesday: sprint assignments review.</div>
-                  </div>
-                </div>
-                </div>
-
-                <div class="tgd-actions"><i data-lucide="list-checks"></i><b>Action Items</b><span class="chev"><i data-lucide="chevron-down"></i></span></div>
-                <div class="tgd-chat"><i data-lucide="sparkles"></i><span>Ask anything about this meeting…</span></div>
-                <div class="tgd-visual" id="tgdVisual"><img src="assets/demo-infographic.jpg" alt="Visual note — a sketchnote infographic generated from the meeting"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tgd-below">
-          <div class="tgd-caption" id="tgdCaption">Take shorthand during the meeting — every line remembers its moment.</div>
-          <div class="tgd-dots" id="tgdDots"><i class="on"></i><i></i><i></i><i></i></div>
-        </div>
-      </div>
-
-      <div class="hero-trust animate-in">No meeting bots. Live transcription runs on-device &mdash; your words never leave your Mac during the meeting.</div>
+</header>
+<main id="main">
+  <section class="home-hero page-width" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <a class="hero-release" href="#availability">Your meeting companion for Mac <span aria-hidden="true">↗</span></a>
+      <img class="hero-brand-logo" src="assets/logo-light-stacked.png" alt="Tagalong" width="210" height="210" fetchpriority="high">
+      <h1 id="hero-title">Focus on the conversation.<br><span>Tagalong captures the rest.</span></h1>
+      <p class="hero-description">A real notepad for your meetings, with AI to help you make more of them. Record and transcribe, keep your own notes, find the big ideas, and turn the conversation into clear next steps.</p>
+      <div class="button-row"><a class="button" href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg">Download free for Mac <span aria-hidden="true">↗</span></a><a class="button button-outline" href="#tour">See how it works <span aria-hidden="true">↓</span></a></div>
+      <p class="download-detail">macOS 15+ · Apple silicon &amp; Intel · <a href="#pricing">Choose your plan</a></p>
+      <div class="hero-benefits"><span>Live transcription</span><span>Notes, summaries &amp; visual notes</span><span>Your files on your Mac</span></div>
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section id="features">
-    <div class="container">
-      <div class="section-header animate-in">
-        <div class="section-label">Features</div>
-        <h2 class="section-title">Everything you need. Nothing you don't.</h2>
-        <p class="section-subtitle">A real notepad at the center, with AI that fills in everything you didn't have time to write.</p>
+  <section class="tour-section page-width" id="tour" aria-labelledby="tour-title">
+    <div class="section-heading tour-heading"><div><p class="eyebrow">SEE TAGALONG IN ACTION</p><h2 id="tour-title">Your notes. The whole conversation.</h2></div><p>Watch a meeting come together.<br>Pause or jump in whenever you like.</p></div>
+    <div class="native-tour" data-product-tour>
+      <div class="native-tour-controls" hidden>
+        <div class="native-tour-control-heading"><strong>Explore the app</strong><span data-tour-status>Auto-playing · Choose any chapter</span></div>
+        <div class="native-tour-chapters" role="tablist" aria-label="Product tour chapters" hidden>
+          <button id="tab-record" role="tab" aria-controls="panel-record" data-tour-step>Record</button>
+          <button id="tab-ai" role="tab" aria-controls="panel-ai" data-tour-step>Live AI</button>
+          <button id="tab-notes" role="tab" aria-controls="panel-notes" data-tour-step>Enhance notes</button>
+          <button id="tab-summary" role="tab" aria-controls="panel-summary" data-tour-step>Summary</button>
+          <button id="tab-speakers" role="tab" aria-controls="panel-speakers" data-tour-step>Speakers</button>
+          <button id="tab-tasks" role="tab" aria-controls="panel-tasks" data-tour-step>Tasks</button>
+          <button id="tab-visual" role="tab" aria-controls="panel-visual" data-tour-step>Visual notes</button>
+          <button id="tab-search" role="tab" aria-controls="panel-search" data-tour-step>Search</button>
+        </div>
+        <div class="native-tour-playback"><button data-tour-expand>Enlarge preview ↗</button><span data-tour-count>1 / 8</span><button data-tour-play aria-pressed="true">Pause animation</button><button data-tour-replay>Replay ↺</button></div>
       </div>
-      <div class="features-grid">
-        <div class="feature-card animate-in">
-          <div class="feature-icon amber"><i data-lucide="notebook-pen"></i></div>
-          <h3>A Real Notepad</h3>
-          <p>Notes lead every meeting. Headings, lists, checklists, highlights, full keyboard shortcuts &mdash; and every line remembers when you wrote it. Click a margin timestamp and playback jumps to that moment.</p>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="feature-icon sage"><i data-lucide="sparkles"></i></div>
-          <h3>Enhance My Notes</h3>
-          <p>One tap rewrites your shorthand into real meeting notes, filling in specifics from the transcript. Your original stays one toggle away, with full revert.</p>
-          <span class="feature-tag">Pro</span>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="feature-icon amber"><i data-lucide="zap"></i></div>
-          <h3>Instant Live Transcription</h3>
-          <p>Words appear on screen as they're spoken, transcribed on-device. Nothing leaves your Mac during the meeting &mdash; it even works offline.</p>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="feature-icon sage"><i data-lucide="monitor-speaker"></i></div>
-          <h3>Conference Mode</h3>
-          <p>Capture your mic and the meeting's audio from Zoom, Meet, or Teams &mdash; no bot, no browser extension. Live channel meters confirm both sides are coming through.</p>
-          <span class="feature-tag">Pro</span>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="feature-icon amber"><i data-lucide="list-checks"></i></div>
-          <h3>Automatic Action Items</h3>
-          <p>Every meeting gets action items with owners, priorities, and due-date hints. Send them to Apple Reminders or Todoist in one click.</p>
-          <span class="feature-tag">Pro</span>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="feature-icon sage"><i data-lucide="book-open"></i></div>
-          <h3>Visual Notes</h3>
-          <p>Turn any meeting into a 4K visual summary, bound into a sketchbook you can flip through. 7 styles, 4 aspect ratios, custom color palettes.</p>
-          <span class="feature-tag">Pro</span>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="feature-icon amber"><i data-lucide="file-text"></i></div>
-          <h3>TL;DR-First Summaries</h3>
-          <p>Summaries open with the TL;DR and decisions, every speaker identified automatically. Six built-in recipes &mdash; from Executive Brief to Follow-Up Email &mdash; or write your own.</p>
-        </div>
-        <div class="feature-card animate-in">
-          <div class="feature-icon sage"><i data-lucide="message-circle"></i></div>
-          <h3>Ask AI &amp; Search</h3>
-          <p>Ask questions about any meeting &mdash; even while it's still happening &mdash; and search across every transcript and note you've ever taken.</p>
-          <span class="feature-tag">Pro</span>
-        </div>
+      <div class="native-tour-stage">
+        <figure id="panel-record" data-tour-panel aria-labelledby="title-record">
+          <div class="native-tour-media"><picture><img src="assets/app-captures/app-recording-1100.png" width="1100" height="812" alt="Tagalong’s native record view with fictional Product weekly meeting content." decoding="async"></picture><video data-tour-video hidden muted playsinline preload="auto" poster="assets/app-captures/app-recording-1100.png" width="1100" height="812" aria-hidden="true" tabindex="-1"><source src="assets/app-captures/app-recording-motion.mp4" type="video/mp4"></video></div>
+          <figcaption><h3 id="title-record">Capture the conversation. Keep your own notes.</h3><p>Microphone and meeting audio sit alongside your timestamped notes. Live transcription helps you follow along.</p></figcaption>
+        </figure>
+        <figure id="panel-ai" data-tour-panel aria-labelledby="title-ai">
+          <div class="native-tour-media"><picture><img src="assets/app-captures/app-live-ai-1100.png" width="1100" height="812" alt="Tagalong’s native live ai view with fictional Product weekly meeting content." decoding="async"></picture><video data-tour-video hidden muted playsinline preload="auto" poster="assets/app-captures/app-live-ai-1100.png" width="1100" height="812" aria-hidden="true" tabindex="-1"><source src="assets/app-captures/app-live-ai-motion.mp4" type="video/mp4"></video></div>
+          <figcaption><h3 id="title-ai">A useful question, while it still matters.</h3><p>Ask what to explore next while the meeting is happening. AI requests send meeting context to the configured cloud provider.</p></figcaption>
+        </figure>
+        <figure id="panel-notes" data-tour-panel aria-labelledby="title-notes">
+          <div class="native-tour-media"><picture><img src="assets/app-captures/app-enhanced-1100.png" width="1100" height="812" alt="Tagalong’s native enhance notes view with fictional Product weekly meeting content." decoding="async"></picture><video data-tour-video hidden muted playsinline preload="auto" poster="assets/app-captures/app-enhanced-1100.png" width="1100" height="812" aria-hidden="true" tabindex="-1"><source src="assets/app-captures/app-enhanced-motion.mp4" type="video/mp4"></video></div>
+          <figcaption><h3 id="title-notes">Your thinking, with the missing details filled in.</h3><p>Enhance your shorthand using the transcript, and keep your original notes available.</p></figcaption>
+        </figure>
+        <figure id="panel-summary" data-tour-panel aria-labelledby="title-summary">
+          <picture><img src="assets/app-captures/app-summary-1100.png" width="1100" height="812" alt="Tagalong’s native summary view with fictional Product weekly meeting content." decoding="async"></picture>
+          <figcaption><h3 id="title-summary">Leave with the decisions made clear.</h3><p>A meeting summary brings the main ideas, decisions, and next steps together.</p></figcaption>
+        </figure>
+        <figure id="panel-speakers" data-tour-panel aria-labelledby="title-speakers">
+          <picture><img src="assets/app-captures/app-transcript-1100.png" width="1100" height="812" alt="Tagalong’s native speakers view with fictional Product weekly meeting content." decoding="async"></picture>
+          <figcaption><h3 id="title-speakers">Come back to exactly who said what.</h3><p>Post-meeting processing identifies speakers. Edit their names and revisit the labeled transcript.</p></figcaption>
+        </figure>
+        <figure id="panel-tasks" data-tour-panel aria-labelledby="title-tasks">
+          <picture><img src="assets/app-captures/app-tasks-1100.png" width="1100" height="812" alt="Tagalong’s native tasks view with fictional Product weekly meeting content." decoding="async"></picture>
+          <figcaption><h3 id="title-tasks">Turn the follow-up into something you can do.</h3><p>Review automatically extracted actions and choose which tasks to export. Exports create tasks; they do not synchronize changes back.</p></figcaption>
+        </figure>
+        <figure id="panel-visual" data-tour-panel aria-labelledby="title-visual">
+          <picture><img src="assets/app-captures/app-visual-1100.png" width="1100" height="812" alt="Tagalong’s native visual notes view with fictional Product weekly meeting content." decoding="async"></picture>
+          <figcaption><h3 id="title-visual">See the shape of the conversation.</h3><p>A visual note makes the big idea easier to revisit. The artwork shown here is an illustrative synthetic example.</p></figcaption>
+        </figure>
+        <figure id="panel-search" data-tour-panel aria-labelledby="title-search">
+          <picture><img src="assets/app-captures/app-search-1100.png" width="1100" height="812" alt="Tagalong’s native search view with fictional Product weekly meeting content." decoding="async"></picture>
+          <figcaption><h3 id="title-search">Find the conversation behind a decision.</h3><p>Search saved meeting text on your Mac. This example finds the onboarding decision in Product weekly.</p></figcaption>
+        </figure>
       </div>
+      <noscript><p class="noscript-note">Each chapter is shown above as a native app capture. Enable JavaScript to watch the animated tour or select a chapter.</p></noscript>
     </div>
+    <div class="tour-caption"><span>Animated native app views · v3.4 release candidate · Fictional meeting content</span><a href="#availability">Feature availability ↗</a></div>
   </section>
 
-  <!-- HOW IT WORKS -->
-  <section id="how-it-works" class="how-it-works">
-    <div class="container">
-      <div class="section-header animate-in">
-        <div class="section-label">How It Works</div>
-        <h2 class="section-title">Three steps. No learning curve.</h2>
-        <p class="section-subtitle">Take the notes you'd take anyway. Tagalong turns them into the record of the meeting.</p>
-      </div>
-      <div class="steps">
-        <div class="step animate-in">
-          <div class="step-number"><i data-lucide="circle-dot"></i></div>
-          <h3>Capture</h3>
-          <p>Tagalong notices your meeting starting and can begin recording automatically &mdash; or press Cmd+Shift+R. Conference mode captures both sides of the call.</p>
-        </div>
-        <div class="step animate-in">
-          <div class="step-number"><i data-lucide="notebook-pen"></i></div>
-          <h3>Jot</h3>
-          <p>Type shorthand in the notepad while live transcription runs on-device &mdash; every word on screen instantly, nothing leaving your Mac.</p>
-        </div>
-        <div class="step animate-in">
-          <div class="step-number"><i data-lucide="sparkles"></i></div>
-          <h3>Stop</h3>
-          <p>Speakers are identified, your notes are enhanced from the transcript, and a summary with action items is ready &mdash; all processed in the background.</p>
-        </div>
-      </div>
-    </div>
+  <section class="workflow-section page-width" id="features" aria-labelledby="features-title">
+    <div class="section-heading"><div><p class="eyebrow">MORE THAN A TRANSCRIPT</p><h2 id="features-title">The conversation is just<br>the beginning.</h2></div><p>From the first word to the next decision,<br>keep your thinking connected.</p></div>
+    <div class="workflow-grid"><article><div class="feature-number">01 <span>DURING</span></div><h3>Room to listen.<br>Help when you need it.</h3><p>Record your mic or conference audio, follow the live text, and jot down the things that matter to you. Ask AI to clarify a point or help shape your next question.</p><ul class="check-list"><li>Recording &amp; live transcription</li><li>Personal notes alongside the conversation</li><li>AI assistance with meeting context</li></ul></article><article><div class="feature-number">02 <span>AFTER</span></div><h3>A clear record.<br>A useful next step.</h3><p>Revisit a speaker-labeled transcript, edit names, and bring structure to the conversation with summaries, decisions, enhanced notes, and extracted action items.</p><ul class="check-list"><li>Speaker identification &amp; editable names</li><li>Summaries &amp; enhanced personal notes</li><li>Visual notes &amp; action items</li></ul></article><article><div class="feature-number">03 <span>WHEN YOU NEED IT</span></div><h3>Past meetings.<br>Present thinking.</h3><p>Search your saved meeting library, reopen the details, and ask follow-up questions. Your files stay useful long after the meeting ends.</p><ul class="check-list"><li>Search across saved meetings</li><li>Post-meeting AI questions</li><li>Local files you can revisit &amp; manage</li></ul></article></div>
   </section>
 
-  <!-- PRICING -->
-  <section id="pricing">
-    <div class="container">
-      <div class="section-header animate-in">
-        <div class="section-label">Pricing</div>
-        <h2 class="section-title">Start free, upgrade when you need more</h2>
-        <p class="section-subtitle">No credit card required. Try the core features with up to 5 meetings per month.</p>
-      </div>
-      <div class="pricing-grid">
-        <div class="pricing-card animate-in">
-          <div class="pricing-tier">Free</div>
-          <div class="pricing-price">$0 <span>/mo</span></div>
-          <div class="pricing-alt">Free forever</div>
-          <div class="pricing-divider"></div>
-          <ul class="pricing-features">
-            <li class="included">5 meetings per month</li>
-            <li class="included">Microphone recording</li>
-            <li class="included">Instant on-device live transcription</li>
-            <li class="included">The full notepad, speaker renaming</li>
-            <li class="included">Basic AI summary</li>
-            <li class="included">Markdown export</li>
-            <li class="excluded">Conference mode</li>
-            <li class="excluded">Enhance My Notes</li>
-            <li class="excluded">Action items &amp; Visual Notes</li>
-            <li class="excluded">AI chat &amp; calendar integration</li>
-          </ul>
-          <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-outline" style="width: 100%; justify-content: center;">
-            Download Free
-          </a>
-        </div>
-        <div class="pricing-card popular animate-in">
-          <div class="popular-badge">Most Popular</div>
-          <div class="pricing-tier">Pro Subscription</div>
-          <div class="pricing-price">$9.99 <span>/mo</span></div>
-          <div class="pricing-alt">Billed monthly, cancel anytime</div>
-          <div class="pricing-divider"></div>
-          <ul class="pricing-features">
-            <li class="included">Unlimited meetings</li>
-            <li class="included">Everything in Free</li>
-            <li class="included">Conference mode (system audio)</li>
-            <li class="included">Enhance My Notes</li>
-            <li class="included">Action items &rarr; Reminders &amp; Todoist</li>
-            <li class="included">Visual Notes (7 styles)</li>
-            <li class="included">AI chat &mdash; ask about any meeting</li>
-            <li class="included">Meeting auto-detection &amp; calendar</li>
-            <li class="included">Cross-meeting search</li>
-            <li class="included">Summary recipes, file import, Slack &amp; Notion</li>
-            <li class="included">API keys managed for you</li>
-          </ul>
-          <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-primary" style="width: 100%; justify-content: center;">
-            Subscribe to Pro
-          </a>
-        </div>
-        <div class="pricing-card animate-in" style="border-color: var(--secondary);">
-          <div class="pricing-tier">Private License</div>
-          <div class="pricing-price">$199 <span>once</span></div>
-          <div class="pricing-alt">One-time payment, yours forever</div>
-          <div class="pricing-divider"></div>
-          <ul class="pricing-features">
-            <li class="included">Unlimited meetings</li>
-            <li class="included">Everything in Pro</li>
-            <li class="included">Bring your own API keys</li>
-            <li class="included">Audio goes direct to AI providers</li>
-            <li class="included">Nothing passes through our servers</li>
-            <li class="included">Files stored locally on your Mac</li>
-            <li class="included">No recurring cost</li>
-            <li class="included">Full data ownership</li>
-          </ul>
-          <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-outline" style="width: 100%; justify-content: center; border-color: var(--secondary); color: var(--secondary);">
-            Get Private License
-          </a>
-        </div>
-      </div>
-    </div>
+  <section class="gallery-section" id="visual-notes" aria-labelledby="gallery-title"><div class="page-width">
+    <div class="section-heading"><div><p class="eyebrow">A DIFFERENT WAY TO REMEMBER</p><h2 id="gallery-title">Big ideas.<br>A clearer picture.</h2></div><p>Some conversations make more sense when you can see them. Generate visual notes from meeting context, with different styles for different kinds of thinking.</p></div>
+    <div class="gallery-grid"><figure class="gallery-card gallery-featured"><button class="gallery-open" data-gallery="0" aria-label="Enlarge sketchnote example"><img src="assets/visual-notes/sketchnote.jpg" alt="Sketchnote with an open door, wireframe, and calendar: one clear first step, prototype before expanding, review on Friday." width="1536" height="1024" loading="lazy"><span class="expand-icon" aria-hidden="true">↗</span></button><figcaption><div><span class="small-label">01 / SKETCHNOTE</span><h3>Find the big idea.</h3></div><p>A conversation, distilled.</p></figcaption></figure><div class="gallery-side"><figure class="gallery-card"><button class="gallery-open" data-gallery="1" aria-label="Enlarge process map example"><img src="assets/visual-notes/blueprint.jpg" alt="Green-and-gold process map: choose one path, build a prototype, test with the team." width="1536" height="1024" loading="lazy"><span class="expand-icon" aria-hidden="true">↗</span></button><figcaption><div><span class="small-label">02 / PROCESS MAP</span><h3>Connect the steps.</h3></div></figcaption></figure><figure class="gallery-card"><button class="gallery-open" data-gallery="2" aria-label="Enlarge next-steps example"><img src="assets/visual-notes/roadmap.jpg" alt="Colorful next-week plan: Maya owns wireframes, Alex the prototype, and Sam the review plan. Decision: simplify onboarding." width="1536" height="1024" loading="lazy"><span class="expand-icon" aria-hidden="true">↗</span></button><figcaption><div><span class="small-label">03 / NEXT STEPS</span><h3>See a way forward.</h3></div></figcaption></figure></div></div>
+    <div class="gallery-note"><span>Illustrative AI-generated examples, created from synthetic meeting content. Actual results vary.</span><span>Visual-note generation is available today.<br>The expanded in-app gallery is in v3.4 QA.</span></div>
+  </div></section>
+
+  <section class="connections-section page-width" id="connections" aria-labelledby="connections-title">
+    <div class="section-heading"><div><p class="eyebrow">KEEP THE WORK MOVING</p><h2 id="connections-title">From “we should”<br>to what’s next.</h2></div><p>Take useful work out of the meeting.<br>You choose the tasks, the destination,<br>and the context you share.</p></div>
+    <div class="export-feature"><div><span class="pill">Task export</span><h3>Your action items.<br>Your task list.</h3><p>Automatic extraction gives you a starting point. Review and select the items you want to create in your task manager.</p><p class="export-fine">These are one-way exports. Later edits and completion do not synchronize back and forth.</p></div><div class="destination-list"><div><span class="integration-icon reminders" aria-hidden="true">☷</span><strong>Apple Reminders</strong><span class="status-badge">Available</span></div><div><span class="integration-icon todoist" aria-hidden="true">✓</span><strong>Todoist</strong><span class="status-badge">Available</span></div><div><span class="integration-icon asana" aria-hidden="true">∴</span><strong>Asana</strong><a class="status-badge qa" href="#availability">In QA · v3.4</a></div><div><span class="integration-icon monday" aria-hidden="true">▰</span><strong>monday.com</strong><a class="status-badge qa" href="#availability">In QA · v3.4</a></div></div></div>
+    <div class="connector-intro"><div><p class="eyebrow">YOUR MEETINGS, WITH YOUR AI TOOLS</p><h3>Bring the right context.<br>Keep control of the rest.</h3></div><p>The v3.4 MCP connector is designed to let Claude or ChatGPT search and fetch individual meeting documents you approve. Both experiences are release candidates undergoing real-client testing.</p></div>
+    <div class="connector-grid"><article class="connector-card"><div class="connector-top"><span class="connector-name"><span aria-hidden="true">✳</span> Claude Desktop</span><span class="status-badge qa">In QA</span></div><h4>A local desktop extension.</h4><p>Select individual meeting documents in Tagalong, then install the exported <code>.mcpb</code> extension in Claude Desktop. Claude Desktop supplies the runtime; the local MCP server needs no API key.</p><details><summary>Candidate setup &amp; sharing details</summary><ol><li>In Tagalong’s Claude &amp; ChatGPT settings, select the documents to allow and enable access.</li><li>Save the Claude Desktop extension. In Claude, use Settings → Extensions → Advanced settings → Install Extension.</li><li>Use the connection to search or fetch allowed documents. Restart Claude if needed.</li></ol><p>Retrieved text enters the Claude conversation and is subject to that provider’s settings and policies. End-to-end validation is still pending.</p></details></article><article class="connector-card"><div class="connector-top"><span class="connector-name"><span aria-hidden="true">◎</span> ChatGPT</span><span class="status-badge qa">In QA</span></div><h4>A private MCP tunnel.</h4><p>This setup requires the OpenAI Secure MCP Tunnel, a supported workspace with Developer Mode, and tunnel credentials. Your Mac must stay awake with the tunnel running.</p><details><summary>Candidate setup &amp; requirements</summary><p>The setup kit requires Node.js 20+, the official tunnel client, workspace access, tunnel management/use permissions, and a private runtime API key. It is not a public-directory or universally one-click connection.</p><p>Only selected documents are exposed by Tagalong’s server. Retrieved text enters your ChatGPT conversation. Workspace availability and the live tunnel flow still need validation.</p></details></article></div>
+    <p class="connection-footnote">New meetings are not automatically approved for MCP access. Revoking access stops future retrieval; it does not remove text already sent to a provider. <a href="#availability">Release status ↗</a></p>
   </section>
 
-  <!-- COMPARISON -->
-  <section class="comparison">
-    <div class="container">
-      <div class="section-header animate-in">
-        <div class="section-label">Comparison</div>
-        <h2 class="section-title">The meeting tool that never joins the call</h2>
-        <p class="section-subtitle">See how Tagalong compares to meeting tools that put a bot in your call.</p>
-      </div>
-      <div class="comparison-table animate-in">
-        <table>
-          <thead>
-            <tr>
-              <th>Feature</th>
-              <th class="highlight-col">Tagalong</th>
-              <th>Granola</th>
-              <th>Otter</th>
-              <th>Fireflies</th>
-              <th>Fathom</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Bot joins call?</td>
-              <td class="highlight-col"><span class="check">&#10003; No</span></td>
-              <td><span class="check">&#10003; No</span></td>
-              <td><span class="cross">Yes</span></td>
-              <td><span class="cross">Yes</span></td>
-              <td><span class="cross">Yes</span></td>
-            </tr>
-            <tr>
-              <td>On-device live transcription</td>
-              <td class="highlight-col"><span class="check">&#10003; Default</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-            </tr>
-            <tr>
-              <td>Speaker diarization</td>
-              <td class="highlight-col"><span class="highlight">Full &mdash; automatic</span></td>
-              <td>Limited</td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td>Visual notes (infographics)</td>
-              <td class="highlight-col"><span class="check">&#10003; 7 styles</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-            </tr>
-            <tr>
-              <td>Private API keys</td>
-              <td class="highlight-col"><span class="check">&#10003; Your keys</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-            </tr>
-            <tr>
-              <td>One-time purchase</td>
-              <td class="highlight-col"><span class="highlight">$199 Private License</span></td>
-              <td><span class="cross">No</span></td>
-              <td><span class="cross">No</span></td>
-              <td><span class="cross">No</span></td>
-              <td><span class="cross">No</span></td>
-            </tr>
-            <tr>
-              <td>Data stays on your Mac</td>
-              <td class="highlight-col"><span class="check">&#10003; With Private License</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-            </tr>
-            <tr>
-              <td>AI summary</td>
-              <td class="highlight-col"><span class="check">&#10003; TL;DR-first, 6 recipes</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-            </tr>
-            <tr>
-              <td>Audio playback</td>
-              <td class="highlight-col"><span class="check">&#10003;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="check">&#10003;</span></td>
-              <td><span class="cross">&#10005;</span></td>
-            </tr>
-            <tr>
-              <td>Starting price</td>
-              <td class="highlight-col"><span class="highlight">Free</span></td>
-              <td>$18/mo</td>
-              <td>$16.99/mo</td>
-              <td>$18/mo</td>
-              <td>$19/mo</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <section class="ownership-section" id="your-data" aria-labelledby="ownership-title"><div class="page-width">
+    <div class="ownership-heading"><p class="eyebrow">LOCAL FILES. DELIBERATE SHARING.</p><h2 id="ownership-title">Your Mac is home base.</h2><p>Your meeting library lives in a folder you control. Cloud services power transcription and AI features. Here’s where the boundaries are.</p></div>
+    <div class="data-grid"><article><span class="data-icon" aria-hidden="true">▱</span><h3>Saved on your Mac</h3><p>Transcripts, personal notes, visual notes, and audio you retain are saved as local files. Library search reads meeting text on your Mac.</p><p>You choose the folder. A folder in iCloud Drive or another sync service follows that service’s settings.</p></article><article><span class="data-icon" aria-hidden="true">↗</span><h3>Sent for processing</h3><p>Live transcription uses on-device speech recognition where supported, with a cloud fallback. Speaker transcription sends audio for cloud processing after recording.</p><p>Summaries, enhanced notes, visual notes, and AI questions send the relevant text or context to AI services. Some processing starts automatically after you stop recording.</p></article><article><span class="data-icon" aria-hidden="true">✓</span><h3>Shared by your choice</h3><p>Task export sends selected task content to the destination you choose. The candidate MCP connections expose only approved documents for search and retrieval.</p><p>Provider retention and workspace policies apply to shared content. Removing a local file or revoking access does not recall content already sent.</p></article></div>
+    <div class="data-footer"><p><strong>Two ways to use AI:</strong> the subscription routes requests through Tagalong’s backend to providers. A private license uses your own provider API keys for direct requests. Neither option makes all processing offline.</p><a href="/privacy">Read the privacy policy <span aria-hidden="true">↗</span></a></div>
+  </div></section>
+
+  <section class="pricing-section page-width" id="pricing" aria-labelledby="pricing-title">
+    <div class="section-heading pricing-heading">
+      <div><p class="eyebrow">PRICING</p><h2 id="pricing-title">Start free. Go further with Pro.</h2></div>
+      <p>Try Tagalong with five meetings a month.<br>Upgrade for the full meeting workspace.</p>
     </div>
+    <div class="plans-grid">
+      <article class="price-card free-plan">
+        <div class="price-top"><h3>Free</h3><span class="pill">Start here</span></div>
+        <p class="price">$0<span>/ month</span></p>
+        <p class="plan-description">Get a feel for better meeting notes.</p>
+        <ul class="check-list"><li>5 meetings per month</li><li>Microphone recording</li><li>Basic AI summaries</li><li>Markdown export</li><li>Editable speaker names</li></ul>
+        <a class="button button-outline" href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg">Download free <span aria-hidden="true">↗</span></a>
+        <p class="price-note">For your first meetings with Tagalong.</p>
+      </article>
+      <article class="price-card subscription">
+        <div class="price-top"><h3>Pro subscription</h3><span class="pill">Managed AI</span></div>
+        <p class="price">$9.99<span>/ month</span></p>
+        <p class="plan-description">The full workspace, with AI access included.</p>
+        <ul class="check-list"><li>Everything in Free, with unlimited meetings</li><li>Conference audio &amp; live AI assistance</li><li>Enhanced notes, summaries &amp; visual notes</li><li>Meeting search &amp; task export</li><li>Provider access managed by Tagalong</li></ul>
+        <a class="button" href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg">Get Pro <span aria-hidden="true">↗</span></a>
+        <p class="price-note">Choose your subscription in the app.</p>
+      </article>
+      <article class="price-card private-plan">
+        <div class="price-top"><h3>Private license</h3><span class="pill">Your API keys</span></div>
+        <p class="price">$199<span>/ one time</span></p>
+        <p class="plan-description">The full workspace, with your own providers.</p>
+        <ul class="check-list"><li>The same released Pro feature set</li><li>Your OpenAI &amp; AssemblyAI API keys</li><li>Your Gemini key for visual notes</li><li>AI requests go directly to your providers</li><li>Provider usage billed separately</li></ul>
+        <a class="button button-outline" href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg">Get a private license <span aria-hidden="true">↗</span></a>
+        <p class="price-note">One-time license; API-key setup required.</p>
+      </article>
+    </div>
+    <p class="plans-disclaimer">Prices in USD. Confirm paid-plan totals at checkout. Features marked “In QA” are release candidates and are not included in the current public download.</p>
   </section>
 
-  <!-- FAQ -->
-  <section id="faq">
-    <div class="container">
-      <div class="section-header animate-in">
-        <div class="section-label">FAQ</div>
-        <h2 class="section-title">Frequently asked questions</h2>
-      </div>
-      <div class="faq-list animate-in">
-        <div class="faq-item">
-          <button class="faq-question">
-            What API keys do I need?
-            <span class="faq-arrow">&#9660;</span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              With a subscription, Tagalong handles the API keys for you &mdash; nothing to configure. With a Private License, you bring your own keys: one for transcription and summaries (OpenAI), one for automatic speaker identification, and optionally a Google Gemini key for Visual Notes. The <a href="/guide">guide</a> walks through the exact setup.
-            </div>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Does it work with Zoom, Google Meet, and Teams?
-            <span class="faq-arrow">&#9660;</span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Yes. Conference Mode captures system audio from any app on your Mac &mdash; Zoom, Meet, Teams, Webex, and anything else that plays sound. No browser extension or meeting integration required. You can also import recorded audio files (MP3, WAV, M4A, MP4, AAC) for post-meeting processing.
-            </div>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Does my audio leave my Mac during a meeting?
-            <span class="faq-arrow">&#9660;</span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              No. Live transcription runs on-device by default &mdash; the words you see appear instantly, work offline, and never leave your Mac while the meeting is happening. After you stop, the transcript, summary, and Visual Notes are generated in the cloud: through Tagalong's managed proxy on a subscription, or directly from your Mac to each AI provider with a Private License.
-            </div>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Is my meeting data private?
-            <span class="faq-arrow">&#9660;</span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Your recordings and notes are saved as local files in ~/Documents/Tagalong/ on your Mac &mdash; you own your data. With a Private License, your API keys stay in the macOS Keychain and every cloud request goes directly to the AI provider; nothing passes through our servers. It's the mode we recommend for the most privacy-sensitive teams.
-            </div>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            What macOS versions are supported?
-            <span class="faq-arrow">&#9660;</span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              Tagalong requires macOS 15.0 (Sequoia) or later. It runs natively on both Apple Silicon and Intel Macs as a universal binary.
-            </div>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Is there a free trial?
-            <span class="faq-arrow">&#9660;</span>
-          </button>
-          <div class="faq-answer">
-            <div class="faq-answer-inner">
-              The Free tier is always available &mdash; no credit card, no time limit. You get 5 meetings per month with mic recording, instant on-device live transcription, the full notepad, basic AI summaries, speaker renaming, and markdown export. Upgrade to Pro when you need unlimited meetings and features like conference mode, Enhance My Notes, action items, and Visual Notes.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <section class="availability-section page-width" id="availability" aria-labelledby="availability-title"><div><p class="eyebrow">A CLEAR VIEW OF WHAT’S READY</p><h2 id="availability-title">Available today.<br>Being tested next.</h2><a class="text-link" href="https://github.com/tagalong-ai/releases/releases/latest">View public release ↗</a></div><div class="release-list"><article><span class="status-badge">Public release · v3.3.2</span><h3>Your core meeting workspace</h3><p>Recording, live transcription, speaker editing, meeting AI, summaries, personal notes, visual-note generation, local search, and Apple Reminders / Todoist export.</p></article><article><span class="status-badge qa">Release candidate · v3.4</span><h3>More connections, in QA</h3><p>Asana and monday.com export, Claude Desktop and ChatGPT MCP connections, plus the expanded in-app visual-notes gallery. Implementation is present; real-client and live-destination checks remain before release.</p></article></div></section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-logo">
-          <img src="assets/logo-light.png" alt="Tagalong">
-        </div>
-        <div class="footer-tagline">Every meeting, remembered.</div>
-        <div class="footer-bottom">
-          <div class="footer-left">&copy; 2026 Tagalong. All rights reserved.</div>
-          <ul class="footer-links">
-            <li><a href="/privacy">Privacy</a></li>
-            <li><a href="/terms">Terms</a></li>
-            <li><a href="/guide">Guide</a></li>
-            <li><a href="https://github.com/tagalong-ai" target="_blank" rel="noopener">GitHub</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <section class="faq-section page-width" aria-labelledby="faq-title"><div><p class="eyebrow">A FEW THINGS TO KNOW</p><h2 id="faq-title">Good questions.</h2><p>Need a hand?<br><a href="mailto:support@tagalongai.com">support@tagalongai.com</a></p></div><div class="home-faq-list"><details><summary>What’s included in the Free tier?</summary><p>Free includes five meetings per month, microphone recording, basic AI summaries, Markdown export, and speaker editing. Pro adds the full feature set, including conference audio, AI assistance, enhanced notes, visual notes, search, and task export.</p></details><details><summary>Does a bot join my meetings?</summary><p>No. Tagalong records from your Mac using microphone or system audio capture. Give participants appropriate notice and get any permission you need before recording.</p></details><details><summary>Does everything run offline?</summary><p>No. Your saved files and library search are local. Live speech recognition can run on-device where supported, but cloud transcription and AI features send audio or relevant text for processing. <a href="#your-data">See what stays local and what is sent.</a></p></details><details><summary>Can I keep my own notes?</summary><p>Yes. Take personal notes during the meeting and enhance them with transcript context afterward. The app preserves the original notes so you can revisit your own wording.</p></details><details><summary>Do exported tasks stay in sync?</summary><p>No. You select tasks and initiate one-way creation in a destination. Later edits or completion do not synchronize between Tagalong and the task manager. Asana and monday.com are still in QA.</p></details><details><summary>Can I connect Claude or ChatGPT now?</summary><p>The v3.4 connector implementation is a release candidate, not part of the public v3.3.2 download. Claude uses a local desktop extension. ChatGPT requires a private Secure MCP Tunnel and eligible workspace setup. <a href="#connections">Read the candidate setup details.</a></p></details><details><summary>Which Macs are supported?</summary><p>Tagalong requires macOS 15 Sequoia or later and supports Apple silicon and Intel Macs. Download the DMG, install the app, and follow the <a href="/guide">getting-started guide</a> for permissions and plan setup.</p></details></div></section>
 
-  <script>
-    // Mobile menu toggle
-    (function () {
-      var btn = document.getElementById('mobileMenuBtn');
-      var links = document.getElementById('navLinks');
-
-      btn.addEventListener('click', function () {
-        links.classList.toggle('mobile-open');
-      });
-
-      links.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () {
-          links.classList.remove('mobile-open');
-        });
-      });
-    })();
-
-    // FAQ accordion
-    (function () {
-      document.querySelectorAll('.faq-question').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var item = btn.parentElement;
-          var isOpen = item.classList.contains('open');
-
-          document.querySelectorAll('.faq-item.open').forEach(function (el) {
-            el.classList.remove('open');
-          });
-
-          if (!isOpen) {
-            item.classList.add('open');
-          }
-        });
-      });
-    })();
-
-    // Initialize Lucide icons
-    lucide.createIcons();
-
-    // Intersection Observer for scroll animations
-    (function () {
-      if (!('IntersectionObserver' in window)) {
-        document.querySelectorAll('.animate-in').forEach(function (el) {
-          el.classList.add('visible');
-        });
-        return;
-      }
-
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-      document.querySelectorAll('.animate-in').forEach(function (el) {
-        observer.observe(el);
-      });
-    })();
-  </script>
-
-  <!-- APP DEMO ANIMATION (hand-built) -->
-  <script>
-  (function(){
-    var vp = document.getElementById('tgdViewport'), stage = document.getElementById('tgdStage');
-    if (!vp || !stage) return;
-    function fit(){
-      var w = vp.clientWidth, sc = Math.min(1, w / 854);
-      stage.style.transform = 'scale(' + sc + ')';
-      vp.style.height = (936 * sc) + 'px';
-    }
-    fit(); window.addEventListener('resize', fit);
-    if (window.lucide) lucide.createIcons();
-
-    var $ = function(id){ return document.getElementById(id); };
-    var orig = $('tgdOrig'), rich = $('tgdRich'), cta = $('tgdEnhCta'), done = $('tgdEnhDone'),
-        btn = $('tgdEnhBtn'), segE = $('tgdSegEnh'), segO = $('tgdSegOrig'), visual = $('tgdVisual'),
-        caption = $('tgdCaption'), dots = $('tgdDots'), metaVis = $('tgdMetaVis'),
-        recbar = $('tgdRecbar'), recTime = $('tgdRecTime'), pillDot = $('tgdRecPillDot'), pillLbl = $('tgdRecPillLbl'), visBtn = $('tgdVisBtn'), visChip = $('tgdVisChip');
-    var recSecs = 1292, recIv = null;
-    function recStart(){
-      recbar.classList.add('show');
-      pillLbl.textContent = 'Recording\u2026'; pillDot.classList.add('tgd-recpulse');
-      recSecs = 1292;
-      recIv = setInterval(function(){
-        recSecs++;
-        var m = Math.floor(recSecs/60), sec = recSecs%60;
-        recTime.textContent = m + ':' + (sec<10?'0':'') + sec;
-      }, 1000);
-      timers.push(recIv);
-    }
-    function recStop(){
-      if (recIv) clearInterval(recIv);
-      recbar.classList.remove('show');
-      pillLbl.textContent = 'Record'; pillDot.classList.remove('tgd-recpulse');
-    }
-    if (!orig || !rich || !caption) return;
-    var lines = orig.querySelectorAll('.tgd-p.short');
-    var richLines = rich.querySelectorAll('.tgd-p');
-    var timers = [], running = false;
-
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) { caption.textContent = 'One tap: Enhance rewrites your shorthand with specifics from the transcript.'; if (dots) dots.style.display = 'none'; return; }
-
-    function T(fn, ms){ timers.push(setTimeout(fn, ms)); }
-    function clearAll(){ timers.forEach(clearTimeout); timers = []; }
-    function setDots(n){ if (!dots) return; var is = dots.children; for (var i=0;i<is.length;i++) is[i].className = (i===n) ? 'on' : ''; }
-    function say(text){ caption.classList.add('fade'); T(function(){ caption.textContent = text; caption.classList.remove('fade'); }, 400); }
-    function segTo(enhanced){ if (!segE) return; segE.className = enhanced ? 'on' : ''; segO.className = enhanced ? '' : 'on'; }
-
-    function typeLine(el, delay, speed){
-      var text = el.getAttribute('data-line'), txt = el.querySelector('.txt');
-      T(function(){
-        el.classList.add('typing');
-        var i = 0;
-        var iv = setInterval(function(){
-          i++; txt.textContent = text.slice(0, i);
-          if (i >= text.length) { clearInterval(iv); el.classList.remove('typing'); el.classList.add('done'); }
-        }, speed);
-        timers.push(iv);
-      }, delay);
-    }
-
-    function resetState(){
-      lines.forEach(function(el){ el.querySelector('.txt').textContent = ''; el.classList.remove('typing','done'); });
-      richLines.forEach(function(el){ el.classList.remove('wash'); });
-      rich.classList.remove('show','blur'); orig.classList.add('show');
-      done.classList.remove('show'); cta.classList.remove('show'); done.parentElement.classList.remove('open');
-      segTo(false); visual.classList.remove('show'); if (metaVis) metaVis.classList.remove('active');
-      recTime.textContent = '21:32'; if (visBtn) { visBtn.classList.remove('press','gen'); visBtn.querySelector('.lbl').textContent = 'Generate Visual Note'; visBtn.style.display = ''; } if (visChip) visChip.style.display = 'none';
-    }
-
-    function run(){
-      clearAll(); recStop(); resetState();
-      // Scene 1 — recording + shorthand typing (0–11s)
-      setDots(0); say('Take shorthand while Tagalong captures the meeting.');
-      recStart();
-      var t0 = 900, speed = 26;
-      lines.forEach(function(el, i){
-        typeLine(el, t0, speed);
-        t0 += el.getAttribute('data-line').length * speed + 480;
-      });
-      // Scene 2 — meeting ends, Enhance (11–20.5s)
-      T(function(){ recStop(); T(function(){ cta.parentElement.classList.add('open'); cta.classList.add('show'); }, 550); }, 10600);
-      T(function(){
-        setDots(1); say('One tap: Enhance rewrites your notes with specifics from the transcript.');
-        btn.classList.add('press');
-        T(function(){ btn.classList.remove('press'); }, 300);
-        T(function(){
-          cta.classList.remove('show'); done.classList.add('show'); segTo(true);
-          orig.classList.add('blur'); orig.classList.remove('show');
-          T(function(){ orig.classList.remove('blur'); }, 700);
-          rich.classList.add('show');
-          richLines.forEach(function(el, i){ T(function(){ el.classList.add('wash'); }, 150 + i*260); });
-        }, 650);
-      }, 12300);
-      // Scene 3 — toggle Original / Enhanced (20.5–27s)
-      T(function(){
-        setDots(2); say('Your original is always one toggle away.');
-        segTo(false); rich.classList.remove('show'); orig.classList.add('show');
-      }, 20600);
-      T(function(){
-        segTo(true); orig.classList.remove('show'); rich.classList.add('show');
-      }, 24000);
-      // Scene 4 — generate the visual note, fitted in the pane (27–37.4s)
-      T(function(){
-        setDots(3); say('One more tap: a visual note of the meeting.');
-        visBtn.classList.add('press');
-        T(function(){ visBtn.classList.remove('press'); visBtn.classList.add('gen'); visBtn.querySelector('.lbl').textContent = 'Generating\u2026'; }, 350);
-      }, 27000);
-      T(function(){
-        visBtn.classList.remove('gen'); visBtn.style.display = 'none'; visChip.style.display = '';
-        if (metaVis) metaVis.classList.add('active');
-        visual.classList.add('show');
-      }, 29400);
-      T(function(){ visual.classList.remove('show'); if (metaVis) metaVis.classList.remove('active'); }, 36200);
-      // loop
-      T(run, 37600);
-    }
-
-    var started = false;
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if (e.isIntersecting && !started) { started = true; run(); }
-          else if (!e.isIntersecting && started) { started = false; clearAll(); recStop(); }
-        });
-      }, { threshold: 0.3 });
-      io.observe(vp);
-    } else { run(); }
-  })();
-  </script>
+  <section class="closing-section page-width"><div class="closing-inner"><p class="eyebrow">BE THERE. BRING IT ALL BACK.</p><h2>Make your next meeting<br>worth coming back to.</h2><div class="button-row"><a class="button button-light" href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg">Download Tagalong for Mac <span aria-hidden="true">↗</span></a><a class="closing-link" href="/guide">Read the guide ↗</a></div><p>macOS 15+ · Your meeting workspace starts here.</p></div><img class="closing-dog" src="assets/logo-light-stacked.png" alt="" width="156" height="180" loading="lazy"></section>
+</main>
+<footer class="page-width site-footer"><div><a class="wordmark" href="/" aria-label="Tagalong home"><img src="assets/logo-light.png" alt="Tagalong" width="154" height="69"></a><p>Every meeting, remembered.</p></div><nav aria-label="Footer navigation"><a href="#pricing">Pricing</a><a href="/guide">Guide</a><a href="/changelog">Changelog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:support@tagalongai.com">Support</a><a href="https://github.com/tagalong-ai/releases/releases/latest">Downloads</a></nav><span class="copyright">© 2026 Tagalong</span></footer>
+<dialog id="capture-dialog" aria-labelledby="capture-dialog-title"><div class="dialog-top"><h2 id="capture-dialog-title">Tagalong · Example meeting</h2><button id="capture-close" aria-label="Close app preview">Close ×</button></div><p class="capture-pan-hint">Native Mac app view · Fictional content. Scroll sideways to explore on a small screen.</p><div class="capture-scroll" tabindex="0" aria-label="Full-size native app preview. Scroll horizontally to see the whole window."><video id="capture-video" hidden controls muted playsinline width="1100" height="812" aria-label="Animated Tagalong app preview"></video><img id="capture-image" src="assets/app-captures/app-recording-1100.png" alt="Tagalong native app preview with a fictional meeting" width="1100" height="812"></div></dialog>
+<dialog id="gallery-dialog" aria-labelledby="gallery-dialog-title"><div class="dialog-top"><h2 id="gallery-dialog-title">Visual-note example</h2><button id="gallery-close" aria-label="Close visual-note example">Close <span aria-hidden="true">×</span></button></div><img id="gallery-dialog-image" src="assets/visual-notes/sketchnote.jpg" alt="Illustrative sketchnote about simplifying onboarding" width="1536" height="1024"><p>Illustrative AI-generated artwork · Synthetic meeting content</p></dialog>
 </body>
 </html>

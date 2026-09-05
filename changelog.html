@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changelog — Tagalong</title>
+  <meta name="description" content="See what is new in Tagalong 3.3.2 and browse the release history for the Tagalong meeting notepad for Mac.">
+  <meta property="og:title" content="Tagalong Changelog">
+  <meta property="og:description" content="New features, improvements, and fixes in Tagalong for Mac.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tagalongai.com/changelog">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .changelog-hero {
+      padding: 136px 0 64px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--surface-secondary) 58%, var(--bg) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .changelog-hero::before {
+      content: '';
+      position: absolute;
+      width: 720px;
+      height: 420px;
+      top: -160px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, var(--secondary-subtle) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .changelog-hero .section-label { position: relative }
+    .changelog-hero h1 {
+      position: relative;
+      font-size: 48px;
+      line-height: 1.12;
+      letter-spacing: -.03em;
+      margin-bottom: 16px;
+    }
+    .changelog-hero p {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+      color: var(--text-secondary);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    .changelog-content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 64px 24px 96px;
+    }
+    .release {
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: 32px;
+      padding: 0 0 56px;
+      position: relative;
+      scroll-margin-top: 88px;
+    }
+    .release:last-child { padding-bottom: 0 }
+    .release-meta {
+      position: relative;
+      padding-top: 3px;
+    }
+    .release-meta::after {
+      content: '';
+      position: absolute;
+      top: 11px;
+      right: -20px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--secondary);
+      z-index: 1;
+    }
+    .release:not(:last-child) .release-meta::before {
+      content: '';
+      position: absolute;
+      top: 22px;
+      bottom: -49px;
+      right: -16px;
+      width: 1px;
+      background: var(--border);
+    }
+    .release-version {
+      display: block;
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .release-date {
+      display: block;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .release-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 30px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.04);
+    }
+    .release-latest .release-card {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 1px var(--secondary-subtle), var(--card-shadow);
+    }
+    .release-latest .release-meta::after {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-subtle);
+    }
+    .release-card > .feature-tag { margin: 0 0 14px }
+    .release-card h2 {
+      font-size: 25px;
+      line-height: 1.25;
+      letter-spacing: -.015em;
+      margin-bottom: 10px;
+    }
+    .release-card > p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+    .release-card > p:last-child { margin-bottom: 0 }
+    .release-notes {
+      list-style: none;
+      display: grid;
+      gap: 14px;
+    }
+    .release-notes li {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px;
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .release-notes .note-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-subtle);
+      color: var(--accent);
+      margin-top: 1px;
+    }
+    .release-notes li:nth-child(even) .note-icon {
+      background: var(--secondary-subtle);
+      color: var(--secondary);
+    }
+    .release-notes svg { width: 17px; height: 17px; stroke-width: 1.8 }
+    .release-notes strong { color: var(--text); font-weight: 600 }
+    .compact-notes {
+      margin: 0 0 0 20px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .compact-notes li { margin-bottom: 6px }
+    .compact-notes li:last-child { margin-bottom: 0 }
+    .release-archive {
+      text-align: center;
+      margin-top: 64px;
+      padding: 30px;
+      border-radius: var(--radius);
+      background: var(--surface-secondary);
+      border: 1px solid var(--border);
+    }
+    .release-archive h2 { font-size: 20px; margin-bottom: 8px }
+    .release-archive p { color: var(--text-secondary); margin-bottom: 18px }
+
+    @media (max-width: 768px) {
+      .changelog-hero { padding: 112px 0 52px }
+      .changelog-hero h1 { font-size: 36px }
+      .changelog-hero p { font-size: 16px; padding: 0 20px }
+      .changelog-content { padding-top: 48px }
+      .release { grid-template-columns: 1fr; gap: 12px; padding-bottom: 40px }
+      .release-meta { display: flex; align-items: baseline; gap: 10px; padding-left: 18px }
+      .release-meta::after { left: 0; right: auto; top: 9px }
+      .release:not(:last-child) .release-meta::before { display: none }
+      .release-date { margin-top: 0 }
+      .release-card { padding: 24px 22px }
+    }
+
+    @media (max-width: 480px) {
+      .changelog-hero h1 { font-size: 30px }
+      .release-notes li { grid-template-columns: 30px minmax(0, 1fr); gap: 10px }
+      .release-notes .note-icon { width: 30px; height: 30px }
+      .release-card h2 { font-size: 22px }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <img src="assets/logo-light.png" alt="Tagalong">
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/guide">Guide</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+        <li><a href="/changelog" class="active">Changelog</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-primary">Download</a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="changelog-hero">
+    <div class="container animate-in">
+      <div class="section-label">Changelog</div>
+      <h1>What&rsquo;s new in Tagalong</h1>
+      <p>New ways to stay in the conversation, plus the fixes and refinements that keep your meetings moving.</p>
+    </div>
+  </header>
+
+  <main class="changelog-content">
+    <article class="release release-latest animate-in" id="v3-3-2">
+      <div class="release-meta">
+        <span class="release-version">3.3.2</span>
+        <time class="release-date" datetime="2026-07-23">July 23, 2026</time>
+      </div>
+      <div class="release-card">
+        <span class="feature-tag">Latest</span>
+        <h2>Calendar connection polish</h2>
+        <p>The Outlook calendar picker now appears right after connecting (no relaunch needed), the Home screen recognizes a connected Microsoft 365 account, and the Connect Calendar card takes you to Calendar settings to choose a source instead of assuming Apple Calendar.</p>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v3-3-1">
+      <div class="release-meta">
+        <span class="release-version">3.3.1</span>
+        <time class="release-date" datetime="2026-07-23">July 23, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Quieter keychain</h2>
+        <p>Tagalong no longer triggers recurring macOS keychain password dialogs. Launch checks stopped reading stored secrets unnecessarily, and leftover items from older versions are now cleaned up automatically &mdash; at most one final approval dialog, then silence.</p>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v3-3-0">
+      <div class="release-meta">
+        <span class="release-version">3.3.0</span>
+        <time class="release-date" datetime="2026-07-23">July 23, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Your Outlook calendar, connected</h2>
+        <p>Version 3.3 connects Tagalong directly to Outlook and Microsoft 365 &mdash; and gives you control over exactly which calendars feed your meeting list.</p>
+        <ul class="release-notes">
+          <li>
+            <span class="note-icon"><i data-lucide="calendar-plus"></i></span>
+            <span><strong>Connect Outlook directly.</strong> Sign in with your Microsoft 365 or personal Outlook account from Settings &rarr; Calendar. Upcoming meetings appear alongside Apple Calendar events &mdash; no macOS account setup required.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="list-checks"></i></span>
+            <span><strong>Pick your calendars.</strong> New dropdowns for both Apple and Outlook calendars choose exactly which ones feed your upcoming meetings &mdash; and Tagalong now reads every Outlook calendar in your account, not just the default one.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="calendar-check"></i></span>
+            <span><strong>Connect Apple Calendar from Settings.</strong> Grant calendar access right in the Calendar section, with a direct path to System Settings if access was previously turned off.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="shield-check"></i></span>
+            <span><strong>Clearer guidance when your workplace requires approval.</strong> If your organization gates new apps behind IT review, Tagalong now explains what happened in plain language and provides the approval link to send your admin.</span>
+          </li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v3-2-0">
+      <div class="release-meta">
+        <span class="release-version">3.2.0</span>
+        <time class="release-date" datetime="2026-07-22">July 22, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Stay in the meeting, on your terms</h2>
+        <p>Version 3.2 adds more control while you record, makes the library easier to navigate, and smooths out several important workflows.</p>
+        <ul class="release-notes">
+          <li>
+            <span class="note-icon"><i data-lucide="mic-off"></i></span>
+            <span><strong>Mute yourself.</strong> Silence your microphone with one click or <span aria-label="Command Shift M">&#8984;&#8679;M</span> while Tagalong keeps capturing the meeting audio and maintaining a continuous transcript timeline. Muting never triggers silence detection or auto-stop.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="layout-grid"></i></span>
+            <span><strong>The Visual Notes gallery is back.</strong> Browse every visual note in a searchable thumbnail grid and open a full-size preview in the app.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="text-cursor-input"></i></span>
+            <span><strong>Click to rename.</strong> Edit meeting names in place from the recording view, meeting page, sidebar, or Home. Click away to save, or press Esc to cancel.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="credit-card"></i></span>
+            <span><strong>Manage your subscription.</strong> Open the Stripe customer billing portal from Settings to update your payment method or cancel.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="mic"></i></span>
+            <span><strong>Know what is recording.</strong> Microphone menus show each device&rsquo;s actual name, keep the list current, and mark the active input with a check.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="calendar"></i></span>
+            <span><strong>Connect a Microsoft 365 calendar.</strong> Settings explains how to add an Exchange account through Internet Accounts, including the administrator approval some workplaces require. A more direct Outlook connection is coming in a future update.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="message-circle"></i></span>
+            <span><strong>Ask questions mid-meeting with confidence.</strong> A second live question no longer risks freezing Tagalong, answers update smoothly, and clearing a response while it arrives is safe. Post-meeting chat gets the same steadier behavior.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="video"></i></span>
+            <span><strong>Join Zoom calls without audio getting stuck.</strong> Tagalong waits until the call is ready before connecting to meeting audio, steps aside while meeting apps or audio devices start, and reconnects automatically afterward.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="sparkles"></i></span>
+            <span><strong>A smoother first recording.</strong> New subscribers are no longer asked for setup they do not need. Live transcription works in the first session, Conference Mode is the default for Pro, permissions appear at the right time, and the menu bar icon shows reliably.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="file-audio"></i></span>
+            <span><strong>Large and cloud-stored imports stay responsive.</strong> Preparing speaker previews and saving transcripts no longer blocks the window, cloud downloads show progress, and imported audio keeps a dependable playback option.</span>
+          </li>
+          <li>
+            <span class="note-icon"><i data-lucide="save"></i></span>
+            <span><strong>Save Audio remembers your choice.</strong> The setting persists after relaunching, and Tagalong deletes a recording only after its transcript has been safely saved.</span>
+          </li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v3-1-1">
+      <div class="release-meta">
+        <span class="release-version">3.1.1</span>
+        <time class="release-date" datetime="2026-07-10">July 10, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Reliable post-meeting processing</h2>
+        <p>Recordings no longer finish with an empty transcript when a sign-in quietly expires. Tagalong refreshes access before processing, shows a retry when something truly fails, and repairs affected meetings when you open them without losing their notes, summary, or original date. Uploads retry dropped connections, and cloud-stored recordings are handled more safely.</p>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v3-1-0">
+      <div class="release-meta">
+        <span class="release-version">3.1.0</span>
+        <time class="release-date" datetime="2026-07-03">July 3, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>A real meeting notepad</h2>
+        <ul class="compact-notes">
+          <li>A continuous rich-text notepad with familiar formatting, lists, checklists, headings, links, and keyboard shortcuts.</li>
+          <li>Ambient timestamps connect notes to the moment they were written.</li>
+          <li>Enhance My Notes rewrites and expands the full document while preserving exactly what you wrote for comparison or a full revert.</li>
+          <li>Visual Notes gained a page-turning sketchbook view for browsing by month in this release.</li>
+          <li>Conference recordings show both sides live, with a pre-flight check so you know the meeting is being captured.</li>
+          <li>Typing stays on the right line, the title bar follows your appearance setting, and valid notes enhance reliably.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v3-0-0">
+      <div class="release-meta">
+        <span class="release-version">3.0.0</span>
+        <time class="release-date" datetime="2026-07-02">July 2, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Instant, on-device live transcription</h2>
+        <ul class="compact-notes">
+          <li>Live words appear as you speak using on-device recognition where supported. Cloud fallback may send audio for transcription when needed.</li>
+          <li>A truthful scrolling waveform and split conference meters show whether your voice and meeting audio are being captured.</li>
+          <li>Automatic action items arrive with owners and priorities, ready for Reminders, Todoist, or the clipboard.</li>
+          <li>Summaries put a short overview and decisions first, with topic links into the details.</li>
+          <li>Consistent speaker colors, avatars, talk-time views, search stepping, and clickable playback make transcripts easier to follow.</li>
+          <li>First-run setup, the free-tier meter, checkout, and conference checks were rebuilt, with newer AI behind summaries, speaker identification, and Visual Notes.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v2-5-3">
+      <div class="release-meta">
+        <span class="release-version">2.5.3</span>
+        <time class="release-date" datetime="2026-07-02">July 2, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Visual Note generation restored</h2>
+        <p>Visual Note generation works again after its previous image option was retired, with the same styles, palettes, and aspect ratios.</p>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v2-5-2">
+      <div class="release-meta">
+        <span class="release-version">2.5.2</span>
+        <time class="release-date" datetime="2026-07-02">July 2, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Privacy, update, and audio safeguards</h2>
+        <p>Pause now records nothing, downloaded updates are checked before installation, and saved Slack and Notion credentials receive stronger protection. Microphone changes stay in sync, save failures show a warning, cloud-stored recordings open reliably, and one meeting's text can no longer appear in the next.</p>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v2-5-1">
+      <div class="release-meta">
+        <span class="release-version">2.5.1</span>
+        <time class="release-date" datetime="2026-07-01">July 1, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Long-meeting reliability</h2>
+        <p>Long conference meetings finish without freezing, interrupted work no longer leaves broken playback behind, and speaker identification shows clear progress instead of spinning forever. Large imports also stay responsive.</p>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v2-5-0">
+      <div class="release-meta">
+        <span class="release-version">2.5.0</span>
+        <time class="release-date" datetime="2026-07-01">July 1, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Cleaner, safer conference audio</h2>
+        <ul class="compact-notes">
+          <li>Recurring meetings never overwrite one another, even when their names match.</li>
+          <li>Your microphone and remote participants are captured separately for clearer, echo-free playback.</li>
+          <li>Speaker previews play the participant you selected instead of sound leaking through your microphone.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v2-3-1">
+      <div class="release-meta">
+        <span class="release-version">2.3.1</span>
+        <time class="release-date" datetime="2026-06-29">June 29, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Meeting reminders and recording controls</h2>
+        <p>Fixed meeting notifications and silence auto-stop, then expanded the menu-bar quick menu with meeting context, Settings, recordings-folder access, and one-click recording.</p>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v2-3-0">
+      <div class="release-meta">
+        <span class="release-version">2.3.0</span>
+        <time class="release-date" datetime="2026-06-29">June 29, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Cleaner recordings</h2>
+        <p>Conference audio loses its scratchy background roughness, loud voices sound natural instead of harsh, and switching microphones or connecting AirPods no longer garbles, pitch-shifts, or clicks through part of a meeting.</p>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v2-2-x">
+      <div class="release-meta">
+        <span class="release-version">2.2.x</span>
+        <time class="release-date" datetime="2026-04-06">April 6, 2026</time>
+      </div>
+      <div class="release-card">
+        <h2>Smoother recording and device switching</h2>
+        <ul class="compact-notes">
+          <li>Recording became faster and steadier, with background saving that reduces glitches.</li>
+          <li>Tagalong falls back to the built-in microphone when AirPods cannot provide an input and no longer freezes when devices change mid-recording.</li>
+          <li>A visible countdown makes prolonged silence clear, and the microphone selector works reliably during meetings.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="release animate-in" id="v2-1-and-earlier">
+      <div class="release-meta">
+        <span class="release-version">2.1 and earlier</span>
+        <time class="release-date">Before April 6, 2026</time>
+      </div>
+      <div class="release-card">
+        <p>2.1 and earlier — the first public releases.</p>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <img src="assets/logo-light.png" alt="Tagalong">
+        </div>
+        <div class="footer-tagline">Every meeting, remembered.</div>
+        <div class="footer-bottom">
+          <div class="footer-left">&copy; 2026 Tagalong. All rights reserved.</div>
+          <ul class="footer-links">
+            <li><a href="/privacy">Privacy</a></li>
+            <li><a href="/terms">Terms</a></li>
+            <li><a href="/guide">Guide</a></li>
+            <li><a href="/changelog">Changelog</a></li>
+            <li><a href="https://github.com/tagalong-ai" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var button = document.getElementById('mobileMenuBtn');
+      var links = document.getElementById('navLinks');
+      button.addEventListener('click', function () {
+        var isOpen = links.classList.toggle('mobile-open');
+        button.setAttribute('aria-expanded', String(isOpen));
+      });
+    })();
+
+    (function () {
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.animate-in').forEach(function (element) {
+          element.classList.add('visible');
+        });
+        return;
+      }
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+      document.querySelectorAll('.animate-in').forEach(function (element) {
+        observer.observe(element);
+      });
+    })();
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

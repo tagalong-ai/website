@@ -1,0 +1,92 @@
+/* App UI is rendered by SwiftUI/AppKit from the current source. Only the tour frame is web UI. */
+.native-tour { max-width:880px; margin-inline:auto }
+.native-tour-stage { position:relative }
+.native-tour figure { margin:0 0 40px }
+.native-tour picture { display:block; overflow:hidden; border:1px solid #d7d9d2; border-radius:12px; background:#fafaf7; box-shadow:0 20px 65px -25px #29452f40 }
+.native-tour img { display:block; width:100%; height:auto; aspect-ratio:1100 / 812; object-fit:contain }
+.native-tour figcaption { min-height:115px; padding:25px 4px 16px; max-width:780px }
+.native-tour figcaption h3 { font-size:22px; line-height:1.3; letter-spacing:-.025em; margin:0 0 7px }
+.native-tour figcaption p { font-size:15px; color:#5a5a5a; line-height:1.6; margin:0 }
+.native-tour.tour-ready figure { margin:0 }
+.native-tour-controls { border-top:1px solid #dedfd6; padding-block:18px 0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px }
+.native-tour-chapters { display:flex; flex-wrap:wrap; gap:5px }
+.native-tour-chapters button,.native-tour-playback button { font:inherit; cursor:pointer; border:1px solid transparent; border-radius:7px; padding:9px 11px; color:#51594f; background:transparent; font-size:13px; min-height:44px; line-height:1.4 }
+.native-tour-chapters button:hover,.native-tour-playback button:hover { background:#edf1e9; color:#215f34 }
+.native-tour-chapters button[aria-selected=true] { background:#e7f0e2; border-color:#bed5b3; color:#226b38; font-weight:650 }
+.native-tour-playback { display:flex; align-items:center; gap:6px; flex-wrap:wrap }
+.native-tour-playback>span { font-size:12px; color:#60685e; font-variant-numeric:tabular-nums; padding-right:6px }
+.native-tour-playback button { border-color:#d8ddd1; background:#fff }
+.native-tour :focus-visible { outline:3px solid #2d7d46; outline-offset:4px }
+.native-tour [role=tabpanel]:focus-visible { border-radius:12px }
+@media (prefers-reduced-motion:no-preference) {
+ .native-tour.is-animating [data-tour-panel]:not([hidden]) picture { animation:native-reveal .35s ease-out }
+ @keyframes native-reveal { from {opacity:.65} to {opacity:1} }
+}
+@media (max-width:800px) {
+ .native-tour-controls { justify-content:center }
+ .native-tour-chapters { justify-content:center }
+ .native-tour figcaption { min-height:130px }
+}
+@media (max-width:600px) {
+
+ .native-tour picture { border-radius:10px; box-shadow:0 12px 35px -20px #29452f40 }
+ .native-tour figcaption { padding-top:20px; min-height:165px }
+ .native-tour figcaption h3 { font-size:20px }
+ .native-tour figcaption p { font-size:14px }
+ .native-tour-chapters { gap:4px; width:100%; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)) }
+ .native-tour-chapters button { padding:8px 3px; font-size:12px }
+ .native-tour-playback { width:100%; justify-content:center }
+}
+
+.native-tour.is-animating picture[data-tour-frame]:not([hidden]) { animation:none }
+
+.homepage #capture-dialog { max-width:1200px; width:calc(100% - 32px); padding:20px }
+.homepage .capture-scroll { overflow:auto; max-height:calc(100dvh - 180px); border:1px solid #d7d9d2; border-radius:8px }
+.homepage #capture-image { display:block; width:1100px; max-width:none; height:auto }
+.homepage .capture-pan-hint { margin:0 0 12px; font-size:13px; color:#5a5a5a }
+@media(max-width:600px) {
+ .native-tour figcaption { min-height:165px }
+ .homepage #capture-dialog { padding:12px; width:calc(100% - 16px) }
+ .native-tour-playback button { font-size:12px; padding-inline:8px }
+}
+
+/* Prominent controls precede the app window at every width. */
+.native-tour-controls { display:grid; grid-template-columns:1fr; padding:18px; margin-bottom:20px; border:1px solid #ccd8c6; border-radius:14px; background:#f0f5ec; gap:14px }
+.native-tour-control-heading { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px }
+.native-tour-control-heading strong { font-size:17px; color:#243d29 }
+.native-tour-control-heading>span { font-size:13px; color:#45694c }
+.native-tour-chapters { display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:7px; counter-reset:chapter }
+.native-tour-chapters button { min-height:66px; padding:9px 5px; border:1px solid #d6dfcf; background:#fff; font-size:13px; font-weight:600; line-height:1.3; box-shadow:0 2px 3px #243d2905; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px; counter-increment:chapter }
+.native-tour-chapters button::before { content:counter(chapter,decimal-leading-zero); font-size:11px; color:#76846e; font-weight:500; letter-spacing:.04em }
+.native-tour-chapters button[aria-selected=true] { background:#2d7d46; border-color:#2d7d46; color:#fff; box-shadow:0 3px 8px #2d7d4622 }
+.native-tour-chapters button[aria-selected=true]::before { color:#d4ead7 }
+.native-tour-playback { justify-content:flex-end }
+.native-tour-playback [data-tour-expand] { margin-right:auto }
+.native-tour-media { position:relative }
+.native-tour-media video { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; border:1px solid #d7d9d2; border-radius:12px; background:#fafaf7 }
+.homepage #capture-video { display:block; width:1100px; max-width:none; height:auto }
+@media (max-width:900px) { .native-tour-chapters { grid-template-columns:repeat(4,minmax(0,1fr)) } }
+@media (max-width:600px) {
+ .native-tour-controls { padding:12px; margin-bottom:14px; gap:12px }
+ .native-tour-control-heading strong { font-size:16px }
+ .native-tour-control-heading>span { font-size:12px }
+ .native-tour-chapters { gap:6px }
+ .native-tour-chapters button { font-size:12px; min-height:65px; padding:8px 3px }
+ .native-tour-playback { justify-content:space-between; gap:6px }
+ .native-tour-playback [data-tour-expand] { margin-right:0 }
+ .native-tour-media video { border-radius:10px }
+}
+
+/* Keep the native 1100px clips below their encoded size for crisp text and a
+   shorter window. Playback controls share the heading row on desktop. */
+@media (min-width:761px) {
+ .native-tour-controls { grid-template-columns:1fr auto; padding:14px; gap:12px; margin-bottom:16px }
+ .native-tour-control-heading { grid-column:1; grid-row:1; display:block }
+ .native-tour-control-heading strong { display:block; font-size:15px; line-height:1.4 }
+ .native-tour-control-heading>span { display:block; font-size:12px }
+ .native-tour-playback { grid-column:2; grid-row:1; gap:5px }
+ .native-tour-playback button { padding:7px 9px; font-size:12px; min-height:38px }
+ .native-tour-chapters { grid-column:1 / -1; grid-row:2; grid-template-columns:repeat(8,minmax(0,1fr)) }
+ .native-tour-chapters button { min-height:58px; font-size:12px; padding:7px 3px }
+ .native-tour figcaption { min-height:100px; padding-top:18px }
+}
