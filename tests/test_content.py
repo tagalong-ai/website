@@ -48,8 +48,15 @@ class PublishingTests(unittest.TestCase):
         self.edit('draft: false', 'draft: true')
         out = self.build()
         self.assertFalse((out / 'blog/meeting-data-on-your-mac').exists())
-        for path in ['sitemap.xml', 'feed.xml', 'collections/meeting-notes/index.html']:
+        for path in ['sitemap.xml', 'feed.xml']:
             self.assertNotIn('/blog/meeting-data-on-your-mac/', (out / path).read_text())
+        collection = checker.Document((out / 'collections/meeting-notes/index.html').read_text())
+        schema = next(s for s in collection.structured[0]['@graph'] if s['@type'] == 'CollectionPage')
+        self.assertNotIn('meeting-data-on-your-mac', str(schema.get('mainEntity', {})))
+        self.assertNotIn('meeting-data-on-your-mac', (out / 'blog/index.html').read_text())
+        for post in self.post.parent.glob('*.md'):
+            post.write_text(post.read_text().replace('draft: false', 'draft: true'))
+        out = self.build()
         self.assertIn('noindex', (out / 'blog/index.html').read_text())
     def test_preview_includes_drafts_but_excludes_search_feeds(self):
         self.edit('draft: false', 'draft: true')
@@ -102,7 +109,7 @@ class PublishingTests(unittest.TestCase):
         config = self.root / 'content/site.json'
         site = json.loads(config.read_text()); site['postsPerPage'] = 1
         config.write_text(json.dumps(site))
-        (self.post.parent / 'second-article.md').write_text(self.post.read_text().replace('Your meeting files on your Mac:', 'A second article:'))
+        (self.post.parent / 'second-article.md').write_text(self.post.read_text().replace('Your meeting files on your Mac:', 'A second article:').replace('Local Meeting Notes vs Cloud AI:', 'Second Article:').replace('See what Tagalong stores', 'Another guide to what Tagalong stores'))
         out = self.build()
         self.assertIn('href="https://tagalongai.com/blog/page/2/"', (out / 'blog/page/2/index.html').read_text())
         self.assertIn('href="/blog/page/2/"', (out / 'blog/index.html').read_text())
@@ -128,6 +135,30 @@ class PublishingTests(unittest.TestCase):
         self.assertIn('AT A GLANCE', html)
         self.assertIn('Questions &amp; answers', html)
         self.assertNotIn('aggregateRating', html)
+
+    def test_editorial_images_have_intrinsic_dimensions_and_safe_paths(self):
+        rendered, _ = builder.markdown('![Synthetic visual](/assets/visual-notes/sketchnote.jpg)')
+        self.assertIn('width="1536"', rendered)
+        self.assertIn('height="1024"', rendered)
+        self.assertIn('loading="lazy"', rendered)
+        self.assertEqual(builder.image_dimensions('/assets/../../content/site.json'), {})
+        self.assertEqual(builder.image_dimensions('https://example.com/remote.jpg'), {})
+    def test_checker_rejects_duplicate_metadata_and_heading_ids(self):
+        out = self.build()
+        page = out / 'blog/meeting-data-on-your-mac/index.html'
+        html = page.read_text().replace('</head>', '<meta name="description" content="duplicate"></head>')
+        html = html.replace('</main>', '<p id="article-summary">Duplicate</p></main>')
+        page.write_text(html)
+        with self.assertRaisesRegex(ValueError, 'nonempty description|duplicate IDs'):
+            checker.check(out)
+
+    def test_collection_cover_can_be_omitted_without_losing_social_image(self):
+        out = self.build()
+        html = (out / 'collections/visual-meeting-notes/index.html').read_text()
+        self.assertNotIn('class="content-cover"', html)
+        self.assertIn('property="og:image"', html)
+        self.assertIn('id="article-summary"', html)
+        self.assertIn('By <a href="/">Tagalong</a>', html)
 
 if __name__ == '__main__':
     unittest.main()

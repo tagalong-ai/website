@@ -14,8 +14,8 @@
 .homepage .content-index-links {display:flex;flex-wrap:wrap;gap:16px 28px;margin-top:24px;font-size:16px;}
 .homepage .content-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;}
 .homepage .content-card {display:flex;flex-direction:column;min-width:0;background:#fff;border:1px solid var(--border);border-top:3px solid #79965e;border-radius:12px;padding:28px;}
-.homepage .content-card h2 {font-size:25px;letter-spacing:-.025em;line-height:1.3;margin:18px 0 14px;}
-.homepage .content-card h2 a {color:#315239;}
+.homepage .content-card :is(h2,h3) {font-size:25px;letter-spacing:-.025em;line-height:1.3;margin:18px 0 14px;}
+.homepage .content-card :is(h2,h3) a {color:#315239;}
 .homepage .content-card p {font-size:16px;line-height:1.65;color:#5c6258;}
 .homepage .content-meta {font-size:13px;display:flex;flex-wrap:wrap;gap:8px 16px;color:#5c6e4e;}
 .homepage .content-read {margin-top:auto;padding-top:25px;font-weight:600;font-size:15px;}
@@ -64,3 +64,14 @@
 .homepage .content-table {overflow-x:auto;max-width:100%;}
 .homepage .content-table table {display:table;overflow:visible;}
 .homepage .content-card .sr-only {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+.homepage .content-prose img {display:block;width:100%;border:1px solid #dce1d3;background:#eef2e7;}
+.homepage .content-prose img+em {display:block;font-size:15px;}
+.homepage .content-answer {scroll-margin-top:28px;}
+.homepage .content-card :is(h2,h3) {font-size:25px;line-height:1.3;margin:18px 0 14px;}
+.homepage .content-table {border:1px solid #dce1d3;border-radius:10px;margin:26px 0;}
+.homepage .content-table table {margin:0;}
+.homepage .content-prose th:first-child,.homepage .content-prose td:first-child {min-width:155px;}
+@media(max-width:560px){.homepage .content-prose th,.homepage .content-prose td {padding:12px;font-size:15px;}.homepage .content-table::before {content:'Scroll table horizontally to compare →';display:block;padding:10px 12px;font-size:13px;color:#52654a;background:#eef2e7;}}
+
+.homepage .content-intro {max-width:760px;}

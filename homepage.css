@@ -1678,3 +1678,11 @@ body.homepage {
   .homepage .price-top { flex-wrap:wrap;gap:10px; }
   .homepage .price-top h3 { font-size:23px; }
 }
+
+/* Guides provide direct paths into the public editorial library. */
+.homepage .discovery-section {padding-block:64px;border-top:1px solid #dce1d3;}
+.homepage .discovery-section h2 {font-size:clamp(28px,3vw,40px);color:#315239;letter-spacing:-.035em;margin:14px 0 28px;}
+.homepage .discovery-links {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.homepage .discovery-links a {display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px;border:1px solid #dce1d3;border-radius:12px;background:#fff;font-weight:600;line-height:1.5;}
+.homepage .discovery-links a:hover {border-color:#2d7d46;background:#eef2e7;}
+@media(max-width:700px){.homepage .discovery-links {grid-template-columns:1fr;}.homepage .discovery-section {padding-block:40px;}}

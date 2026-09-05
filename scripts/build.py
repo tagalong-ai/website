@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import struct
 import sys
 from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
@@ -19,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SLUG = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 STATIC = ('index.html', 'guide.html', 'privacy.html', 'terms.html', 'changelog.html', 'admin.html', 'success.html')
 STYLES = ('styles.css', 'homepage.css', 'homepage.js', 'product-demo.css', 'content.css')
-ALLOWED = {'title', 'description', 'date', 'updated', 'author', 'draft', 'collections', 'answer', 'faqs', 'resources', 'image', 'imageAlt', 'seoTitle', 'seoDescription'}
+ALLOWED = {'title', 'description', 'date', 'updated', 'author', 'draft', 'collections', 'answer', 'faqs', 'resources', 'image', 'imageAlt', 'seoTitle', 'seoDescription', 'showCover'}
 
 class ContentError(ValueError):
     pass
@@ -103,11 +104,49 @@ def read_entry(path, kind, site):
         for key in ('title', 'description'):
             resource[key] = text(resource[key], key)
         resource['url'] = safe_url(resource['url'])
+    if 'showCover' in data and not isinstance(data['showCover'], bool):
+        raise ContentError(f'{path.name}: showCover must be true or false')
     if 'image' in data:
         data['image'] = safe_url(data['image'])
         data['imageAlt'] = text(data.get('imageAlt'), 'imageAlt')
     data['url'] = '/' + ('blog' if kind == 'posts' else 'collections') + '/' + path.stem + '/'
     return data
+
+def image_dimensions(url):
+    """Read intrinsic dimensions for public local PNG/JPEG assets without decoding them."""
+    if not url.startswith('/assets/'):
+        return {}
+    path = (ROOT / url.lstrip('/')).resolve()
+    if not path.is_relative_to((ROOT / 'assets').resolve()) or not path.is_file():
+        return {}
+    try:
+        with path.open('rb') as f:
+            head = f.read(24)
+            if head.startswith(b'\x89PNG\r\n\x1a\n'):
+                width, height = struct.unpack('>II', head[16:24])
+                return {'width': width, 'height': height}
+            if not head.startswith(b'\xff\xd8'):
+                return {}
+            f.seek(2)
+            while True:
+                marker = f.read(1)
+                if not marker:
+                    return {}
+                if marker != b'\xff':
+                    return {}
+                while marker == b'\xff':
+                    marker = f.read(1)
+                if marker in (b'\xda', b'\xd9', b''):
+                    return {}
+                length = struct.unpack('>H', f.read(2))[0]
+                if marker[0] in (0xc0, 0xc1, 0xc2):
+                    _, height, width = struct.unpack('>BHH', f.read(5))
+                    return {'width': width, 'height': height}
+                if length < 2:
+                    return {}
+                f.seek(length - 2, 1)
+    except (OSError, struct.error):
+        return {}
 
 def markdown(body):
     md = MarkdownIt('commonmark', {'html': False}).enable(['table', 'strikethrough'])
@@ -128,6 +167,9 @@ def markdown(body):
             for child in token.children or []:
                 if child.type == 'image':
                     child.attrSet('loading', 'lazy')
+                    child.attrSet('decoding', 'async')
+                    for key, value in image_dimensions(child.attrGet('src') or '').items():
+                        child.attrSet(key, str(value))
     rendered = md.renderer.render(tokens, md.options, {})
     rendered = rendered.replace('<table>', '<div class="content-table" role="region" aria-label="Article table" tabindex="0"><table>').replace('</table>', '</table></div>')
     return rendered, headings
@@ -168,38 +210,41 @@ def breadcrumbs(site, entries):
     schema = {'@type': 'BreadcrumbList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'name': label, **({'item': site['url'] + url} if url else {})} for i, (label, url) in enumerate(entries)]}
     return html, schema
 
-def card(entry):
+def card(entry, heading=2):
     kind = 'Article' if entry['kind'] == 'posts' else 'Collection'
     date_label = f'<time datetime="{entry["date"]}">{entry["date"].strftime("%B %-d, %Y")}</time>' if 'date' in entry else ''
-    return f'<article class="content-card"><div class="content-meta">{kind} {date_label}</div><h2><a href="{entry["url"]}">{escape(entry["title"])}</a></h2><p>{escape(entry["description"])}</p><a class="content-read" href="{entry["url"]}">Read {kind.lower()} <span aria-hidden="true">↗</span><span class="sr-only">: {escape(entry["title"])}</span></a></article>'
+    return f'<article class="content-card"><div class="content-meta">{kind} {date_label}</div><h{heading}><a href="{entry["url"]}">{escape(entry["title"])}</a></h{heading}><p>{escape(entry["description"])}</p><a class="content-read" href="{entry["url"]}">Read {kind.lower()} <span aria-hidden="true">↗</span><span class="sr-only">: {escape(entry["title"])}</span></a></article>'
 
 def entry_page(site, entry, posts, collections, preview):
     is_post = entry['kind'] == 'posts'
     parent, parent_url = ('Blog', '/blog/') if is_post else ('Collections', '/collections/')
     crumb, crumb_schema = breadcrumbs(site, [('Home', '/'), (parent, parent_url), (entry['title'], None)])
     rendered, headings = markdown(entry['body'])
-    answer = f'<div class="content-answer"><p class="eyebrow">AT A GLANCE</p><p>{escape(entry["answer"])}</p></div>' if entry.get('answer') else ''
+    answer = f'<div class="content-answer" id="article-summary"><p class="eyebrow">AT A GLANCE</p><p>{escape(entry["answer"])}</p></div>' if entry.get('answer') else ''
     status = '<p class="content-draft">Draft preview · Not published</p>' if entry['draft'] else ''
-    byline = f'<span>By <a href="{escape(site["authors"][entry["author"]]["url"])}">{escape(site["authors"][entry["author"]]["name"])}</a></span><span>Published <time datetime="{entry["date"]}">{entry["date"].strftime("%B %-d, %Y")}</time></span>' if is_post else ''
+    byline = f'<span>By <a href="{escape(site["authors"][entry["author"]]["url"])}">{escape(site["authors"][entry["author"]]["name"])}</a></span><span>Published <time datetime="{entry["date"]}">{entry["date"].strftime("%B %-d, %Y")}</time></span>' if is_post else f'<span>By <a href="/">{escape(site["name"])}</a></span>'
     if not is_post or entry['updated'] != entry['date']:
         byline += f'<span>Updated <time datetime="{entry["updated"]}">{entry["updated"].strftime("%B %-d, %Y")}</time></span>'
+    if entry['faqs']:
+        headings.append(('questions', 'Questions & answers'))
     toc = '<aside class="content-toc"><nav aria-label="On this page"><p>On this page</p><ol>' + ''.join(f'<li><a href="#{anchor}">{escape(label)}</a></li>' for anchor, label in headings) + '</ol></nav></aside>' if headings else ''
     faq_html = '<section class="content-faq"><h2 id="questions">Questions &amp; answers</h2>' + ''.join(f'<details><summary>{escape(f["question"])}</summary><p>{escape(f["answer"])}</p></details>' for f in entry['faqs']) + '</section>' if entry['faqs'] else ''
     resources = '<section class="content-resources"><h2>Explore this topic</h2><ul>' + ''.join(f'<li><a href="{escape(r["url"])}">{escape(r["title"])}</a><p>{escape(r["description"])}</p></li>' for r in entry['resources']) + '</ul></section>' if entry['resources'] else ''
     related = [p for p in posts if (p['slug'] != entry['slug'] and set(p['collections']) & set(entry['collections']))] if is_post else [p for p in posts if entry['slug'] in p['collections']]
-    related_html = '<section class="content-related"><h2>' + ('Keep reading' if is_post else 'Articles in this collection') + '</h2><div class="content-grid">' + ''.join(card(p) for p in related) + '</div></section>' if related else ''
+    related_html = '<section class="content-related"><h2>' + ('Keep reading' if is_post else 'Articles in this collection') + '</h2><div class="content-grid">' + ''.join(card(p, heading=3) for p in related) + '</div></section>' if related else ''
     collection_links = '<p class="content-collection-links">In ' + ' · '.join(f'<a href="{collections[c]["url"]}">{escape(collections[c]["title"])}</a>' for c in entry['collections'] if c in collections) + '</p>' if entry['collections'] else ''
-    cover = f'<figure class="content-cover"><img src="{escape(entry["image"])}" alt="{escape(entry["imageAlt"])}"></figure>' if entry.get('image') else ''
-    body = f'{crumb}<header class="content-heading">{status}<p class="eyebrow">{parent}</p><h1>{escape(entry["title"])}</h1><p class="content-deck">{escape(entry["description"])}</p><div class="content-byline">{byline}</div>{collection_links}</header>{cover}<div class="content-layout"><article class="content-prose">{answer}{rendered}{faq_html}{resources}</article>{toc}</div>{related_html}<div class="content-bottom"><a href="{parent_url}">← All {parent.lower()}</a><a class="button button-outline" href="/guide">Explore Tagalong</a></div>'
+    dimensions = ' '.join(f'{key}="{value}"' for key, value in image_dimensions(entry.get('image', '')).items())
+    cover = f'<figure class="content-cover"><img src="{escape(entry["image"])}" alt="{escape(entry["imageAlt"])}" {dimensions}></figure>' if entry.get('image') and entry.get('showCover', True) else ''
+    body = f'{crumb}<header class="content-heading">{status}<p class="eyebrow">{parent}</p><h1>{escape(entry["title"])}</h1><p class="content-deck">{escape(entry["description"])}</p><div class="content-byline">{byline}</div>{collection_links}</header>{cover}<div class="content-prose content-intro">{answer}</div><div class="content-layout"><article class="content-prose">{rendered}{faq_html}{resources}</article>{toc}</div>{related_html}<div class="content-bottom"><a href="{parent_url}">← All {parent.lower()}</a><a class="button button-outline" href="/#pricing">Try Tagalong for Mac ↗</a></div>'
     schema = {'@type': 'BlogPosting' if is_post else 'CollectionPage', '@id': site['url'] + entry['url'] + '#content', 'url': site['url'] + entry['url'], 'name': entry['title'], 'description': entry['description'], 'dateModified': str(entry['updated']), 'inLanguage': 'en', 'isPartOf': {'@id': site['url'] + parent_url}, 'publisher': {'@id': site['url'] + '/#organization'}}
     if is_post:
         author = site['authors'][entry['author']]
         schema.update(headline=entry['title'], datePublished=str(entry['date']), mainEntityOfPage=site['url'] + entry['url'], author={'@type': author['type'], 'name': author['name'], 'url': author['url']})
-    else:
+    elif related:
         schema['mainEntity'] = {'@type': 'ItemList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': site['url'] + p['url'], 'name': p['title']} for i, p in enumerate(related)]}
     if entry.get('image'):
         schema['image'] = site['url'] + entry['image'] if entry['image'].startswith('/') else entry['image']
-    return page(site, entry.get('seoTitle', entry['title'] + ' | Tagalong'), entry.get('seoDescription', entry['description']), entry['url'], body, [crumb_schema, schema], entry.get('image'), is_post, preview)
+    return page(site, entry.get('seoTitle', entry['title'] + ' | Tagalong'), entry.get('seoDescription', entry['description']), entry['url'], body, [crumb_schema, schema], entry.get('image', site['defaultImage']), is_post, preview)
 
 def write(out, url, value):
     path = out / (url.strip('/') + '/index.html' if url.endswith('/') and url != '/' else 'index.html' if url == '/' else url.lstrip('/'))
@@ -238,7 +283,7 @@ def build(root=ROOT, out=None, preview=False, today=None):
         if page_count > 1:
             body += '<nav class="content-pagination" aria-label="Blog pages">' + ''.join(f'<a href="{"/blog/" if n == 1 else f"/blog/page/{n}/"}"' + (' aria-current="page"' if n == number else '') + f'>{n}</a>' for n in range(1, page_count + 1)) + '</nav>'
         schema = {'@type': 'Blog', '@id': site['url'] + url, 'name': 'Tagalong Blog', 'url': site['url'] + url, 'blogPost': [{'@id': site['url'] + e['url'] + '#content'} for e in subset]}
-        generated[url] = page(site, 'Meeting Notes & Workflows Blog | Tagalong' + (f' — Page {number}' if number > 1 else ''), 'Practical guides to meeting notes, transcription, AI assistance, and keeping a useful meeting record on your Mac.', url, body, [schema], noindex=preview or not subset)
+        generated[url] = page(site, 'Meeting Notes & Workflows Blog | Tagalong' + (f' — Page {number}' if number > 1 else ''), 'Practical guides to meeting notes, transcription, AI assistance, and keeping a useful meeting record on your Mac.' + (f' Browse older articles on page {number}.' if number > 1 else ''), url, body, [schema], noindex=preview or not subset)
     body = '<header class="content-heading content-index-heading"><p class="eyebrow">COLLECTIONS</p><h1>A useful place to start.</h1><p class="content-deck">Guides and ideas, brought together by topic. Find the workflow that fits the way you meet.</p></header><div class="content-grid">' + ''.join(card(c) for c in collections.values()) + '</div>'
     generated['/collections/'] = page(site, 'Meeting Workflow Collections | Tagalong', 'Browse collections of guides to meeting notes, transcription, local storage, and practical workflows for Mac.', '/collections/', body, [{'@type': 'CollectionPage', 'url': site['url'] + '/collections/', 'name': 'Tagalong Collections', 'mainEntity': {'@type': 'ItemList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': site['url'] + c['url'], 'name': c['title']} for i, c in enumerate(collections.values())]}}], noindex=preview or not collections)
     generated['/404.html'] = page(site, 'Page not found | Tagalong', 'Find your way back to Tagalong.', '/404.html', '<header class="content-heading"><p class="eyebrow">404</p><h1>This page isn’t here.</h1><p class="content-deck">Try the <a href="/blog/">blog</a>, <a href="/collections/">collections</a>, or <a href="/">homepage</a>.</p></header>', noindex=True)

@@ -14,12 +14,20 @@ class Document(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.ids, self.links, self.canonicals, self.robots = set(), [], [], []
         self.h1 = 0
+        self.titles, self.descriptions, self.duplicate_ids = [], [], set()
+        self.current_title = None
         self.structured, self.current_script = [], None
         self.feed(source)
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if attrs.get('id'):
+            if attrs['id'] in self.ids:
+                self.duplicate_ids.add(attrs['id'])
             self.ids.add(attrs['id'])
+        if tag == 'title':
+            self.current_title = ''
+        if tag == 'meta' and attrs.get('name') == 'description':
+            self.descriptions.append(attrs.get('content', ''))
         if tag == 'h1':
             self.h1 += 1
         if tag == 'link' and attrs.get('rel') == 'canonical':
@@ -33,9 +41,14 @@ class Document(HTMLParser):
                 if attrs.get(attr):
                     self.links.append(attrs[attr])
     def handle_data(self, data):
+        if self.current_title is not None:
+            self.current_title += data
         if self.current_script is not None:
             self.current_script += data
     def handle_endtag(self, tag):
+        if tag == 'title' and self.current_title is not None:
+            self.titles.append(self.current_title.strip())
+            self.current_title = None
         if tag == 'script' and self.current_script is not None:
             self.structured.append(json.loads(self.current_script))
             self.current_script = None
@@ -52,7 +65,19 @@ def check(out):
     out = Path(out)
     errors = []
     docs = {p: Document(p.read_text()) for p in out.rglob('*.html') if not p.name.startswith('google')}
+    seen_titles, seen_descriptions = {}, {}
     for path, doc in docs.items():
+        for label, values, seen in [('title', doc.titles, seen_titles), ('description', doc.descriptions, seen_descriptions)]:
+            if len(values) != 1 or not values[0].strip():
+                errors.append(f'{path.relative_to(out)}: expected one nonempty {label}')
+            elif not any('noindex' in value for value in doc.robots):
+                if values[0] in seen:
+                    errors.append(f'{path.relative_to(out)}: duplicate {label} also in {seen[values[0]]}')
+                seen[values[0]] = path.relative_to(out)
+        if doc.duplicate_ids:
+            errors.append(f'{path.relative_to(out)}: duplicate IDs {sorted(doc.duplicate_ids)}')
+        if len(doc.robots) != 1:
+            errors.append(f'{path.relative_to(out)}: expected one robots directive')
         if len(doc.canonicals) != 1 or not doc.canonicals[0].startswith('https://tagalongai.com/'):
             errors.append(f'{path.relative_to(out)}: expected one production canonical')
         if not doc.structured:

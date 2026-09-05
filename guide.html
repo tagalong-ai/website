@@ -634,10 +634,12 @@
 
       <div class="guide-subsection" id="private-ai-connections">
         <h3>Claude and ChatGPT with your local library</h3>
-        <div class="callout warning"><strong>In QA — v3.4 release candidate.</strong> These connections are not included in the current public v3.3.2 download. Real Claude Desktop and ChatGPT connection tests are required before release. <a href="/#availability">See current feature availability.</a></div>
-        <p>In Settings → Claude &amp; ChatGPT, select individual meeting documents and enable sharing. New meetings are never shared automatically. Your assistant can search those documents and retrieve bounded excerpts; it cannot read audio or edit the library.</p>
-        <p>Save and install the Claude Desktop extension, or save the ChatGPT private-connection setup kit. ChatGPT setup requires developer mode, OpenAI tunnel permissions, a runtime credential and a running Mac. This private connection is separate from a public directory connector.</p>
-        <p>Retrieved text enters the AI provider’s conversation and is subject to its retention policies. Remove a document or disable sharing to stop future access. This does not delete earlier AI conversations.</p>
+        <div class="callout"><strong>Available in v3.4.1:</strong> the Claude Desktop extension and private ChatGPT setup kit. Claude’s interactive workspace has been validated; interactive ChatGPT rendering has not. <a href="/#availability">Current availability.</a></div>
+        <p>In Settings → Claude &amp; ChatGPT, choose your meeting library folder and enable <strong>Allow AI assistants to read this folder</strong>. Access includes current and future supported meeting Markdown and personal-note text in that folder and subfolders. Audio and images are excluded; task status is read-only.</p>
+        <p>Click <strong>Install in Claude</strong>. After installation, close the extension popup and use Claude Settings → Extensions → Configure beside Tagalong to choose the same library folder. Claude supplies the runtime; no separate server API key is needed. If an older extension lacks the folder picker, remove it and install version 0.4.2. Restart Claude if tools do not appear.</p>
+        <p>Ask Claude to search Tagalong and show a meeting. The interactive workspace provides Summary, Tasks, Transcript, Notes, and Audio &amp; visuals tabs. Audio playback, images, and task editing open in Tagalong. The connector’s folder restriction is enforced in code, not an OS sandbox; Claude may still display its broad extension warning.</p>
+        <p><strong>ChatGPT:</strong> Set up ChatGPT saves a kit and checklist, not an established connection. It requires Node.js 20+, OpenAI Secure MCP Tunnel, developer-mode access, tunnel permissions and a runtime credential. Your Mac must remain awake with the tunnel running. This private setup is not a public-directory or universally one-click connector. Interactive ChatGPT rendering remains unvalidated.</p>
+        <p>Retrieved text enters the AI provider’s conversation and follows its retention policies. Turn folder access off to stop future retrieval; earlier excerpts remain with the provider. Changing the folder disables access until you enable it again. Older individual-document permissions do not silently expand to folder access.</p>
       </div>
 
       <!-- NEW: Tier System & Feature Gating -->
@@ -652,7 +654,7 @@
           </div>
           <div class="guide-col-card">
             <h4>Pro Tier</h4>
-            <p>Access to released Pro features, including conference mode, visual notes, Enhance My Notes, action item export, AI chat, summary recipes, cross-meeting search, file import, audio playback, and custom vocabulary. Features marked as release candidates remain in QA.</p>
+            <p>Access to released Pro features, including conference mode, visual notes, Enhance My Notes, action item export, AI chat, summary recipes, cross-meeting search, file import, audio playback, and custom vocabulary. ChatGPT interactive rendering remains unvalidated and requires additional private-tunnel setup.</p>
           </div>
         </div>
 
@@ -1376,7 +1378,7 @@
       <!-- Action Items -->
       <div class="guide-subsection animate-in" id="action-items">
         <h3>Action Items <span class="badge-pro">PRO</span></h3>
-        <p><strong>Export availability:</strong> Apple Reminders and Todoist are available in the public release. Asana and monday.com, along with the revised destination picker, are v3.4 release candidates in QA. Task exports are initiated by you and create tasks one way; they do not synchronize later changes.</p>
+        <p><strong>Export availability:</strong> Apple Reminders, Todoist, Asana, monday.com, and the revised destination picker are included in v3.4.1. Asana requires an API token and project ID; monday.com requires an API token and board ID. The current monday.com export creates named items without owner, status, or due-date column mapping. Task exports are initiated by you and create tasks one way; they do not synchronize later changes.</p>
         <p>Action items are extracted automatically as part of background processing — no button to press first. The Action Items card sits between Notes and AI Summary on the meeting page.</p>
 
         <ol class="guide-steps">
@@ -2166,7 +2168,7 @@
           </button>
           <div class="faq-answer">
             <div class="faq-answer-inner">
-              Action items are extracted during background processing. Open the Action Items section to review them or re-extract when needed, then select the items you want to create in Apple Reminders or Todoist. Exports are one-way; later changes do not synchronize. Asana and monday.com are v3.4 release candidates.
+              Action items are extracted during background processing. Open the Action Items section to review them or re-extract when needed, then select the items you want to create in Apple Reminders or Todoist. Exports are one-way; later changes do not synchronize. Asana and monday.com are also included in v3.4.1, with destination-specific setup and field limits.
             </div>
           </div>
         </div>

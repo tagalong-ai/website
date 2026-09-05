@@ -2,6 +2,8 @@
 
 The existing HTML/CSS/JS website remains the source for the product and support pages. A small Python build converts Markdown into static HTML and packages only public files into `dist/`. Cloudflare Pages serves that directory. There is no client-side content fetching, database, or CMS account.
 
+For topic selection, fair comparisons, source review and measurement, use [DISCOVERY.md](DISCOVERY.md) and the [research brief template](content/templates/brief.md).
+
 ## Write and publish an article
 
 1. Copy `content/templates/post.md` into `content/posts/your-article-slug.md`.
@@ -32,6 +34,7 @@ Use collections for meaningful topics, workflows, or use cases. Write distinct, 
 | `collections` | Article list of collection filenames without `.md`. Unknown or unpublished collections fail the build. |
 | `answer` | Optional concise answer displayed in an “At a glance” block. |
 | `image`, `imageAlt` | Optional representative image and required alternative text. Use a public HTTPS URL or `/assets/...` path. Images also populate article/social metadata. |
+| `showCover` | Optional Boolean, default `true`. Use `false` to keep the image in social metadata without repeating it as a large cover. |
 | `faqs` | Optional list of `{question, answer}` objects, rendered as accessible questions and answers. |
 | `resources` | Optional list of `{title, url, description}` links, especially useful for collections. |
 
