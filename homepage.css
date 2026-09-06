@@ -581,19 +581,16 @@ body.homepage {
   background:white;
   border:1px solid #dce1d5;
   border-radius:8px;
-  font-size:26px
+  overflow:hidden
 }
-.homepage .reminders {
-  color:#3479c4
+.homepage .integration-icon img {
+  display:block;
+  width:22px;
+  height:22px
 }
-.homepage .todoist {
-  color:#be493d
-}
-.homepage .asana {
-  color:#c44e69
-}
-.homepage .monday {
-  color:#bd7136
+.homepage .integration-icon.reminders img {
+  width:100%;
+  height:100%
 }
 .homepage .status-badge {
   font-size:12px;
@@ -655,9 +652,11 @@ body.homepage {
   gap:12px;
   align-items:center
 }
-.homepage .connector-name>span {
-  font-size:28px;
-  color:#745d47
+.homepage .connector-mark {
+  display:block;
+  flex:none;
+  width:26px;
+  height:26px
 }
 .homepage .connector-card h4 {
   font-size:23px;
@@ -1212,8 +1211,11 @@ body.homepage {
   }
   .homepage .integration-icon {
     width:30px;
-    height:30px;
-    font-size:22px
+    height:30px
+  }
+  .homepage .integration-icon img {
+    width:20px;
+    height:20px
   }
   .homepage .destination-list .status-badge {
     font-size:12px;
