@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy - Tagalong</title>
   <meta name="description" content="Tagalong Privacy Policy — how your meeting data is handled across Private License and Subscription modes.">
-  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
@@ -17,14 +17,14 @@
   <nav>
     <div class="container">
       <a href="/" class="nav-logo">
-        <img src="assets/logo-light.png" alt="Tagalong">
+        <img src="/assets/logo-light.png" alt="Tagalong">
       </a>
       <ul class="nav-links" id="navLinks">
-        <li><a href="/#features">Features</a></li>
-        <li><a href="/#how-it-works">How It Works</a></li>
+        <li><a href="/#tour">Product</a></li>
+        <li><a href="/collections/">Guides</a></li>
+        <li><a href="/blog/">Blog</a></li>
         <li><a href="/#pricing">Pricing</a></li>
-        <li><a href="/#faq">FAQ</a></li>
-        <li><a href="/guide">Guide</a></li>
+        <li><a href="/guide">Setup</a></li>
       </ul>
       <div class="nav-right">
         <a href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg" class="btn btn-primary">Download</a>
@@ -91,8 +91,8 @@
     </ul>
 
     <h2>Optional AI assistant connections</h2>
-    <p><strong>Release status:</strong> Claude Desktop and ChatGPT connections are v3.4 release candidates undergoing QA. They are not part of the current public v3.3.2 download.</p>
-    <p>When you enable Claude or ChatGPT sharing, a local permission file records the individual documents you select. The connector searches those documents on demand. It does not replicate the library or create a cloud index, and it does not expose audio or file-editing tools.</p>
+    <p><strong>Release status:</strong> Tagalong 3.4.1 includes the Claude Desktop extension and a private ChatGPT setup kit. Interactive ChatGPT rendering has not been validated.</p>
+    <p>When you enable “Allow AI assistants to read this folder” in Tagalong 3.4.1, a local permission file records the library folder and your access choice. Current and future supported meeting Markdown and personal-note text in that folder and subfolders become available for retrieval. Audio, images, hidden files, symlinks and hard links are excluded. The connector searches on demand; it does not replicate the library or create a cloud index. Task status is read-only. Changing folders disables access until you enable it again; upgrading older individual-document permissions does not silently grant folder-wide access. Folder restrictions are enforced by the connector, not an operating-system sandbox.</p>
     <p>Search results and retrieved excerpts are sent to the connected AI provider. They may remain in the provider’s conversation history according to your account and workspace policies. Turning sharing off stops future retrieval; it does not remove content already sent to an AI conversation. The ChatGPT private connection uses OpenAI Secure MCP Tunnel and requires the Mac and tunnel client to be available.</p>
 
     <h2>4. Third-Party AI Services</h2>
@@ -165,7 +165,7 @@
     <div class="container">
       <div class="footer-inner">
         <div class="footer-logo">
-          <img src="assets/logo-light.png" alt="Tagalong">
+          <img src="/assets/logo-light.png" alt="Tagalong">
         </div>
         <div class="footer-tagline">Every meeting, remembered.</div>
         <div class="footer-bottom">

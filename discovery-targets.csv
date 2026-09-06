@@ -1,0 +1,13 @@
+target_id,prompt,origin,intent,canonical_candidate,priority,query_status,observed_demand,ai_winnability
+PT-01,What is Tagalong AI?,User objective: branded discovery,navigational,/,Baseline,PROPOSED,UNMEASURED,UNKNOWN
+PT-02,What are the best Granola alternatives for Mac?,User objective: Granola alternatives,commercial,/collections/granola-alternatives/,First,PROPOSED,UNMEASURED,UNKNOWN
+PT-03,Which Granola alternative stores meeting notes on my Mac?,Proposed constraint variant,commercial,/collections/granola-alternatives/,First,PROPOSED,UNMEASURED,UNKNOWN
+PT-04,What is the best AI meeting note taker for Mac?,User objective: best note takers; narrowed to product fit,commercial,/collections/meeting-notes/,First,PROPOSED,UNMEASURED,UNKNOWN
+PT-05,Do locally stored meeting notes mean all AI processing is offline?,Proposed product-boundary question,informational,/blog/meeting-data-on-your-mac/,First,PROPOSED,UNMEASURED,UNKNOWN
+PT-06,How can I turn meeting action items into Apple Reminders?,Proposed workflow question,informational,/blog/meeting-action-items-apple-reminders/,Next,PROPOSED,UNMEASURED,UNKNOWN
+PT-07,Which meeting note app turns meeting notes into visual summaries?,Proposed capability question,commercial,/collections/visual-meeting-notes/,Next,PROPOSED,UNMEASURED,UNKNOWN
+PT-08,Tagalong vs Granola: which fits my meeting workflow?,Proposed head-to-head evaluation,commercial,/blog/tagalong-vs-granola/,Validate distinct scope,PROPOSED,UNMEASURED,UNKNOWN
+PT-09,Which meeting assistant can help me during a call as well as summarize it afterward?,Proposed workflow constraint,commercial,/collections/meeting-notes/,Next,PROPOSED,UNMEASURED,UNKNOWN
+PT-10,Can Claude search meeting notes in a folder I enable?,Proposed integration question,informational,/collections/meeting-ai-connections/,Release-gated,PROPOSED,UNMEASURED,UNKNOWN
+PT-11,Can I connect locally stored meeting notes to ChatGPT?,Proposed integration question,informational,/collections/meeting-ai-connections/,Release-gated,PROPOSED,UNMEASURED,UNKNOWN
+PT-12,What can I do with the free Tagalong plan?,Proposed price qualification,informational,/#pricing,Baseline,PROPOSED,UNMEASURED,UNKNOWN

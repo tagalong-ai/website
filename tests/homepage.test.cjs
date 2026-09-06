@@ -94,6 +94,6 @@ test('brand classes remain isolated; Free pricing and release boundaries are pre
  const shared=fs.readFileSync(path.join(__dirname,'../styles.css'),'utf8');
  const classes=new Set([...html.matchAll(/class="([^"]+)"/g)].flatMap(m=>m[1].split(/\s+/)));
  const legacy=new Set([...shared.matchAll(/\.([A-Za-z_][\w-]*)/g)].map(m=>m[1]));assert.deepEqual([...classes].filter(c=>legacy.has(c)),[]);
- for(const text of ['<h3>Free</h3>','$0','5 meetings per month','$9.99','$199','support@tagalongai.com','Public release · v3.3.2','Release candidate · v3.4'])assert.ok(html.includes(text),`Missing ${text}`);
+ for(const text of ['<h3>Free</h3>','$0','5 meetings per month','$9.99','$199','support@tagalongai.com','Public release · v3.4.1','ChatGPT · setup kit'])assert.ok(html.includes(text),`Missing ${text}`);
  assert.doesNotMatch(html,/@gmail\.com/);
 });
