@@ -75,3 +75,11 @@
 @media(max-width:560px){.homepage .content-prose th,.homepage .content-prose td {padding:12px;font-size:15px;}.homepage .content-table::before {content:'Scroll table horizontally to compare →';display:block;padding:10px 12px;font-size:13px;color:#52654a;background:#eef2e7;}}
 
 .homepage .content-intro {max-width:760px;}
+
+.homepage .content-topic-link {margin-top:16px;font-size:15px;line-height:1.6;color:#52654a;}
+.homepage .content-topic-link a {text-decoration:underline;text-underline-offset:4px;}
+.homepage .content-topic-group {padding:0 0 48px;}
+.homepage .content-pillar {max-width:900px;border:1px solid #dce1d3;border-radius:14px;padding:clamp(24px,4vw,44px);background:#eef2e7;margin-bottom:36px;}
+.homepage .content-pillar h2 {font-size:clamp(28px,3vw,40px);line-height:1.2;letter-spacing:-.03em;color:#315239;margin:16px 0;}
+.homepage .content-pillar>p:not(.eyebrow) {font-size:18px;line-height:1.65;max-width:680px;margin-bottom:24px;}
+.homepage .content-topic-heading {font-size:28px;margin-bottom:24px;}

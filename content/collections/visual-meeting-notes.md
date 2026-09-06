@@ -4,6 +4,7 @@ seoTitle: "Visual Meeting Notes: AI Summary Gallery for Mac | Tagalong"
 description: "Explore three visual meeting-note examples: sketchnote, process map, and next-step plan. See the source context, workflow, and AI-generation limits."
 updated: 2026-09-05
 draft: false
+pillar: meeting-notes
 image: /assets/visual-notes/sketchnote.jpg
 showCover: false
 imageAlt: "Synthetic sketchnote showing one clear starting path, a prototype, and a Friday review."

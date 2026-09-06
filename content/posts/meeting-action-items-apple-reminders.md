@@ -6,6 +6,7 @@ date: 2026-09-05
 updated: 2026-09-05
 author: tagalong
 draft: false
+pillar: meeting-notes
 collections:
   - meeting-notes
   - granola-alternatives

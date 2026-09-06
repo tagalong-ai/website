@@ -20,6 +20,12 @@ Copy `content/templates/collection.md` into `content/collections/topic-slug.md`.
 
 Use collections for meaningful topics, workflows, or use cases. Write distinct, useful introductions; avoid publishing multiple near-identical pages just to target keyword variants.
 
+## Pillars and topic clusters
+
+The main navigation links to **Guides** (`/collections/`) and **Blog** (`/blog/`); **Setup** remains the app manual at `/guide`. Guides features root pillar pages and their supporting pages instead of a flat list of collection files.
+
+The first pillar is `/collections/meeting-notes/`. Granola alternatives, local data handling, Apple Reminders export, and the visual-note gallery each declare `pillar: meeting-notes`. The pillar links to every supporting page, each supporting page links back near its heading, and related-topic cards connect siblings. Contextual links in the body remain editorial choices. New topics can introduce another root collection and their own supporting pages without renaming existing URLs.
+
 ## Front matter
 
 | Field | Purpose |
@@ -31,6 +37,7 @@ Use collections for meaningful topics, workflows, or use cases. Write distinct, 
 | `date` | Required for articles; actual publication date, `YYYY-MM-DD`. |
 | `updated` | Article modification date; defaults to `date`. Required for collections. Change only after a material content update. |
 | `author` | Required for articles. Registry key in `content/site.json`; `tagalong` is the organization byline. Add a real person only with their actual name and profile URL. |
+| `pillar` | Optional collection slug for a supporting page. Generates a pillar backlink, topic breadcrumbs, related-topic cards, and matching schema. Must reference a published root collection; cycles fail the build. |
 | `collections` | Article list of collection filenames without `.md`. Unknown or unpublished collections fail the build. |
 | `answer` | Optional concise answer displayed in an “At a glance” block. |
 | `image`, `imageAlt` | Optional representative image and required alternative text. Use a public HTTPS URL or `/assets/...` path. Images also populate article/social metadata. |

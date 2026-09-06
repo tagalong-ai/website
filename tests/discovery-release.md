@@ -38,7 +38,7 @@ Competitor documentation checked September 5, 2026:
 
 - Production build: **15 HTML pages, 12 sitemap URLs, 2 articles**.
 - Full generated-site checker passes: exactly one nonempty title/description/robots directive, unique indexable metadata, canonical URLs, JSON-LD syntax, internal targets and anchors, duplicate IDs, sitemap canonicals and indexability, RSS XML, and authoring-file exclusion.
-- **16 Python publishing tests pass**, including draft/date handling, pagination, invalid metadata, HTML safety, image dimensions, and checker regressions.
+- **19 Python publishing tests pass**, including draft/date handling, pagination, invalid metadata, HTML safety, image dimensions, and checker regressions.
 - **15 native-tour behavior tests pass**, including autoplay, pause/replay, keyboard navigation, reduced motion, media failures, offscreen suspension, and pricing/release boundaries.
 - Local PNG/JPEG editorial images receive intrinsic dimensions; inline images lazy-load. The visual collection's social image does not repeat as an oversized hero.
 - Answers precede the mobile table of contents; comparison tables have keyboard-focusable horizontal scrolling and a mobile hint. Related cards use h3 beneath their h2 section.
@@ -52,3 +52,9 @@ The tool sandbox denies localhost server binding with `PermissionError: Operatio
 From the website directory, start `python3 scripts/preview.py --port 4173`. Then review desktop and mobile widths: typography, page overflow, table scrolling, gallery readability, menu, keyboard focus, FAQ controls, section links, downloads, and console/resource errors. The content must remain useful with JavaScript disabled.
 
 After browser fixes and publication, verify Cloudflare's production build and live routes, sitemap, robots, feed, key file, HTTP 404 behavior, and download destination. Submit the sitemap and five canonical content URLs in the separate **Tagalong** Google Search Console and Bing Webmaster Tools properties. Record accepted submissions separately from actual indexed status. Search engines determine crawl timing, indexing, rankings, and AI citations.
+
+## Navigation and topic structure follow-up
+
+The homepage, setup manual, privacy, terms, changelog, and editorial pages now expose Guides and Blog in their primary navigation. Guides features the Mac meeting-notes pillar and its four supporting pages. Each supporting page declares its pillar, shows a prominent return link, and uses topic-aware breadcrumbs and schema. The pillar lists all members; sibling cards and contextual links connect the cluster. Existing URL paths remain unchanged.
+
+Three additional tests verify primary navigation, bidirectional pillar relationships and schema, and rejection of missing/cyclic pillar references. Total: 34 passing automated tests. Browser preview was retried and still returned ERR_CONNECTION_REFUSED; publication/indexing remain pending.

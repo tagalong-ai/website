@@ -136,6 +136,38 @@ class PublishingTests(unittest.TestCase):
         self.assertIn('Questions &amp; answers', html)
         self.assertNotIn('aggregateRating', html)
 
+    def test_primary_navigation_reaches_guides_and_blog_across_site(self):
+        out = self.build()
+        for name in ['index.html', 'guide.html', 'privacy.html', 'terms.html', 'changelog.html', 'blog/index.html', 'collections/index.html']:
+            nav = (out / name).read_text().split('<nav', 1)[1].split('</nav>', 1)[0]
+            self.assertEqual(nav.count('href="/collections/"'), 1, name)
+            self.assertEqual(nav.count('href="/blog/"'), 1, name)
+    def test_pillar_and_cluster_links_are_bidirectional_with_matching_schema(self):
+        out = self.build()
+        pillar_url = '/collections/meeting-notes/'
+        pillar = (out / 'collections/meeting-notes/index.html').read_text()
+        hub = (out / 'collections/index.html').read_text()
+        children = ['/collections/granola-alternatives/', '/collections/visual-meeting-notes/', '/blog/meeting-data-on-your-mac/', '/blog/meeting-action-items-apple-reminders/']
+        for url in children:
+            self.assertIn(f'href="{url}"', pillar)
+            self.assertIn(f'href="{url}"', hub)
+            child = (out / url.strip('/') / 'index.html').read_text()
+            self.assertIn(f'Part of <a href="{pillar_url}"', child)
+            schema = next(s for s in checker.Document(child).structured[0]['@graph'] if s['@type'] in ('BlogPosting', 'CollectionPage'))
+            self.assertEqual(schema['isPartOf']['@id'], 'https://tagalongai.com' + pillar_url + '#content')
+    def test_missing_or_cyclic_pillar_preserves_previous_build(self):
+        out = self.build()
+        old = (out / 'sitemap.xml').read_bytes()
+        self.edit('pillar: meeting-notes', 'pillar: nonexistent')
+        with self.assertRaisesRegex(builder.ContentError, 'published root collection'):
+            self.build()
+        self.assertEqual((out / 'sitemap.xml').read_bytes(), old)
+        self.edit('pillar: nonexistent', 'pillar: meeting-notes')
+        root = self.root / 'content/collections/meeting-notes.md'
+        root.write_text(root.read_text().replace('draft: false', 'draft: false\npillar: granola-alternatives'))
+        with self.assertRaisesRegex(builder.ContentError, 'published root collection'):
+            self.build()
+
     def test_editorial_images_have_intrinsic_dimensions_and_safe_paths(self):
         rendered, _ = builder.markdown('![Synthetic visual](/assets/visual-notes/sketchnote.jpg)')
         self.assertIn('width="1536"', rendered)

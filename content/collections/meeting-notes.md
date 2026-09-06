@@ -30,6 +30,15 @@ An AI notetaker is more than a summary generator. The lasting value is whether y
 
 This guide is published by Tagalong and describes its public **3.4.1** release, checked September 5, 2026. It provides buying criteria and a product walkthrough, not a claim that one app is best for everyone. For named alternatives and vendor sources, use the [Granola alternatives comparison](/collections/granola-alternatives/).
 
+## Explore the meeting-notes guide
+
+Start here for the complete Mac workflow, then follow the question that matters to you:
+
+- **Choosing an app:** compare [Granola alternatives for Mac](/collections/granola-alternatives/) by storage, transcription, and plan limits.
+- **Understanding your data:** see [local meeting files versus cloud AI processing](/blog/meeting-data-on-your-mac/), including assistant permissions.
+- **Following through:** learn how to [send meeting action items to Apple Reminders](/blog/meeting-action-items-apple-reminders/) and what each destination receives.
+- **Remembering visually:** explore the [visual meeting notes gallery](/collections/visual-meeting-notes/) with source context and text explanations.
+
 ## Compare workflows before feature counts
 
 | Your priority | What to inspect | Tagalong’s approach |

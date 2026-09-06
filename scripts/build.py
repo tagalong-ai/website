@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SLUG = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 STATIC = ('index.html', 'guide.html', 'privacy.html', 'terms.html', 'changelog.html', 'admin.html', 'success.html')
 STYLES = ('styles.css', 'homepage.css', 'homepage.js', 'product-demo.css', 'content.css')
-ALLOWED = {'title', 'description', 'date', 'updated', 'author', 'draft', 'collections', 'answer', 'faqs', 'resources', 'image', 'imageAlt', 'seoTitle', 'seoDescription', 'showCover'}
+ALLOWED = {'title', 'description', 'date', 'updated', 'author', 'draft', 'collections', 'answer', 'faqs', 'resources', 'image', 'imageAlt', 'seoTitle', 'seoDescription', 'showCover', 'pillar'}
 
 class ContentError(ValueError):
     pass
@@ -104,6 +104,8 @@ def read_entry(path, kind, site):
         for key in ('title', 'description'):
             resource[key] = text(resource[key], key)
         resource['url'] = safe_url(resource['url'])
+    if 'pillar' in data and (not isinstance(data['pillar'], str) or not SLUG.fullmatch(data['pillar'])):
+        raise ContentError(f'{path.name}: pillar must name a collection slug')
     if 'showCover' in data and not isinstance(data['showCover'], bool):
         raise ContentError(f'{path.name}: showCover must be true or false')
     if 'image' in data:
@@ -195,10 +197,10 @@ def metadata(site, title, description, url, graph, image=None, article=False, no
     return '\n'.join(parts)
 
 def header(site):
-    return f'''<a class="skip-link" href="#main">Skip to content</a><header class="site-header"><nav class="page-width nav-row" aria-label="Main navigation"><a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69"></a><button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="site-links" hidden>Menu <span aria-hidden="true">☰</span></button><div class="site-links" id="site-links"><a href="/#tour">Product</a><a href="/blog/">Blog</a><a href="/collections/">Collections</a><a href="/guide">Guide</a><a href="/#pricing">Pricing</a><a class="button button-small" href="{site['download']}">Download for Mac ↗</a></div></nav></header>'''
+    return f'''<a class="skip-link" href="#main">Skip to content</a><header class="site-header"><nav class="page-width nav-row" aria-label="Main navigation"><a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69"></a><button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="site-links" hidden>Menu <span aria-hidden="true">☰</span></button><div class="site-links" id="site-links"><a href="/#tour">Product</a><a href="/collections/">Guides</a><a href="/blog/">Blog</a><a href="/#pricing">Pricing</a><a href="/guide">Setup</a><a class="button button-small" href="{site['download']}">Download for Mac ↗</a></div></nav></header>'''
 
 def footer(site):
-    return f'''<footer class="page-width site-footer"><div><a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69" loading="lazy"></a><p>Every meeting, remembered.</p></div><nav aria-label="Footer navigation"><a href="/blog/">Blog</a><a href="/collections/">Collections</a><a href="/guide">Guide</a><a href="/#pricing">Pricing</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:{site['support']}">Support</a></nav><span>© {date.today().year} Tagalong</span></footer>'''
+    return f'''<footer class="page-width site-footer"><div><a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69" loading="lazy"></a><p>Every meeting, remembered.</p></div><nav aria-label="Footer navigation"><a href="/collections/">Guides</a><a href="/blog/">Blog</a><a href="/#pricing">Pricing</a><a href="/guide">Setup</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:{site['support']}">Support</a></nav><span>© {date.today().year} Tagalong</span></footer>'''
 
 def page(site, title, description, url, body, graph=None, image=None, article=False, noindex=False):
     graph = [organization(site)] + (graph or [])
@@ -211,14 +213,16 @@ def breadcrumbs(site, entries):
     return html, schema
 
 def card(entry, heading=2):
-    kind = 'Article' if entry['kind'] == 'posts' else 'Collection'
+    kind = 'Article' if entry['kind'] == 'posts' else 'Guide'
     date_label = f'<time datetime="{entry["date"]}">{entry["date"].strftime("%B %-d, %Y")}</time>' if 'date' in entry else ''
     return f'<article class="content-card"><div class="content-meta">{kind} {date_label}</div><h{heading}><a href="{entry["url"]}">{escape(entry["title"])}</a></h{heading}><p>{escape(entry["description"])}</p><a class="content-read" href="{entry["url"]}">Read {kind.lower()} <span aria-hidden="true">↗</span><span class="sr-only">: {escape(entry["title"])}</span></a></article>'
 
 def entry_page(site, entry, posts, collections, preview):
     is_post = entry['kind'] == 'posts'
-    parent, parent_url = ('Blog', '/blog/') if is_post else ('Collections', '/collections/')
-    crumb, crumb_schema = breadcrumbs(site, [('Home', '/'), (parent, parent_url), (entry['title'], None)])
+    parent, parent_url = ('Blog', '/blog/') if is_post else ('Guides', '/collections/')
+    pillar = collections.get(entry.get('pillar'))
+    trail = [('Home', '/'), ('Guides', '/collections/'), (pillar['title'], pillar['url']), (entry['title'], None)] if pillar else [('Home', '/'), (parent, parent_url), (entry['title'], None)]
+    crumb, crumb_schema = breadcrumbs(site, trail)
     rendered, headings = markdown(entry['body'])
     answer = f'<div class="content-answer" id="article-summary"><p class="eyebrow">AT A GLANCE</p><p>{escape(entry["answer"])}</p></div>' if entry.get('answer') else ''
     status = '<p class="content-draft">Draft preview · Not published</p>' if entry['draft'] else ''
@@ -231,12 +235,17 @@ def entry_page(site, entry, posts, collections, preview):
     faq_html = '<section class="content-faq"><h2 id="questions">Questions &amp; answers</h2>' + ''.join(f'<details><summary>{escape(f["question"])}</summary><p>{escape(f["answer"])}</p></details>' for f in entry['faqs']) + '</section>' if entry['faqs'] else ''
     resources = '<section class="content-resources"><h2>Explore this topic</h2><ul>' + ''.join(f'<li><a href="{escape(r["url"])}">{escape(r["title"])}</a><p>{escape(r["description"])}</p></li>' for r in entry['resources']) + '</ul></section>' if entry['resources'] else ''
     related = [p for p in posts if (p['slug'] != entry['slug'] and set(p['collections']) & set(entry['collections']))] if is_post else [p for p in posts if entry['slug'] in p['collections']]
-    related_html = '<section class="content-related"><h2>' + ('Keep reading' if is_post else 'Articles in this collection') + '</h2><div class="content-grid">' + ''.join(card(p, heading=3) for p in related) + '</div></section>' if related else ''
+    members = [e for e in posts + list(collections.values()) if e.get('pillar') == (pillar['slug'] if pillar else entry['slug']) and e['url'] != entry['url']]
+    if pillar or members:
+        related = members
+    related_heading = 'Explore this topic' if not pillar and members else 'More in this guide' if pillar else 'Keep reading' if is_post else 'Articles in this collection'
+    related_html = '<section class="content-related"><h2>' + related_heading + '</h2><div class="content-grid">' + ''.join(card(p, heading=3) for p in related) + '</div></section>' if related else ''
     collection_links = '<p class="content-collection-links">In ' + ' · '.join(f'<a href="{collections[c]["url"]}">{escape(collections[c]["title"])}</a>' for c in entry['collections'] if c in collections) + '</p>' if entry['collections'] else ''
+    topic_link = f'<p class="content-topic-link">Part of <a href="{pillar["url"]}">{escape(pillar["title"])}</a></p>' if pillar else ''
     dimensions = ' '.join(f'{key}="{value}"' for key, value in image_dimensions(entry.get('image', '')).items())
     cover = f'<figure class="content-cover"><img src="{escape(entry["image"])}" alt="{escape(entry["imageAlt"])}" {dimensions}></figure>' if entry.get('image') and entry.get('showCover', True) else ''
-    body = f'{crumb}<header class="content-heading">{status}<p class="eyebrow">{parent}</p><h1>{escape(entry["title"])}</h1><p class="content-deck">{escape(entry["description"])}</p><div class="content-byline">{byline}</div>{collection_links}</header>{cover}<div class="content-prose content-intro">{answer}</div><div class="content-layout"><article class="content-prose">{rendered}{faq_html}{resources}</article>{toc}</div>{related_html}<div class="content-bottom"><a href="{parent_url}">← All {parent.lower()}</a><a class="button button-outline" href="/#pricing">Try Tagalong for Mac ↗</a></div>'
-    schema = {'@type': 'BlogPosting' if is_post else 'CollectionPage', '@id': site['url'] + entry['url'] + '#content', 'url': site['url'] + entry['url'], 'name': entry['title'], 'description': entry['description'], 'dateModified': str(entry['updated']), 'inLanguage': 'en', 'isPartOf': {'@id': site['url'] + parent_url}, 'publisher': {'@id': site['url'] + '/#organization'}}
+    body = f'{crumb}<header class="content-heading">{status}<p class="eyebrow">{parent}</p><h1>{escape(entry["title"])}</h1><p class="content-deck">{escape(entry["description"])}</p><div class="content-byline">{byline}</div>{topic_link}{collection_links if not pillar else ""}</header>{cover}<div class="content-prose content-intro">{answer}</div><div class="content-layout"><article class="content-prose">{rendered}{faq_html}{resources}</article>{toc}</div>{related_html}<div class="content-bottom"><a href="{parent_url}">← All {parent.lower()}</a><a class="button button-outline" href="/#pricing">Try Tagalong for Mac ↗</a></div>'
+    schema = {'@type': 'BlogPosting' if is_post else 'CollectionPage', '@id': site['url'] + entry['url'] + '#content', 'url': site['url'] + entry['url'], 'name': entry['title'], 'description': entry['description'], 'dateModified': str(entry['updated']), 'inLanguage': 'en', 'isPartOf': {'@id': site['url'] + (pillar['url'] + '#content' if pillar else parent_url)}, 'publisher': {'@id': site['url'] + '/#organization'}}
     if is_post:
         author = site['authors'][entry['author']]
         schema.update(headline=entry['title'], datePublished=str(entry['date']), mainEntityOfPage=site['url'] + entry['url'], author={'@type': author['type'], 'name': author['name'], 'url': author['url']})
@@ -272,20 +281,32 @@ def build(root=ROOT, out=None, preview=False, today=None):
     for post in posts:
         if set(post['collections']) - set(collections):
             raise ContentError(f'{post["slug"]}: published article references an unpublished collection')
+    for entry in posts + list(collections.values()):
+        if 'pillar' in entry:
+            pillar = collections.get(entry['pillar'])
+            if not pillar or pillar['url'] == entry['url'] or 'pillar' in pillar:
+                raise ContentError(f'{entry["slug"]}: pillar must be a published root collection')
     # Finish validation and rendering before replacing an earlier good build.
     generated = {e['url']: entry_page(site, e, posts, collections, preview) for e in posts + list(collections.values())}
     page_count = max(1, (len(posts) + site['postsPerPage'] - 1) // site['postsPerPage'])
     for number in range(1, page_count + 1):
         url = '/blog/' if number == 1 else f'/blog/page/{number}/'
         subset = posts[(number - 1) * site['postsPerPage']:number * site['postsPerPage']]
-        body = '<header class="content-heading content-index-heading"><p class="eyebrow">THE TAGALONG BLOG</p><h1>Make more of your meetings.</h1><p class="content-deck">Practical notes on capturing conversations, keeping the useful details, and following through.</p><div class="content-index-links"><a href="/collections/">Browse collections ↗</a><a href="/feed.xml">Subscribe via RSS ↗</a></div></header>'
+        body = '<header class="content-heading content-index-heading"><p class="eyebrow">THE TAGALONG BLOG</p><h1>Make more of your meetings.</h1><p class="content-deck">Practical notes on capturing conversations, keeping the useful details, and following through.</p><div class="content-index-links"><a href="/collections/">Browse topic guides ↗</a><a href="/feed.xml">Subscribe via RSS ↗</a></div></header>'
         body += '<div class="content-grid">' + ''.join(card(e) for e in subset) + '</div>' if subset else '<p>Articles are on their way. Explore the <a href="/guide">Tagalong guide</a> in the meantime.</p>'
         if page_count > 1:
             body += '<nav class="content-pagination" aria-label="Blog pages">' + ''.join(f'<a href="{"/blog/" if n == 1 else f"/blog/page/{n}/"}"' + (' aria-current="page"' if n == number else '') + f'>{n}</a>' for n in range(1, page_count + 1)) + '</nav>'
         schema = {'@type': 'Blog', '@id': site['url'] + url, 'name': 'Tagalong Blog', 'url': site['url'] + url, 'blogPost': [{'@id': site['url'] + e['url'] + '#content'} for e in subset]}
         generated[url] = page(site, 'Meeting Notes & Workflows Blog | Tagalong' + (f' — Page {number}' if number > 1 else ''), 'Practical guides to meeting notes, transcription, AI assistance, and keeping a useful meeting record on your Mac.' + (f' Browse older articles on page {number}.' if number > 1 else ''), url, body, [schema], noindex=preview or not subset)
-    body = '<header class="content-heading content-index-heading"><p class="eyebrow">COLLECTIONS</p><h1>A useful place to start.</h1><p class="content-deck">Guides and ideas, brought together by topic. Find the workflow that fits the way you meet.</p></header><div class="content-grid">' + ''.join(card(c) for c in collections.values()) + '</div>'
-    generated['/collections/'] = page(site, 'Meeting Workflow Collections | Tagalong', 'Browse collections of guides to meeting notes, transcription, local storage, and practical workflows for Mac.', '/collections/', body, [{'@type': 'CollectionPage', 'url': site['url'] + '/collections/', 'name': 'Tagalong Collections', 'mainEntity': {'@type': 'ItemList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': site['url'] + c['url'], 'name': c['title']} for i, c in enumerate(collections.values())]}}], noindex=preview or not collections)
+    roots = [c for c in collections.values() if 'pillar' not in c]
+    body = '<header class="content-heading content-index-heading"><p class="eyebrow">TAGALONG GUIDES</p><h1>Start with the bigger picture.</h1><p class="content-deck">Choose a meeting workflow, then explore the comparisons and practical guides that help you put it to work.</p></header>'
+    for pillar in roots:
+        members = [e for e in list(collections.values()) + posts if e.get('pillar') == pillar['slug']]
+        body += f'<section class="content-topic-group"><div class="content-pillar"><p class="eyebrow">START HERE</p><h2><a href="{pillar["url"]}">{escape(pillar["title"])}</a></h2><p>{escape(pillar["description"])}</p><a class="button button-outline" href="{pillar["url"]}">Read the complete guide ↗</a></div>'
+        if members:
+            body += '<h2 class="content-topic-heading">Explore the details</h2><div class="content-grid">' + ''.join(card(e, heading=3) for e in members) + '</div>'
+        body += '</section>'
+    generated['/collections/'] = page(site, 'AI Meeting Notes Guides & Comparisons | Tagalong', 'Start with the Mac meeting-notes guide, then explore Granola alternatives, local storage, Apple Reminders, and visual meeting summaries.', '/collections/', body, [{'@type': 'CollectionPage', 'url': site['url'] + '/collections/', 'name': 'Tagalong Guides', 'mainEntity': {'@type': 'ItemList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': site['url'] + c['url'], 'name': c['title']} for i, c in enumerate(roots)]}}], noindex=preview or not collections)
     generated['/404.html'] = page(site, 'Page not found | Tagalong', 'Find your way back to Tagalong.', '/404.html', '<header class="content-heading"><p class="eyebrow">404</p><h1>This page isn’t here.</h1><p class="content-deck">Try the <a href="/blog/">blog</a>, <a href="/collections/">collections</a>, or <a href="/">homepage</a>.</p></header>', noindex=True)
     urls = []
     for filename in STATIC:
@@ -302,9 +323,7 @@ def build(root=ROOT, out=None, preview=False, today=None):
             graph.append({'@type': 'SoftwareApplication', '@id': site['url'] + '/#app', 'name': 'Tagalong', 'url': site['url'] + '/', 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'macOS 15 or later', 'downloadUrl': site['download'], 'description': site['description'], 'publisher': {'@id': site['url'] + '/#organization'}})
         source = re.sub(r'<title>.*?</title>\s*|<meta\s+(?:name="(?:description|robots|twitter:[^"]+)"|property="og:[^"]+")[^>]*>\s*|<link\s+rel="canonical"[^>]*>\s*', '', source, flags=re.S)
         source = source.replace('</head>', metadata(site, unescape(title), description, url, graph, site['defaultImage'] if filename == 'index.html' else None, noindex=noindex) + '\n</head>', 1)
-        if filename == 'index.html':
-            source = source.replace('<a href="/guide">Guide</a><a class="button button-small"', '<a href="/guide">Guide</a><a href="/blog/">Blog</a><a class="button button-small"', 1)
-        source = re.sub(r'(<footer\b[\s\S]*?)(</(?:ul|nav)>)', lambda m: m[1] + ('<li><a href="/blog/">Blog</a></li><li><a href="/collections/">Collections</a></li>' if m[2] == '</ul>' else '<a href="/blog/">Blog</a><a href="/collections/">Collections</a>') + m[2], source, count=1)
+        source = re.sub(r'(<footer\b[\s\S]*?)(</(?:ul|nav)>)', lambda m: m[1] + ('<li><a href="/blog/">Blog</a></li><li><a href="/collections/">Guides</a></li>' if m[2] == '</ul>' else '<a href="/blog/">Blog</a><a href="/collections/">Guides</a>') + m[2], source, count=1)
         generated['/' + filename] = source
         if not noindex:
             urls.append((url, None))

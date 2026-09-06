@@ -24,6 +24,12 @@ Use the existing Markdown collection and article types. The name `/collections/`
 
 Do not create separate URLs for spelling variants such as notetaker/note taker, Mac/macOS or several phrasings of the same Granola-alternative question. Use those words naturally within a strong canonical page. Persona pages require a genuinely different workflow and evidence, not a swapped job title.
 
+## Current pillar and cluster map
+
+Main navigation → Guides (`/collections/`) → AI meeting notes for Mac (`/collections/meeting-notes/`). Its supporting pages are Granola alternatives, local data handling, Apple Reminders export, and visual meeting notes. Blog is a chronological route to articles, not the topic hierarchy. Setup is the product manual.
+
+Use `pillar: meeting-notes` on those supporting entries. The build makes pillar-to-child links, child-to-pillar links, sibling suggestions, and aligned breadcrumb/schema relationships explicit. Continue adding contextual links where they answer the reader’s next question; avoid unrelated sitewide keyword links. Keep one authoritative pillar per distinct intent.
+
 ## Collection anatomy
 
 1. A clear H1 and concise answer to the buying question, naming its subject.
