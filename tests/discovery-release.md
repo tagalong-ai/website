@@ -58,3 +58,13 @@ After browser fixes and publication, verify Cloudflare's production build and li
 The homepage, setup manual, privacy, terms, changelog, and editorial pages now expose Guides and Blog in their primary navigation. Guides features the Mac meeting-notes pillar and its four supporting pages. Each supporting page declares its pillar, shows a prominent return link, and uses topic-aware breadcrumbs and schema. The pillar lists all members; sibling cards and contextual links connect the cluster. Existing URL paths remain unchanged.
 
 Three additional tests verify primary navigation, bidirectional pillar relationships and schema, and rejection of missing/cyclic pillar references. Total: 34 passing automated tests. Browser preview was retried and still returned ERR_CONNECTION_REFUSED; publication/indexing remain pending.
+
+## Broken route and reference-layout correction
+
+Cloudflare production was inspected again: deployed commit remains `19484c0`, predating the content build. The live `/product/guides` returns the old homepage; its relative styles and media resolve beneath `/product/`. This matches Cloudflare Pages’ default SPA fallback when no root 404 exists.
+
+The new build already includes a root 404. Exact redirects now send `/product/guides` and `/product/guides/` to `/collections/`; other missing routes return a styled, noindex 404. Existing static-page CSS, scripts, and media references are root-relative. The local preview handles the same exact redirects. Regression tests cover both alias forms, real missing-page handling, and resource-path stability.
+
+The supplied Elisity pillar, solution, and vendor comparison were reviewed in the browser. Applied structural patterns: clear topic hero, quick answer, concise takeaways, question-led sections, sourced comparison, supporting guides, and product CTA. Tagalong retains its own palette, logo, evidence, and approved product tour. Editorial pillar, comparison, gallery, and article layouts now have distinct treatments. No Elisity copy, statistics, or testimonials were transferred.
+
+Current verification: 21 Python tests plus 15 tour tests pass (36 total); generated-site checker passes. Browser QA of the new pages still requires a working local server or a pushed Cloudflare branch preview. Do not report this correction as live until its deployed commit and rendered pages have been verified.

@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SLUG = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 STATIC = ('index.html', 'guide.html', 'privacy.html', 'terms.html', 'changelog.html', 'admin.html', 'success.html')
 STYLES = ('styles.css', 'homepage.css', 'homepage.js', 'product-demo.css', 'content.css')
-ALLOWED = {'title', 'description', 'date', 'updated', 'author', 'draft', 'collections', 'answer', 'faqs', 'resources', 'image', 'imageAlt', 'seoTitle', 'seoDescription', 'showCover', 'pillar'}
+ALLOWED = {'title', 'description', 'date', 'updated', 'author', 'draft', 'collections', 'answer', 'faqs', 'resources', 'image', 'imageAlt', 'seoTitle', 'seoDescription', 'showCover', 'pillar', 'layout', 'takeaways'}
 
 class ContentError(ValueError):
     pass
@@ -104,6 +104,12 @@ def read_entry(path, kind, site):
         for key in ('title', 'description'):
             resource[key] = text(resource[key], key)
         resource['url'] = safe_url(resource['url'])
+    if data.get('layout', 'article') not in ('pillar', 'comparison', 'gallery', 'article'):
+        raise ContentError(f'{path.name}: unknown editorial layout')
+    if 'takeaways' in data:
+        if not isinstance(data['takeaways'], list) or not 1 <= len(data['takeaways']) <= 4:
+            raise ContentError(f'{path.name}: takeaways must contain one to four items')
+        data['takeaways'] = [text(item, 'takeaway') for item in data['takeaways']]
     if 'pillar' in data and (not isinstance(data['pillar'], str) or not SLUG.fullmatch(data['pillar'])):
         raise ContentError(f'{path.name}: pillar must name a collection slug')
     if 'showCover' in data and not isinstance(data['showCover'], bool):
@@ -202,10 +208,10 @@ def header(site):
 def footer(site):
     return f'''<footer class="page-width site-footer"><div><a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69" loading="lazy"></a><p>Every meeting, remembered.</p></div><nav aria-label="Footer navigation"><a href="/collections/">Guides</a><a href="/blog/">Blog</a><a href="/#pricing">Pricing</a><a href="/guide">Setup</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:{site['support']}">Support</a></nav><span>© {date.today().year} Tagalong</span></footer>'''
 
-def page(site, title, description, url, body, graph=None, image=None, article=False, noindex=False):
+def page(site, title, description, url, body, graph=None, image=None, article=False, noindex=False, layout="article"):
     graph = [organization(site)] + (graph or [])
     head = metadata(site, title, description, url, graph, image, article, noindex)
-    return f'''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">{head}<link rel="icon" href="/assets/favicon.png"><link rel="preload" href="/assets/fonts/dm-sans.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/homepage.css"><link rel="stylesheet" href="/content.css"><script src="/homepage.js" defer></script></head><body class="homepage content-site">{header(site)}<main id="main" class="page-width content-main">{body}</main>{footer(site)}</body></html>'''
+    return f'''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">{head}<link rel="icon" href="/assets/favicon.png"><link rel="preload" href="/assets/fonts/dm-sans.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/homepage.css"><link rel="stylesheet" href="/content.css"><script src="/homepage.js" defer></script></head><body class="homepage content-site" data-layout="{escape(layout)}">{header(site)}<main id="main" class="page-width content-main">{body}</main>{footer(site)}</body></html>'''
 
 def breadcrumbs(site, entries):
     html = '<nav class="content-breadcrumbs" aria-label="Breadcrumb"><ol>' + ''.join(f'<li><a href="{escape(url)}">{escape(label)}</a></li>' if url else f'<li aria-current="page">{escape(label)}</li>' for label, url in entries) + '</ol></nav>'
@@ -225,6 +231,9 @@ def entry_page(site, entry, posts, collections, preview):
     crumb, crumb_schema = breadcrumbs(site, trail)
     rendered, headings = markdown(entry['body'])
     answer = f'<div class="content-answer" id="article-summary"><p class="eyebrow">AT A GLANCE</p><p>{escape(entry["answer"])}</p></div>' if entry.get('answer') else ''
+    takeaways = '<section class="content-takeaways" aria-label="Key takeaways"><ul>' + ''.join(f'<li><span aria-hidden="true">{i + 1:02d}</span><p>{escape(item)}</p></li>' for i, item in enumerate(entry.get('takeaways', []))) + '</ul></section>' if entry.get('takeaways') else ''
+    layout = entry.get('layout', 'article')
+    label = {'pillar': 'THE COMPLETE GUIDE', 'comparison': 'COMPARE YOUR OPTIONS', 'gallery': 'VISUAL NOTES GALLERY', 'article': 'PRACTICAL GUIDE'}[layout]
     status = '<p class="content-draft">Draft preview · Not published</p>' if entry['draft'] else ''
     byline = f'<span>By <a href="{escape(site["authors"][entry["author"]]["url"])}">{escape(site["authors"][entry["author"]]["name"])}</a></span><span>Published <time datetime="{entry["date"]}">{entry["date"].strftime("%B %-d, %Y")}</time></span>' if is_post else f'<span>By <a href="/">{escape(site["name"])}</a></span>'
     if not is_post or entry['updated'] != entry['date']:
@@ -244,7 +253,7 @@ def entry_page(site, entry, posts, collections, preview):
     topic_link = f'<p class="content-topic-link">Part of <a href="{pillar["url"]}">{escape(pillar["title"])}</a></p>' if pillar else ''
     dimensions = ' '.join(f'{key}="{value}"' for key, value in image_dimensions(entry.get('image', '')).items())
     cover = f'<figure class="content-cover"><img src="{escape(entry["image"])}" alt="{escape(entry["imageAlt"])}" {dimensions}></figure>' if entry.get('image') and entry.get('showCover', True) else ''
-    body = f'{crumb}<header class="content-heading">{status}<p class="eyebrow">{parent}</p><h1>{escape(entry["title"])}</h1><p class="content-deck">{escape(entry["description"])}</p><div class="content-byline">{byline}</div>{topic_link}{collection_links if not pillar else ""}</header>{cover}<div class="content-prose content-intro">{answer}</div><div class="content-layout"><article class="content-prose">{rendered}{faq_html}{resources}</article>{toc}</div>{related_html}<div class="content-bottom"><a href="{parent_url}">← All {parent.lower()}</a><a class="button button-outline" href="/#pricing">Try Tagalong for Mac ↗</a></div>'
+    body = f'{crumb}<header class="content-heading">{status}<p class="eyebrow">{label}</p><h1>{escape(entry["title"])}</h1><p class="content-deck">{escape(entry["description"])}</p><div class="content-byline">{byline}</div>{topic_link}{collection_links if not pillar else ""}</header>{cover}<div class="content-prose content-intro">{answer}</div>{takeaways}<div class="content-layout"><article class="content-prose">{rendered}{faq_html}{resources}</article>{toc}</div>{related_html}<div class="content-bottom"><a href="{parent_url}">← All {parent.lower()}</a><a class="button button-outline" href="/#pricing">Try Tagalong for Mac ↗</a></div>'
     schema = {'@type': 'BlogPosting' if is_post else 'CollectionPage', '@id': site['url'] + entry['url'] + '#content', 'url': site['url'] + entry['url'], 'name': entry['title'], 'description': entry['description'], 'dateModified': str(entry['updated']), 'inLanguage': 'en', 'isPartOf': {'@id': site['url'] + (pillar['url'] + '#content' if pillar else parent_url)}, 'publisher': {'@id': site['url'] + '/#organization'}}
     if is_post:
         author = site['authors'][entry['author']]
@@ -253,7 +262,7 @@ def entry_page(site, entry, posts, collections, preview):
         schema['mainEntity'] = {'@type': 'ItemList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': site['url'] + p['url'], 'name': p['title']} for i, p in enumerate(related)]}
     if entry.get('image'):
         schema['image'] = site['url'] + entry['image'] if entry['image'].startswith('/') else entry['image']
-    return page(site, entry.get('seoTitle', entry['title'] + ' | Tagalong'), entry.get('seoDescription', entry['description']), entry['url'], body, [crumb_schema, schema], entry.get('image', site['defaultImage']), is_post, preview)
+    return page(site, entry.get('seoTitle', entry['title'] + ' | Tagalong'), entry.get('seoDescription', entry['description']), entry['url'], body, [crumb_schema, schema], entry.get('image', site['defaultImage']), is_post, preview, layout=layout)
 
 def write(out, url, value):
     path = out / (url.strip('/') + '/index.html' if url.endswith('/') and url != '/' else 'index.html' if url == '/' else url.lstrip('/'))
@@ -360,7 +369,7 @@ def build(root=ROOT, out=None, preview=False, today=None):
     ET.ElementTree(rss).write(out / 'feed.xml', encoding='utf-8', xml_declaration=True)
     (out / 'robots.txt').write_text('User-agent: *\nDisallow: /\n' if preview else f'User-agent: *\nAllow: /\n\nSitemap: {site["url"]}/sitemap.xml\n')
     (out / '_headers').write_text('''/admin\n  X-Robots-Tag: noindex, nofollow\n/admin.html\n  X-Robots-Tag: noindex, nofollow\n/success\n  X-Robots-Tag: noindex, nofollow\n/success.html\n  X-Robots-Tag: noindex, nofollow\n/404.html\n  X-Robots-Tag: noindex, nofollow\nhttps://:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\nhttps://:deployment.:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\n''')
-    (out / '_redirects').write_text('https://www.tagalongai.com/* https://tagalongai.com/:splat 301\n')
+    (out / '_redirects').write_text('https://www.tagalongai.com/* https://tagalongai.com/:splat 301\n/product/guides /collections/ 301\n/product/guides/ /collections/ 301\n')
     # Verification files contain public ownership tokens, never account credentials.
     verification = root / 'content/verification'
     if verification.exists():

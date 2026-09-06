@@ -37,6 +37,8 @@ The first pillar is `/collections/meeting-notes/`. Granola alternatives, local d
 | `date` | Required for articles; actual publication date, `YYYY-MM-DD`. |
 | `updated` | Article modification date; defaults to `date`. Required for collections. Change only after a material content update. |
 | `author` | Required for articles. Registry key in `content/site.json`; `tagalong` is the organization byline. Add a real person only with their actual name and profile URL. |
+| `layout` | Optional `pillar`, `comparison`, `gallery`, or `article` treatment, using the Tagalong palette and typography. |
+| `takeaways` | Optional list of one to four concise, verified takeaways below the quick answer. |
 | `pillar` | Optional collection slug for a supporting page. Generates a pillar backlink, topic breadcrumbs, related-topic cards, and matching schema. Must reference a published root collection; cycles fail the build. |
 | `collections` | Article list of collection filenames without `.md`. Unknown or unpublished collections fail the build. |
 | `answer` | Optional concise answer displayed in an “At a glance” block. |

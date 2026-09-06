@@ -18,6 +18,16 @@ class Preview(SimpleHTTPRequestHandler):
         if any(part.startswith('.') for part in Path(path).parts):
             self.send_error(404)
             return None
+        redirects = Path(self.directory) / '_redirects'
+        if redirects.is_file():
+            for line in redirects.read_text().splitlines():
+                rule = line.split()
+                if len(rule) == 3 and rule[0] == path and rule[1].startswith('/') and not rule[1].startswith('//') and rule[2] in ('301', '302', '307', '308'):
+                    self.send_response(int(rule[2]))
+                    self.send_header('Location', rule[1] + ('?' + parsed.query if parsed.query else ''))
+                    self.send_header('Content-Length', '0')
+                    self.end_headers()
+                    return None
         target = Path(self.translate_path(path))
         if path != '/' and not target.suffix and target.with_suffix('.html').is_file():
             self.path = parsed.path + '.html'

@@ -168,6 +168,43 @@ class PublishingTests(unittest.TestCase):
         with self.assertRaisesRegex(builder.ContentError, 'published root collection'):
             self.build()
 
+    def test_nested_route_redirect_and_real_not_found_response(self):
+        out = self.build()
+        spec_preview = importlib.util.spec_from_file_location('preview', ROOT / 'scripts/preview.py')
+        preview = importlib.util.module_from_spec(spec_preview)
+        spec_preview.loader.exec_module(preview)
+        handler = object.__new__(preview.Preview)
+        handler.directory = str(out)
+        responses, headers = [], {}
+        handler.send_response = lambda code: responses.append(code)
+        handler.send_header = lambda name, value: headers.update({name: value})
+        handler.end_headers = lambda: None
+        for route in ['/product/guides', '/product/guides/']:
+            handler.path = route
+            self.assertIsNone(handler.send_head())
+            self.assertEqual(responses[-1], 301)
+            self.assertEqual(headers['Location'], '/collections/')
+        handler.path = '/product/this-page-does-not-exist'
+        response = handler.send_head()
+        self.assertEqual(responses[-1], 404)
+        html = response.read().decode()
+        self.assertIn('noindex', html)
+        self.assertIn('Page not found', html)
+        self.assertNotIn('id="hero-title"', html)
+    def test_static_assets_are_root_relative_and_editorial_layouts_are_distinct(self):
+        from urllib.parse import urlsplit
+        out = self.build()
+        for name in builder.STATIC:
+            doc = checker.Document((out / name).read_text())
+            for link in doc.links:
+                parsed = urlsplit(link)
+                if not parsed.scheme and parsed.path.endswith(('.css', '.js', '.png', '.jpg', '.mp4')):
+                    self.assertTrue(parsed.path.startswith('/'), (name, link))
+        for slug, layout in [('meeting-notes', 'pillar'), ('granola-alternatives', 'comparison'), ('visual-meeting-notes', 'gallery')]:
+            html = (out / 'collections' / slug / 'index.html').read_text()
+            self.assertIn(f'data-layout="{layout}"', html)
+            self.assertIn('aria-label="Key takeaways"', html)
+
     def test_editorial_images_have_intrinsic_dimensions_and_safe_paths(self):
         rendered, _ = builder.markdown('![Synthetic visual](/assets/visual-notes/sketchnote.jpg)')
         self.assertIn('width="1536"', rendered)

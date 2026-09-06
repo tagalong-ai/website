@@ -6,6 +6,11 @@ date: 2026-09-05
 updated: 2026-09-05
 author: tagalong
 draft: false
+layout: article
+takeaways:
+- Review extracted tasks and explicitly send the ones you want to keep.
+- Confirm the destination list, owner context, and actual due date.
+- Export creates separate tasks; subsequent edits and completion do not synchronize.
 pillar: meeting-notes
 collections:
   - meeting-notes

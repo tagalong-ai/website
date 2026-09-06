@@ -83,3 +83,21 @@
 .homepage .content-pillar h2 {font-size:clamp(28px,3vw,40px);line-height:1.2;letter-spacing:-.03em;color:#315239;margin:16px 0;}
 .homepage .content-pillar>p:not(.eyebrow) {font-size:18px;line-height:1.65;max-width:680px;margin-bottom:24px;}
 .homepage .content-topic-heading {font-size:28px;margin-bottom:24px;}
+
+/* Distinct editorial page treatments share the existing Tagalong identity. */
+.homepage.content-site {background:#fafaf7;}
+.homepage .content-heading {max-width:none;padding:42px 0 40px;margin-bottom:24px;border-bottom:1px solid #dce1d3;}
+.homepage .content-heading h1 {max-width:900px;font-size:clamp(36px,4.5vw,60px);}
+.homepage .content-heading>.eyebrow {display:inline-block;color:#315239;background:#e9efdf;border-radius:30px;padding:7px 13px;font-size:12px;letter-spacing:.08em;}
+.homepage.content-site[data-layout="pillar"] .content-heading {padding:clamp(26px,4vw,48px);border:1px solid #dce1d3;border-radius:16px;background:linear-gradient(120deg,#edf2e5,#fafaf7);margin-top:28px;}
+.homepage.content-site[data-layout="comparison"] .content-heading>.eyebrow {background:#f4e8c8;color:#654d1b;}
+.homepage.content-site[data-layout="gallery"] .content-heading {border-bottom:3px solid #b79a54;}
+.homepage .content-takeaways {padding:0;margin:0 0 44px;}
+.homepage .content-takeaways ul {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;list-style:none;}
+.homepage .content-takeaways li {padding:20px 0;border-top:2px solid #b4c79c;}
+.homepage .content-takeaways li>span {font-size:13px;letter-spacing:.08em;color:#597245;font-weight:700;}
+.homepage .content-takeaways p {font-size:16px;line-height:1.7;color:#454f41;margin-top:12px;}
+.homepage .content-prose h2 {padding-top:12px;}
+.homepage .content-table tbody tr:nth-child(even) {background:#f3f5ef;}
+.homepage .content-table th {font-weight:700;}
+@media(max-width:700px){.homepage .content-takeaways ul {grid-template-columns:1fr;gap:0;}.homepage .content-takeaways li {display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;padding:16px 0;border-top:1px solid #dce1d3;}.homepage .content-takeaways p {margin:0;}.homepage .content-heading {padding:28px 0;}.homepage.content-site[data-layout="pillar"] .content-heading {margin-top:20px;}.homepage .content-takeaways {margin-bottom:28px;}}

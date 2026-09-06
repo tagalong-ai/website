@@ -6,6 +6,13 @@ date: 2026-09-05
 updated: 2026-09-05
 author: tagalong
 draft: false
+layout: article
+takeaways:
+- Your saved meeting files and library search stay on your Mac.
+- Cloud transcription and AI processing can send audio or text, including automatic
+  post-meeting steps.
+- Assistant folder access includes future supported meeting text until you turn it
+  off.
 pillar: meeting-notes
 collections:
   - meeting-notes
