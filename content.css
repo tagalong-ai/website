@@ -101,3 +101,6 @@
 .homepage .content-table tbody tr:nth-child(even) {background:#f3f5ef;}
 .homepage .content-table th {font-weight:700;}
 @media(max-width:700px){.homepage .content-takeaways ul {grid-template-columns:1fr;gap:0;}.homepage .content-takeaways li {display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;padding:16px 0;border-top:1px solid #dce1d3;}.homepage .content-takeaways p {margin:0;}.homepage .content-heading {padding:28px 0;}.homepage.content-site[data-layout="pillar"] .content-heading {margin-top:20px;}.homepage .content-takeaways {margin-bottom:28px;}}
+
+/* Keep wide comparison tables inside the article on narrow screens. */
+.homepage .content-layout > .content-prose {width:100%;max-width:100%;min-width:0;}
