@@ -8,7 +8,7 @@ const html = fs.readFileSync(path.join(__dirname, '../texts.html'), 'utf8');
 
 // Exact consent wording registered with the A2P campaign. Changing it on the page
 // requires re-registering the campaign, so this test pins it.
-const CONSENT = "Yes, I'd like to receive recurring text messages from Tagalong with product updates, tips, and offers at the number provided. Consent is not a condition of purchase. Msg frequency varies, up to 4 msgs/month. Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel.";
+const CONSENT = "Yes, send me recurring marketing text messages from Tagalong AI (new releases, tips, and offers) at the number provided. Consent is not a condition of purchase. Msg frequency varies, up to 4 msgs/month. Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel.";
 
 function element(extra = {}) {
   return {
