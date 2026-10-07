@@ -18,8 +18,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 SLUG = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
-STATIC = ('index.html', 'guide.html', 'privacy.html', 'terms.html', 'changelog.html', 'admin.html', 'success.html')
-STYLES = ('styles.css', 'homepage.css', 'homepage.js', 'admin.js', 'product-demo.css', 'content.css')
+STATIC = ('index.html', 'guide.html', 'privacy.html', 'terms.html', 'changelog.html', 'admin.html', 'success.html', 'texts.html')
+STYLES = ('styles.css', 'homepage.css', 'homepage.js', 'admin.js', 'product-demo.css', 'content.css', 'texts.css', 'texts.js')
 ALLOWED = {'title', 'description', 'date', 'updated', 'author', 'draft', 'collections', 'answer', 'faqs', 'resources', 'image', 'imageAlt', 'seoTitle', 'seoDescription', 'showCover', 'pillar', 'layout', 'takeaways'}
 
 class ContentError(ValueError):
@@ -206,7 +206,7 @@ def header(site):
     return f'''<a class="skip-link" href="#main">Skip to content</a><header class="site-header"><nav class="page-width nav-row" aria-label="Main navigation"><a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69"></a><button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="site-links" hidden>Menu <span aria-hidden="true">☰</span></button><div class="site-links" id="site-links"><a href="/#tour">Product</a><a href="/collections/">Guides</a><a href="/blog/">Blog</a><a href="/#pricing">Pricing</a><a href="/guide">Setup</a><a class="button button-small" href="{site['download']}">Download for Mac ↗</a></div></nav></header>'''
 
 def footer(site):
-    return f'''<footer class="page-width site-footer"><div><a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69" loading="lazy"></a><p>Every meeting, remembered.</p></div><nav aria-label="Footer navigation"><a href="/collections/">Guides</a><a href="/blog/">Blog</a><a href="/#pricing">Pricing</a><a href="/guide">Setup</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:{site['support']}">Support</a></nav><span>© {date.today().year} Tagalong</span></footer>'''
+    return f'''<footer class="page-width site-footer"><div><a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69" loading="lazy"></a><p>Every meeting, remembered.</p></div><nav aria-label="Footer navigation"><a href="/collections/">Guides</a><a href="/blog/">Blog</a><a href="/#pricing">Pricing</a><a href="/guide">Setup</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/texts">Text updates</a><a href="mailto:{site['support']}">Support</a></nav><span>© {date.today().year} Tagalong</span></footer>'''
 
 def page(site, title, description, url, body, graph=None, image=None, article=False, noindex=False, layout="article"):
     graph = [organization(site)] + (graph or [])
@@ -332,7 +332,7 @@ def build(root=ROOT, out=None, preview=False, today=None):
             graph.append({'@type': 'SoftwareApplication', '@id': site['url'] + '/#app', 'name': 'Tagalong', 'url': site['url'] + '/', 'applicationCategory': 'BusinessApplication', 'operatingSystem': 'macOS 15 or later', 'downloadUrl': site['download'], 'description': site['description'], 'publisher': {'@id': site['url'] + '/#organization'}})
         source = re.sub(r'<title>.*?</title>\s*|<meta\s+(?:name="(?:description|robots|twitter:[^"]+)"|property="og:[^"]+")[^>]*>\s*|<link\s+rel="canonical"[^>]*>\s*', '', source, flags=re.S)
         source = source.replace('</head>', metadata(site, unescape(title), description, url, graph, site['defaultImage'] if filename == 'index.html' else None, noindex=noindex) + '\n</head>', 1)
-        source = re.sub(r'(<footer\b[\s\S]*?)(</(?:ul|nav)>)', lambda m: m[1] + ('<li><a href="/blog/">Blog</a></li><li><a href="/collections/">Guides</a></li>' if m[2] == '</ul>' else '<a href="/blog/">Blog</a><a href="/collections/">Guides</a>') + m[2], source, count=1)
+        source = re.sub(r'(<footer\b[\s\S]*?)(</(?:ul|nav)>)', lambda m: m[1] + ('<li><a href="/blog/">Blog</a></li><li><a href="/collections/">Guides</a></li><li><a href="/texts">Text updates</a></li>' if m[2] == '</ul>' else '<a href="/blog/">Blog</a><a href="/collections/">Guides</a><a href="/texts">Text updates</a>') + m[2], source, count=1)
         generated['/' + filename] = source
         if not noindex:
             urls.append((url, None))

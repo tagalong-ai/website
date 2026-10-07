@@ -264,6 +264,26 @@ class PublishingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'nonempty description|duplicate IDs'):
             checker.check(out)
 
+    def test_text_opt_in_page_is_public_indexable_and_linked_from_policies(self):
+        out = self.build()
+        html = (out / 'texts.html').read_text()
+        doc = checker.Document(html)
+        self.assertEqual(doc.canonicals, ['https://tagalongai.com/texts'])
+        self.assertNotIn('noindex', doc.robots[0])
+        self.assertIn('<loc>https://tagalongai.com/texts</loc>', (out / 'sitemap.xml').read_text())
+        self.assertTrue((out / 'texts.js').is_file())
+        self.assertTrue((out / 'texts.css').is_file())
+        self.assertIn('https://sms-promote-production.up.railway.app/public/join', (out / 'texts.js').read_text())
+        privacy = (out / 'privacy.html').read_text()
+        self.assertIn('id="text-messaging"', privacy)
+        self.assertIn('No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. All the above categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties.', privacy)
+        terms = (out / 'terms.html').read_text()
+        self.assertIn('id="text-messages"', terms)
+        self.assertIn('Carriers are not liable for delayed or undelivered messages.', terms)
+        for name in ['index.html', 'privacy.html', 'terms.html', 'texts.html', 'blog/index.html']:
+            footer = (out / name).read_text().split('<footer', 1)[1]
+            self.assertEqual(footer.count('href="/texts"'), 1, name)
+
     def test_collection_cover_can_be_omitted_without_losing_social_image(self):
         out = self.build()
         html = (out / 'collections/visual-meeting-notes/index.html').read_text()

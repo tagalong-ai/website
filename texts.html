@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get Tagalong Updates by Text - Tagalong</title>
+  <meta name="description" content="Sign up for Tagalong text messages: new releases, product updates, tips, and occasional Tagalong Pro offers. Up to 4 msgs/month. Reply STOP to cancel.">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="preload" href="/assets/fonts/dm-sans.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/homepage.css">
+  <link rel="stylesheet" href="/content.css">
+  <link rel="stylesheet" href="/texts.css">
+  <script src="/homepage.js" defer></script>
+  <script src="/texts.js" defer></script>
+</head>
+<body class="homepage content-site texts-page" data-layout="article">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="page-width nav-row" aria-label="Main navigation">
+    <a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69"></a>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="site-links" hidden>Menu <span aria-hidden="true">☰</span></button>
+    <div class="site-links" id="site-links"><a href="/#tour">Product</a><a href="/collections/">Guides</a><a href="/blog/">Blog</a><a href="/#pricing">Pricing</a><a href="/guide">Setup</a><a class="button button-small" href="https://github.com/tagalong-ai/releases/releases/latest/download/Tagalong.dmg">Download for Mac <span aria-hidden="true">↗</span></a></div>
+  </nav>
+</header>
+
+<main id="main" class="page-width content-main texts-main">
+  <header class="content-heading texts-heading">
+    <p class="eyebrow">TAGALONG TEXT UPDATES</p>
+    <h1>Get Tagalong updates by text</h1>
+    <p class="content-deck">Tagalong is the Mac app for AI meeting notes. Join our text list to hear about new releases first, pick up practical tips, and get the occasional Tagalong Pro offer.</p>
+  </header>
+
+  <div class="texts-layout">
+    <section class="texts-card" aria-labelledby="texts-form-title">
+      <h2 id="texts-form-title">Sign up for texts</h2>
+      <p class="texts-card-intro">Up to 4 texts a month. Reply STOP anytime to cancel.</p>
+
+      <form id="texts-form" class="texts-form" novalidate>
+        <div class="texts-field">
+          <label for="texts-first-name">First name <span class="texts-optional">(optional)</span></label>
+          <input id="texts-first-name" name="first_name" type="text" autocomplete="given-name" maxlength="60">
+        </div>
+
+        <div class="texts-field">
+          <label for="texts-phone">Mobile number</label>
+          <input id="texts-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required aria-required="true" aria-describedby="texts-phone-hint" placeholder="(555) 555-0123">
+          <p id="texts-phone-hint" class="texts-hint">US and Canadian mobile numbers only.</p>
+        </div>
+
+        <div class="texts-hp" aria-hidden="true">
+          <label for="texts-company-website">Company website</label>
+          <input id="texts-company-website" name="company_website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="texts-consent">
+          <input id="texts-consent" name="consent" type="checkbox" value="yes" required aria-required="true">
+          <label for="texts-consent">Yes, I'd like to receive recurring text messages from Tagalong with product updates, tips, and offers at the number provided. Consent is not a condition of purchase. Msg frequency varies, up to 4 msgs/month. Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel. <a href="/privacy">Privacy Policy</a> &amp; <a href="/terms">Terms</a>.</label>
+        </div>
+
+        <button id="texts-submit" class="button texts-submit" type="submit" disabled>Sign up for texts</button>
+        <noscript><p class="texts-noscript">JavaScript is required to submit this form. Turn it on and reload this page, or email <a href="mailto:support@tagalongai.com">support@tagalongai.com</a> for help.</p></noscript>
+        <div id="texts-status" class="texts-status" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <aside class="texts-details" aria-labelledby="texts-details-title">
+      <h2 id="texts-details-title">What you’ll get</h2>
+      <ul class="texts-list">
+        <li><strong>New releases &amp; product updates</strong><span>Know when a new version of Tagalong ships and what changed.</span></li>
+        <li><strong>Tips</strong><span>Short, practical ways to get more from your meeting notes.</span></li>
+        <li><strong>Occasional Tagalong Pro offers</strong><span>Now and then, a deal on Tagalong Pro.</span></li>
+      </ul>
+      <dl class="texts-facts">
+        <div><dt>How often</dt><dd>Message frequency varies, up to 4 msgs/month.</dd></div>
+        <div><dt>Cost</dt><dd>Msg &amp; data rates may apply.</dd></div>
+        <div><dt>Stop anytime</dt><dd>Reply STOP to any message to cancel.</dd></div>
+        <div><dt>Get help</dt><dd>Reply HELP, or email <a href="mailto:support@tagalongai.com">support@tagalongai.com</a>.</dd></div>
+      </dl>
+      <p class="texts-promise">We never share your mobile number or text consent with third parties.</p>
+    </aside>
+  </div>
+
+  <section class="texts-fineprint" aria-labelledby="texts-fineprint-title">
+    <h2 id="texts-fineprint-title">Program details</h2>
+    <p>Tagalong text messages are sent by Tagalong to the mobile number you provide on this page after you check the consent box. Messages cover product updates and new releases, tips, and occasional offers on Tagalong Pro. Message frequency varies, up to 4 msgs/month. Msg &amp; data rates may apply. Consent is not a condition of purchase. Reply STOP to cancel at any time; you will receive one confirmation and no further messages. Reply HELP for help, or email <a href="mailto:support@tagalongai.com">support@tagalongai.com</a>. Carriers are not liable for delayed or undelivered messages. Available for US and Canadian mobile numbers.</p>
+    <p>Read how we handle your number in our <a href="/privacy#text-messaging">Privacy Policy</a> and the program terms in our <a href="/terms#text-messages">Terms of Service</a>.</p>
+  </section>
+</main>
+
+<footer class="page-width site-footer"><div><a class="wordmark" href="/" aria-label="Tagalong home"><img src="/assets/logo-light.png" alt="Tagalong" width="154" height="69" loading="lazy"></a><p>Every meeting, remembered.</p></div><nav aria-label="Footer navigation"><a href="/#pricing">Pricing</a><a href="/guide">Setup</a><a href="/changelog">Changelog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:support@tagalongai.com">Support</a></nav><span class="copyright">© 2026 Tagalong</span></footer>
+</body>
+</html>
