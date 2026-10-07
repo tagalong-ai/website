@@ -19,7 +19,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SLUG = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 STATIC = ('index.html', 'guide.html', 'privacy.html', 'terms.html', 'changelog.html', 'admin.html', 'success.html')
-STYLES = ('styles.css', 'homepage.css', 'homepage.js', 'product-demo.css', 'content.css')
+STYLES = ('styles.css', 'homepage.css', 'homepage.js', 'admin.js', 'product-demo.css', 'content.css')
 ALLOWED = {'title', 'description', 'date', 'updated', 'author', 'draft', 'collections', 'answer', 'faqs', 'resources', 'image', 'imageAlt', 'seoTitle', 'seoDescription', 'showCover', 'pillar', 'layout', 'takeaways'}
 
 class ContentError(ValueError):
@@ -368,7 +368,14 @@ def build(root=ROOT, out=None, preview=False, today=None):
             ET.SubElement(item, key).text = value
     ET.ElementTree(rss).write(out / 'feed.xml', encoding='utf-8', xml_declaration=True)
     (out / 'robots.txt').write_text('User-agent: *\nDisallow: /\n' if preview else f'User-agent: *\nAllow: /\n\nSitemap: {site["url"]}/sitemap.xml\n')
-    (out / '_headers').write_text('''/admin\n  X-Robots-Tag: noindex, nofollow\n/admin.html\n  X-Robots-Tag: noindex, nofollow\n/success\n  X-Robots-Tag: noindex, nofollow\n/success.html\n  X-Robots-Tag: noindex, nofollow\n/404.html\n  X-Robots-Tag: noindex, nofollow\nhttps://:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\nhttps://:deployment.:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\n''')
+    admin_headers = """  X-Robots-Tag: noindex, nofollow
+  Content-Security-Policy: default-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src https://api.tagalongai.com; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'
+  Cache-Control: no-store
+  Referrer-Policy: no-referrer
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+"""
+    (out / '_headers').write_text('/admin\n' + admin_headers + '/admin.html\n' + admin_headers + '''/success\n  X-Robots-Tag: noindex, nofollow\n/success.html\n  X-Robots-Tag: noindex, nofollow\n/404.html\n  X-Robots-Tag: noindex, nofollow\nhttps://:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\nhttps://:deployment.:project.pages.dev/*\n  X-Robots-Tag: noindex, nofollow\n''')
     (out / '_redirects').write_text('https://www.tagalongai.com/* https://tagalongai.com/:splat 301\n/product/guides /collections/ 301\n/product/guides/ /collections/ 301\n')
     # Verification files contain public ownership tokens, never account credentials.
     verification = root / 'content/verification'

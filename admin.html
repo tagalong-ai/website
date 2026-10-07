@@ -6,12 +6,10 @@
   <title>Admin - Tagalong</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" href="/assets/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/admin.js" defer></script>
   <link rel="stylesheet" href="/styles.css">
   <style>
+    @font-face { font-family: "DM Sans"; src: url("/assets/fonts/dm-sans.ttf") format("truetype"); font-style: normal; font-weight: 100 1000; font-display: swap; }
     /* ─── LOGIN ─── */
     .login-wrapper {
       min-height: 100vh;
@@ -590,7 +588,7 @@
       <p>Enter the admin secret to continue.</p>
       <div id="loginError" class="login-error"></div>
       <input type="password" id="secretInput" placeholder="Admin secret" autocomplete="off" autofocus>
-      <button class="btn btn-primary btn-full" id="loginBtn" onclick="handleLogin()">Sign In</button>
+      <button class="btn btn-primary btn-full" id="loginBtn">Sign In</button>
     </div>
   </div>
 
@@ -604,14 +602,14 @@
         <h1><span>Admin</span> Dashboard</h1>
       </div>
       <div class="dashboard-header-center">
-        <input type="text" class="search-input" id="globalSearch" placeholder="Search by email, device ID, or Stripe ID..." oninput="handleGlobalSearch()">
+        <input type="text" class="search-input" id="globalSearch" placeholder="Search by email, device ID, or Stripe ID...">
       </div>
       <div class="dashboard-header-right">
-        <button class="btn btn-outline btn-small" onclick="refreshAll()">
-          <i data-lucide="refresh-cw" style="width:14px;height:14px"></i> Refresh
+        <button class="btn btn-outline btn-small" id="refreshBtn">
+          Refresh
         </button>
-        <button class="btn btn-danger btn-small" onclick="handleLogout()">
-          <i data-lucide="log-out" style="width:14px;height:14px"></i> Logout
+        <button class="btn btn-danger btn-small" id="logoutBtn">
+          Logout
         </button>
       </div>
     </div>
@@ -621,33 +619,33 @@
       <!-- STATS -->
       <div class="stats-grid" id="statsGrid">
         <div class="stat-card">
-          <div class="stat-card-label"><i data-lucide="monitor-smartphone"></i> Total Devices</div>
+          <div class="stat-card-label">Total Devices</div>
           <div class="stat-card-value" id="statDevices">--</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-label"><i data-lucide="users"></i> Unique Subscribers</div>
+          <div class="stat-card-label">Unique Subscribers</div>
           <div class="stat-card-value" id="statSubscribers">--</div>
           <div class="stat-card-sub" id="statDevicesSub"></div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-label"><i data-lucide="key"></i> Active Licenses</div>
+          <div class="stat-card-label">Active Licenses</div>
           <div class="stat-card-value" id="statLicenses">--</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-label"><i data-lucide="dollar-sign"></i> MRR</div>
+          <div class="stat-card-label">MRR</div>
           <div class="stat-card-value green" id="statMRR">--</div>
           <div class="stat-card-action">
-            <button class="btn btn-outline btn-tiny" onclick="verifyWithStripe()" id="stripeVerifyBtn">Verify with Stripe</button>
+            <button class="btn btn-outline btn-tiny" id="stripeVerifyBtn">Verify with Stripe</button>
           </div>
           <div class="stat-card-sub" id="statMRRSub"></div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-label"><i data-lucide="trending-down"></i> Est. API Cost</div>
+          <div class="stat-card-label">Est. API Cost</div>
           <div class="stat-card-value red" id="statApiCost">--</div>
           <div class="stat-card-sub" id="statApiCostSub">This month</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-label"><i data-lucide="trending-up"></i> Net Margin</div>
+          <div class="stat-card-label">Net Margin</div>
           <div class="stat-card-value green" id="statNetMargin">--</div>
           <div class="stat-card-sub" id="statNetMarginSub"></div>
         </div>
@@ -657,12 +655,12 @@
       <div class="admin-section">
         <div class="admin-section-header">
           <div class="admin-section-header-left">
-            <i data-lucide="key-round"></i>
+
             <h2>Licenses</h2>
             <span class="count" id="licensesCount">0</span>
           </div>
-          <button class="btn btn-accent btn-small" id="generateBtn" onclick="toggleLicenseForm()">
-            <i data-lucide="plus" style="width:14px;height:14px"></i> Generate License
+          <button class="btn btn-accent btn-small" id="generateBtn">
+            Generate License
           </button>
         </div>
         <div class="license-form" id="licenseForm">
@@ -677,8 +675,8 @@
             <label>Note (optional)</label>
             <input type="text" id="licenseNote" placeholder="e.g. Early adopter gift">
           </div>
-          <button class="btn btn-accent btn-small" onclick="generateLicense()" id="createLicenseBtn">Create</button>
-          <button class="btn btn-outline btn-small" onclick="toggleLicenseForm()">Cancel</button>
+          <button class="btn btn-accent btn-small" id="createLicenseBtn">Create</button>
+          <button class="btn btn-outline btn-small" id="cancelLicenseBtn">Cancel</button>
         </div>
         <div class="table-wrapper">
           <table>
@@ -703,13 +701,13 @@
       <div class="admin-section">
         <div class="admin-section-header">
           <div class="admin-section-header-left">
-            <i data-lucide="bar-chart-3"></i>
+
             <h2>Usage</h2>
           </div>
         </div>
         <div class="usage-controls">
           <label for="usageMonth">Month:</label>
-          <input type="month" id="usageMonth" onchange="fetchUsageDetailed()">
+          <input type="month" id="usageMonth">
         </div>
         <div class="usage-summary" id="usageSummary" style="display:none"></div>
         <div class="table-wrapper">
@@ -737,17 +735,17 @@
       <div class="admin-section">
         <div class="admin-section-header">
           <div class="admin-section-header-left">
-            <i data-lucide="monitor-smartphone"></i>
+
             <h2>Devices</h2>
             <span class="count" id="subscribersCount">0</span>
           </div>
           <div class="admin-section-header-right">
-            <select class="filter-select" id="subscriberStatusFilter" onchange="renderSubscribers()">
+            <select class="filter-select" id="subscriberStatusFilter">
               <option value="all">All Statuses</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
-            <select class="filter-select" id="subscriberTierFilter" onchange="renderSubscribers()">
+            <select class="filter-select" id="subscriberTierFilter">
               <option value="all">All Tiers</option>
               <option value="pro">Pro</option>
               <option value="free">Free</option>
@@ -779,535 +777,5 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <script>
-    var API_BASE = 'https://api.tagalongai.com';
-
-    // --- Data stores for client-side filtering ---
-    var subscribersData = [];
-    var licensesData = [];
-    var usageData = [];
-    var usageTotals = {};
-    var globalSearchQuery = '';
-
-    // --- Auth ---
-
-    function getSecret() {
-      return sessionStorage.getItem('tagalong_admin_secret') || '';
-    }
-
-    function handleLogin() {
-      var secret = document.getElementById('secretInput').value.trim();
-      if (!secret) {
-        showLoginError('Please enter the admin secret.');
-        return;
-      }
-      var btn = document.getElementById('loginBtn');
-      btn.disabled = true;
-      btn.textContent = 'Signing in...';
-
-      apiFetch('/v1/admin/stats', { secret: secret })
-        .then(function () {
-          sessionStorage.setItem('tagalong_admin_secret', secret);
-          showDashboard();
-        })
-        .catch(function (err) {
-          showLoginError(err.status === 403 || err.status === 401 ? 'Invalid admin secret.' : 'Connection failed. Check the API.');
-        })
-        .finally(function () {
-          btn.disabled = false;
-          btn.textContent = 'Sign In';
-        });
-    }
-
-    function handleLogout() {
-      sessionStorage.removeItem('tagalong_admin_secret');
-      document.getElementById('dashboardView').style.display = 'none';
-      document.getElementById('loginView').style.display = 'flex';
-      document.getElementById('secretInput').value = '';
-      document.getElementById('loginError').style.display = 'none';
-    }
-
-    function showLoginError(msg) {
-      var el = document.getElementById('loginError');
-      el.textContent = msg;
-      el.style.display = 'block';
-    }
-
-    function showDashboard() {
-      document.getElementById('loginView').style.display = 'none';
-      document.getElementById('dashboardView').style.display = 'block';
-      lucide.createIcons();
-
-      // Set usage month to current
-      var now = new Date();
-      var month = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
-      document.getElementById('usageMonth').value = month;
-
-      refreshAll();
-    }
-
-    // --- API ---
-
-    function apiFetch(path, opts) {
-      opts = opts || {};
-      var secret = opts.secret || getSecret();
-      var fetchOpts = {
-        method: opts.method || 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + secret,
-          'Content-Type': 'application/json'
-        }
-      };
-      if (opts.body) {
-        fetchOpts.body = JSON.stringify(opts.body);
-      }
-      return fetch(API_BASE + path, fetchOpts).then(function (res) {
-        if (!res.ok) {
-          var err = new Error('HTTP ' + res.status);
-          err.status = res.status;
-          throw err;
-        }
-        return res.json();
-      });
-    }
-
-    // --- Global Search ---
-
-    function handleGlobalSearch() {
-      globalSearchQuery = document.getElementById('globalSearch').value.trim().toLowerCase();
-      renderSubscribers();
-      renderLicenses();
-      renderUsage();
-    }
-
-    function matchesSearch(item) {
-      if (!globalSearchQuery) return true;
-      var q = globalSearchQuery;
-      var fields = [
-        item.email, item.deviceId, item.stripeCustomerId,
-        item.licenseKey, item.note, item.activatedDeviceId
-      ];
-      for (var i = 0; i < fields.length; i++) {
-        if (fields[i] && fields[i].toLowerCase().indexOf(q) !== -1) return true;
-      }
-      return false;
-    }
-
-    // --- Refresh ---
-
-    function refreshAll() {
-      fetchStats();
-      fetchSubscribers();
-      fetchLicenses();
-      fetchUsageDetailed();
-    }
-
-    // --- Stats ---
-
-    function fetchStats() {
-      var ids = ['statDevices', 'statSubscribers', 'statLicenses', 'statMRR'];
-      ids.forEach(function (id) { document.getElementById(id).textContent = '...'; });
-      document.getElementById('statApiCost').textContent = '...';
-      document.getElementById('statNetMargin').textContent = '...';
-
-      apiFetch('/v1/admin/stats')
-        .then(function (data) {
-          document.getElementById('statDevices').textContent = data.totalDevices;
-          document.getElementById('statSubscribers').textContent = data.uniqueSubscribers;
-          document.getElementById('statDevicesSub').textContent = data.activeDevices + ' active device' + (data.activeDevices !== 1 ? 's' : '');
-          document.getElementById('statLicenses').textContent = data.activeLicenses;
-          document.getElementById('statMRR').textContent = '$' + data.mrr;
-          document.getElementById('statMRRSub').textContent = data.mrrSource === 'stripe' ? 'From Stripe' : 'From Redis (verify with Stripe)';
-        })
-        .catch(function () {
-          ids.forEach(function (id) { document.getElementById(id).textContent = '--'; });
-        });
-    }
-
-    function verifyWithStripe() {
-      var btn = document.getElementById('stripeVerifyBtn');
-      btn.disabled = true;
-      btn.textContent = 'Checking...';
-
-      apiFetch('/v1/admin/stats/stripe')
-        .then(function (data) {
-          document.getElementById('statMRRSub').textContent =
-            'Stripe: ' + data.stripeActiveSubscriptions + ' subs, $' + data.stripeMRR + ' MRR';
-          showToast('Stripe: ' + data.stripeActiveSubscriptions + ' active subs, $' + data.stripeMRR + ' MRR');
-        })
-        .catch(function (err) {
-          document.getElementById('statMRRSub').textContent = 'Stripe verification failed';
-          showToast('Stripe verification failed');
-        })
-        .finally(function () {
-          btn.disabled = false;
-          btn.textContent = 'Verify with Stripe';
-        });
-    }
-
-    // --- Subscribers ---
-
-    function fetchSubscribers() {
-      var tbody = document.getElementById('subscribersBody');
-      tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span> Loading...</td></tr>';
-
-      apiFetch('/v1/admin/subscribers')
-        .then(function (data) {
-          subscribersData = data.devices || [];
-          renderSubscribers();
-        })
-        .catch(function () {
-          tbody.innerHTML = '<tr><td colspan="6" class="error-state">Failed to load subscribers.</td></tr>';
-        });
-    }
-
-    function renderSubscribers(filtered) {
-      var tbody = document.getElementById('subscribersBody');
-      var devices = filtered || subscribersData;
-
-      // Apply filters
-      var statusFilter = document.getElementById('subscriberStatusFilter').value;
-      var tierFilter = document.getElementById('subscriberTierFilter').value;
-
-      devices = devices.filter(function (d) {
-        if (!matchesSearch(d)) return false;
-        if (statusFilter === 'active' && d.subscriptionActive !== 'true') return false;
-        if (statusFilter === 'inactive' && d.subscriptionActive === 'true') return false;
-        if (tierFilter !== 'all' && (d.tier || 'free') !== tierFilter) return false;
-        return true;
-      });
-
-      document.getElementById('subscribersCount').textContent = devices.length;
-
-      if (devices.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No devices match the current filters.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = devices.map(function (d, i) {
-        var isActive = d.subscriptionActive === 'true';
-        var tierClass = (d.tier || 'free') === 'pro' ? 'badge-pro' : 'badge-free';
-        var rowId = 'sub-detail-' + i;
-        var customerDisplay = d.email
-          ? '<div class="customer-cell"><span class="customer-email">' + esc(d.email) + '</span><span class="customer-device">' + esc(d.deviceId.substring(0, 12)) + '...</span></div>'
-          : '<div class="customer-cell"><span class="customer-email" style="color:var(--text-tertiary)">No email</span><span class="customer-device copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(d.deviceId) + '\')" title="' + escAttr(d.deviceId) + '">' + esc(d.deviceId.substring(0, 16)) + '...</span></div>';
-
-        var mainRow = '<tr class="expandable" onclick="toggleDetail(\'' + rowId + '\', this)">' +
-          '<td>' + customerDisplay + '</td>' +
-          '<td><span class="badge ' + (isActive ? 'badge-active' : 'badge-inactive') + '">' + (isActive ? 'Active' : 'Inactive') + '</span></td>' +
-          '<td><span class="badge ' + tierClass + '">' + esc(d.tier || 'free') + '</span></td>' +
-          '<td class="mono">' + esc(d.stripeCustomerId || '--') + '</td>' +
-          '<td>' + formatDate(d.registeredAt) + '</td>' +
-          '<td>' + formatDate(d.lastSeenAt) + '</td>' +
-        '</tr>';
-
-        var detailItems = buildDetailItems(d, ['deviceId', 'email', 'subscriptionActive', 'tier', 'stripeCustomerId', 'subscriptionId', 'registeredAt', 'lastSeenAt']);
-        var detailRow = '<tr class="detail-row" id="' + rowId + '"><td colspan="6"><div class="detail-grid">' + detailItems + '</div></td></tr>';
-        return mainRow + detailRow;
-      }).join('');
-    }
-
-    // --- Licenses ---
-
-    function fetchLicenses() {
-      var tbody = document.getElementById('licensesBody');
-      tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span> Loading...</td></tr>';
-
-      apiFetch('/v1/admin/licenses')
-        .then(function (data) {
-          licensesData = data.licenses || [];
-          renderLicenses();
-        })
-        .catch(function () {
-          tbody.innerHTML = '<tr><td colspan="6" class="error-state">Failed to load licenses.</td></tr>';
-        });
-    }
-
-    function renderLicenses(filtered) {
-      var tbody = document.getElementById('licensesBody');
-      var licenses = filtered || licensesData;
-
-      licenses = licenses.filter(function (l) {
-        return matchesSearch(l);
-      });
-
-      document.getElementById('licensesCount').textContent = licenses.length;
-
-      if (licenses.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No licenses match the current filters.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = licenses.map(function (l, i) {
-        var rowId = 'lic-detail-' + i;
-        var mainRow = '<tr class="expandable" onclick="toggleDetail(\'' + rowId + '\', this)">' +
-          '<td><span class="mono copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(l.licenseKey) + '\')" title="Click to copy">' + esc(l.licenseKey) + '</span></td>' +
-          '<td><span class="badge badge-pro">' + esc(l.tier) + '</span></td>' +
-          '<td>' + formatDate(l.createdAt) + '</td>' +
-          '<td>' + esc(l.maxDevices || '1') + '</td>' +
-          '<td>' + esc(l.note || '--') + '</td>' +
-          '<td>' + (l.activatedDeviceId ? '<span class="mono truncate copyable" onclick="event.stopPropagation(); copyText(\'' + escAttr(l.activatedDeviceId) + '\')" title="' + escAttr(l.activatedDeviceId) + '">' + esc(l.activatedDeviceId.substring(0, 12)) + '...</span>' : '--') + '</td>' +
-        '</tr>';
-
-        var detailItems = buildDetailItems(l, ['licenseKey', 'tier', 'createdAt', 'maxDevices', 'note', 'activatedDeviceId', 'activatedAt']);
-        var detailRow = '<tr class="detail-row" id="' + rowId + '"><td colspan="6"><div class="detail-grid">' + detailItems + '</div></td></tr>';
-        return mainRow + detailRow;
-      }).join('');
-    }
-
-    function toggleLicenseForm() {
-      var form = document.getElementById('licenseForm');
-      form.classList.toggle('visible');
-    }
-
-    function generateLicense() {
-      var tier = document.getElementById('licenseTier').value;
-      var note = document.getElementById('licenseNote').value.trim();
-      var btn = document.getElementById('createLicenseBtn');
-      btn.disabled = true;
-      btn.textContent = 'Creating...';
-
-      var body = { tier: tier };
-      if (note) body.note = note;
-
-      apiFetch('/v1/admin/generate-license', { method: 'POST', body: body })
-        .then(function (data) {
-          showToast('License created: ' + data.licenseKey);
-          document.getElementById('licenseNote').value = '';
-          document.getElementById('licenseForm').classList.remove('visible');
-          fetchLicenses();
-        })
-        .catch(function () {
-          showToast('Failed to create license.');
-        })
-        .finally(function () {
-          btn.disabled = false;
-          btn.textContent = 'Create';
-        });
-    }
-
-    // --- Usage (Detailed) ---
-
-    function fetchUsageDetailed() {
-      var month = document.getElementById('usageMonth').value;
-      if (!month) return;
-
-      var tbody = document.getElementById('usageBody');
-      var summary = document.getElementById('usageSummary');
-      tbody.innerHTML = '<tr class="loading-row"><td colspan="11"><span class="spinner"></span> Loading...</td></tr>';
-      summary.style.display = 'none';
-
-      apiFetch('/v1/admin/usage/detailed?month=' + month)
-        .then(function (data) {
-          usageData = data.usage || [];
-          usageTotals = data.totals || {};
-          renderUsage();
-          updateCostStats();
-        })
-        .catch(function () {
-          // Fall back to legacy endpoint
-          apiFetch('/v1/admin/usage?month=' + month)
-            .then(function (data) {
-              // Map legacy format to detailed format
-              usageData = (data.usage || []).map(function (u) {
-                return {
-                  deviceId: u.deviceId,
-                  email: null,
-                  endpoints: {},
-                  totalCalls: u.apiCalls,
-                  estimatedCost: 0,
-                  revenue: 0,
-                  profit: 0,
-                  isActiveSubscriber: false,
-                };
-              });
-              usageTotals = { totalCalls: data.totalCalls, estimatedCost: 0, revenue: 0, profit: 0, marginPercent: 0 };
-              renderUsage();
-              updateCostStats();
-            })
-            .catch(function () {
-              tbody.innerHTML = '<tr><td colspan="11" class="error-state">Failed to load usage data.</td></tr>';
-              summary.style.display = 'none';
-            });
-        });
-    }
-
-    function renderUsage(filtered) {
-      var tbody = document.getElementById('usageBody');
-      var summary = document.getElementById('usageSummary');
-      var usage = filtered || usageData;
-
-      usage = usage.filter(function (u) {
-        return matchesSearch(u);
-      });
-
-      if (usage.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No usage data for this month.</td></tr>';
-        summary.style.display = 'none';
-        return;
-      }
-
-      // Summary bar
-      var t = usageTotals;
-      var hasEnhanced = usage.some(function (u) { return u.costSource === 'enhanced'; });
-      var hasLegacy = usage.some(function (u) { return u.costSource === 'blended'; });
-      summary.innerHTML =
-        '<span>API Cost: <strong class="cost">$' + (t.estimatedCost || 0).toFixed(2) + '</strong></span>' +
-        '<span>Revenue: <strong class="revenue">$' + (t.revenue || 0).toFixed(2) + '</strong></span>' +
-        '<span>Net: <strong class="profit">$' + (t.profit || 0).toFixed(2) + '</strong> (' + (t.marginPercent || 0) + '%)</span>' +
-        '<span>Devices: <strong>' + usage.length + '</strong></span>' +
-        (hasEnhanced ? '<span style="color:var(--accent);font-size:11px">&#9679; enhanced = real tokens + estimated whisper/gemini</span>' : '') +
-        (hasLegacy ? '<span style="color:var(--text-tertiary);font-size:11px">~est = blended average (no endpoint data)</span>' : '');
-      summary.style.display = 'flex';
-
-      tbody.innerHTML = usage.map(function (u) {
-        var ep = u.endpoints || {};
-        var customerLabel = u.email
-          ? esc(u.email)
-          : '<span class="mono truncate copyable" onclick="copyText(\'' + escAttr(u.deviceId) + '\')" title="' + escAttr(u.deviceId) + '">' + esc(u.deviceId.substring(0, 14)) + '...</span>';
-
-        var profitClass = u.profit >= 0 ? 'profit-positive' : 'profit-negative';
-
-        // Group by API provider
-        var openai = (ep.whisper || 0) + (ep.chat || 0);
-        var assemblyai = (ep['assemblyai-submit'] || 0) + (ep['assemblyai-upload'] || 0) + (ep['assemblyai-poll'] || 0);
-        var gemini = ep.gemini || 0;
-
-        // Cost display with source indicator
-        var displayCost = u.cost !== undefined ? u.cost : (u.estimatedCost || 0);
-        var costBadge = '';
-        var costTooltip = '';
-        if (u.costSource === 'enhanced') {
-          costBadge = ' <span style="color:var(--accent);font-size:10px;font-weight:600" title="Real token/duration data from API responses">&#9679;</span>';
-          if (u.realCostBreakdown) {
-            var rb = u.realCostBreakdown;
-            costTooltip = 'Chat: $' + rb.realCostChat.toFixed(4) + ' (' + rb.tokensInputChat + ' in / ' + rb.tokensOutputChat + ' out)' +
-              '\\nAAI: $' + rb.realCostAssemblyai.toFixed(4) + ' (' + rb.audioDurationSeconds.toFixed(0) + 's audio)' +
-              '\\nWhisper est: $' + rb.whisperEstimate.toFixed(4) +
-              '\\nGemini est: $' + rb.geminiEstimate.toFixed(4) +
-              (rb.lastModelChat ? '\\nModel: ' + rb.lastModelChat : '');
-          }
-        } else if (u.costSource === 'blended') {
-          costBadge = ' <span style="color:var(--text-tertiary);font-size:10px">~est</span>';
-          costTooltip = 'Blended average — no per-endpoint data';
-        }
-
-        var costCell = '<td class="right mono"' + (costTooltip ? ' title="' + costTooltip + '" style="cursor:help"' : '') + '>$' + displayCost.toFixed(2) + costBadge + '</td>';
-
-        return '<tr>' +
-          '<td>' + customerLabel + '</td>' +
-          '<td class="right mono">' + openai + '</td>' +
-          '<td class="right mono">' + assemblyai + '</td>' +
-          '<td class="right mono">' + gemini + '</td>' +
-          '<td class="right"><strong>' + u.totalCalls + '</strong></td>' +
-          costCell +
-          '<td class="right mono">$' + (u.revenue || 0).toFixed(2) + '</td>' +
-          '<td class="right mono ' + profitClass + '">$' + (u.profit || 0).toFixed(2) + '</td>' +
-        '</tr>';
-      }).join('');
-    }
-
-    function updateCostStats() {
-      var t = usageTotals;
-      if (t && t.estimatedCost !== undefined) {
-        document.getElementById('statApiCost').textContent = '$' + (t.estimatedCost || 0).toFixed(2);
-        document.getElementById('statApiCostSub').textContent = 'This month';
-
-        var profit = t.profit || 0;
-        var margin = t.marginPercent || 0;
-        document.getElementById('statNetMargin').textContent = '$' + profit.toFixed(2);
-        var marginEl = document.getElementById('statNetMargin');
-        marginEl.className = 'stat-card-value ' + (profit >= 0 ? 'green' : 'red');
-        document.getElementById('statNetMarginSub').textContent = margin + '% margin';
-      }
-    }
-
-    // --- Detail Row Helpers ---
-
-    function toggleDetail(rowId, triggerRow) {
-      var detail = document.getElementById(rowId);
-      if (!detail) return;
-      detail.classList.toggle('visible');
-      triggerRow.classList.toggle('expanded');
-    }
-
-    function buildDetailItems(obj, knownKeys) {
-      var allKeys = knownKeys.slice();
-      // Include any extra fields from the Redis hash that aren't in the known set
-      Object.keys(obj).forEach(function (k) {
-        if (allKeys.indexOf(k) === -1) {
-          allKeys.push(k);
-        }
-      });
-      return allKeys.map(function (key) {
-        var val = obj[key];
-        if (val === undefined || val === null) val = '--';
-        var displayVal = String(val);
-        var isDate = key.toLowerCase().indexOf('at') === key.length - 2 && key.length > 2;
-        if (isDate && displayVal !== '--') {
-          displayVal = formatDate(displayVal) || displayVal;
-        }
-        var isCopyable = displayVal.length > 20 || key.toLowerCase().indexOf('id') !== -1 || key.toLowerCase().indexOf('key') !== -1;
-        var copyAttr = isCopyable && displayVal !== '--' ? ' class="detail-value copyable" onclick="copyText(\'' + escAttr(displayVal) + '\')" title="Click to copy"' : ' class="detail-value"';
-        return '<div class="detail-item"><span class="detail-label">' + esc(formatFieldName(key)) + '</span><span' + copyAttr + '>' + esc(displayVal) + '</span></div>';
-      }).join('');
-    }
-
-    function formatFieldName(key) {
-      // Convert camelCase to Title Case (e.g. "stripeCustomerId" -> "Stripe Customer Id")
-      return key.replace(/([A-Z])/g, ' $1').replace(/^./, function (s) { return s.toUpperCase(); });
-    }
-
-    // --- Utilities ---
-
-    function formatDate(iso) {
-      if (!iso) return '--';
-      var d = new Date(iso);
-      if (isNaN(d.getTime())) return '--';
-      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
-        ' ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    }
-
-    function esc(str) {
-      if (!str) return '';
-      var div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
-
-    function escAttr(str) {
-      return esc(str).replace(/'/g, "\\'");
-    }
-
-    function copyText(text) {
-      navigator.clipboard.writeText(text).then(function () {
-        showToast('Copied to clipboard');
-      });
-    }
-
-    var toastTimer;
-    function showToast(msg) {
-      var el = document.getElementById('toast');
-      el.textContent = msg;
-      el.classList.add('visible');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(function () {
-        el.classList.remove('visible');
-      }, 2500);
-    }
-
-    // --- Init ---
-
-    document.getElementById('secretInput').addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') handleLogin();
-    });
-
-    // Auto-login if secret is still in sessionStorage
-    if (getSecret()) {
-      showDashboard();
-    }
-
-    lucide.createIcons();
-  </script>
 </body>
 </html>

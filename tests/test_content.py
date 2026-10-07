@@ -44,6 +44,49 @@ class PublishingTests(unittest.TestCase):
         self.assertIn('/collections/', home)
         self.assertNotIn('noindex', home)
         self.assertIn('noindex', (out / 'admin.html').read_text())
+    def test_admin_build_preserves_security_boundary(self):
+        from html.parser import HTMLParser
+        class AdminDocument(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.scripts, self.handlers, self.font_links = [], [], []
+            def handle_starttag(self, tag, attrs):
+                values = dict(attrs)
+                self.handlers.extend(key for key in values if key.lower().startswith('on'))
+                if tag == 'script' and values.get('type') != 'application/ld+json':
+                    self.scripts.append(values.get('src'))
+                if tag == 'link' and 'fonts.' in values.get('href', ''):
+                    self.font_links.append(values['href'])
+        out = self.build()
+        doc = AdminDocument()
+        doc.feed((out / 'admin.html').read_text())
+        self.assertEqual(doc.scripts, ['/admin.js'])
+        self.assertEqual(doc.handlers, [])
+        self.assertEqual(doc.font_links, [])
+        self.assertEqual((out / 'admin.js').read_bytes(), (ROOT / 'admin.js').read_bytes())
+        headers, route = {}, None
+        for line in (out / '_headers').read_text().splitlines():
+            if line.startswith('  '):
+                key, value = line.strip().split(': ', 1)
+                headers[route][key] = value
+            elif line:
+                route = line
+                headers[route] = {}
+        for route in ('/admin', '/admin.html'):
+            values = headers[route]
+            csp = dict(item.strip().split(' ', 1) for item in values['Content-Security-Policy'].split(';') if item.strip())
+            self.assertEqual(csp['default-src'], "'none'")
+            self.assertEqual(csp['script-src'], "'self'")
+            self.assertEqual(csp['script-src-attr'], "'none'")
+            self.assertEqual(csp['connect-src'], 'https://api.tagalongai.com')
+            self.assertEqual(csp['font-src'], "'self'")
+            for directive in ('frame-ancestors', 'base-uri', 'form-action', 'object-src'):
+                self.assertEqual(csp[directive], "'none'")
+            self.assertEqual(values['Cache-Control'], 'no-store')
+            self.assertEqual(values['Referrer-Policy'], 'no-referrer')
+            self.assertEqual(values['X-Content-Type-Options'], 'nosniff')
+            self.assertEqual(values['X-Frame-Options'], 'DENY')
+
     def test_drafts_absent_from_pages_sitemap_feed_and_collection(self):
         self.edit('draft: false', 'draft: true')
         out = self.build()
