@@ -26,6 +26,9 @@
 .homepage .texts-consent a {color:var(--brand-green);text-decoration:underline;text-underline-offset:3px;}
 
 .homepage .texts-submit {width:100%;font-size:17px;}
+.homepage .texts-optional-note {margin:0 0 10px;}
+.homepage .texts-legal-links {margin:12px 0 0;font-size:14px;text-align:center;color:#5b6357;}
+.homepage .texts-legal-links a {color:var(--brand-green);text-decoration:underline;text-underline-offset:3px;}
 .homepage .texts-submit:disabled {background:#7fa98b;border-color:#7fa98b;cursor:not-allowed;box-shadow:none;}
 .homepage .texts-submit[aria-busy="true"] {cursor:progress;}
 .homepage .texts-noscript {font-size:15px;color:#69531b;background:#f8edcf;border:1px solid #dfc077;border-radius:8px;padding:12px 14px;}

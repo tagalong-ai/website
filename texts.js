@@ -5,6 +5,7 @@
   const ENDPOINT = 'https://sms-promote-production.up.railway.app/public/join';
   const TIMEOUT_MS = 15000;
   const SUPPORT = 'support@tagalongai.com';
+  const SUCCESS = "You're subscribed to Tagalong AI texts! Watch for a confirmation text. Up to 4 msgs/month. Reply STOP to cancel, HELP for help.";
 
   const form = document.getElementById('texts-form');
   if (!form) return;
@@ -17,7 +18,9 @@
   const label = submit.textContent;
   let sending = false;
 
-  submit.disabled = false;
+  // Signing up is voluntary: the button only turns on once the consent box is checked.
+  function syncButton() { if (!sending) submit.disabled = !consent.checked; }
+  syncButton();
 
   function show(message, kind) {
     status.className = 'texts-status is-' + kind;
@@ -42,7 +45,7 @@
   }
 
   phone.addEventListener('input', () => phone.removeAttribute('aria-invalid'));
-  consent.addEventListener('change', () => consent.removeAttribute('aria-invalid'));
+  consent.addEventListener('change', () => { consent.removeAttribute('aria-invalid'); syncButton(); });
 
   form.addEventListener('submit', async event => {
     event.preventDefault();
@@ -76,8 +79,9 @@
       let data = {};
       try { data = await response.json(); } catch (_) { data = {}; }
       if (response.ok && data && data.ok) {
-        show(typeof data.message === 'string' && data.message ? data.message : "You're subscribed! Watch for a confirmation text.", 'success');
+        show(typeof data.message === 'string' && data.message ? data.message : SUCCESS, 'success');
         form.reset();
+        status.focus();
       } else if (response.status === 429) {
         show('Too many sign-up attempts from this connection. Please try again in an hour.', 'error');
       } else {
@@ -88,7 +92,7 @@
     } finally {
       clearTimeout(timer);
       sending = false;
-      submit.disabled = false;
+      syncButton();
       submit.removeAttribute('aria-busy');
       submit.textContent = label;
     }
