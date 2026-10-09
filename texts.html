@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Get Tagalong Updates by Text - Tagalong</title>
-  <meta name="description" content="Sign up for Tagalong text messages: new releases, product updates, tips, and occasional Tagalong Pro offers. Up to 4 msgs/month. Reply STOP to cancel.">
+  <title>Get Tagalong Updates - Tagalong</title>
+  <meta name="description" content="Sign up for Tagalong updates by email: new releases, product updates, tips, and occasional Tagalong Pro offers. Texts are optional, up to 4 msgs/month. Reply STOP to cancel.">
   <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="preload" href="/assets/fonts/dm-sans.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="/styles.css">
@@ -26,26 +26,31 @@
 
 <main id="main" class="page-width content-main texts-main">
   <header class="content-heading texts-heading">
-    <p class="eyebrow">TAGALONG TEXT UPDATES</p>
-    <h1>Get Tagalong updates by text</h1>
-    <p class="content-deck">Tagalong, from Tagalong AI, is the Mac app for AI meeting notes. Join our text list to hear about new releases first, pick up practical tips, and get the occasional Tagalong Pro offer.</p>
+    <p class="eyebrow">TAGALONG UPDATES</p>
+    <h1>Get Tagalong updates</h1>
+    <p class="content-deck">Tagalong, from Tagalong AI, is the Mac app for AI meeting notes. Sign up to hear about new releases first, pick up practical tips, and get the occasional Tagalong Pro offer. Updates come by email, and by text too if you choose.</p>
   </header>
 
   <div class="texts-layout">
     <section class="texts-card" aria-labelledby="texts-form-title">
-      <h2 id="texts-form-title">Sign up for texts</h2>
-      <p class="texts-card-intro">Up to 4 texts a month. Reply STOP anytime to cancel.</p>
+      <h2 id="texts-form-title">Sign up for updates</h2>
+      <p class="texts-card-intro">All you need is your email. Texts are optional: add your mobile number and check the box only if you want them too.</p>
 
-      <form id="texts-form" class="texts-form" novalidate>
+      <form id="texts-form" class="texts-form" action="https://sms-promote-production.up.railway.app/public/join" method="post" novalidate>
+        <div class="texts-field">
+          <label for="texts-email">Email address</label>
+          <input id="texts-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required aria-required="true" placeholder="you@example.com">
+        </div>
+
         <div class="texts-field">
           <label for="texts-first-name">First name <span class="texts-optional">(optional)</span></label>
           <input id="texts-first-name" name="first_name" type="text" autocomplete="given-name" maxlength="60">
         </div>
 
         <div class="texts-field">
-          <label for="texts-phone">Mobile number</label>
+          <label for="texts-phone">Mobile number <span class="texts-optional">(optional, only needed for texts)</span></label>
           <input id="texts-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="texts-phone-hint" placeholder="(555) 555-0123">
-          <p id="texts-phone-hint" class="texts-hint">US and Canadian mobile numbers only.</p>
+          <p id="texts-phone-hint" class="texts-hint">Only used if you check the text box below. US and Canadian mobile numbers only.</p>
         </div>
 
         <div class="texts-hp" aria-hidden="true">
@@ -53,15 +58,19 @@
           <input id="texts-company-website" name="company_website" type="text" tabindex="-1" autocomplete="new-password">
         </div>
 
-        <div class="texts-consent">
-          <input id="texts-consent" name="consent" type="checkbox" value="yes" aria-describedby="texts-optional-note">
-          <label for="texts-consent">By checking this box, I agree to receive recurring automated marketing text messages from Tagalong AI (new releases, tips, and offers) at the mobile number provided. Consent is not a condition of purchase or of using Tagalong. Msg frequency varies, up to 4 msgs/month. Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel. See our <a href="/privacy#text-messaging">Privacy Policy</a> and <a href="/terms#text-messages">Terms of Service</a>.</label>
+        <div class="texts-optin">
+          <p id="texts-optional-note" class="texts-hint texts-optional-note">Texts are optional. Leave the box unchecked to get email updates only.</p>
+          <div class="texts-consent">
+            <input id="texts-consent" name="consent" type="checkbox" value="yes" aria-describedby="texts-optional-note">
+            <label for="texts-consent">By checking this box, I agree to receive recurring automated marketing text messages from Tagalong AI (new releases, tips, and offers) at the mobile number provided. Consent is not a condition of purchase or of using Tagalong. Msg frequency varies, up to 4 msgs/month. Msg &amp; data rates may apply. Reply HELP for help, STOP to cancel. See our <a href="/privacy#text-messaging">Privacy Policy</a> and <a href="/terms#text-messages">Terms of Service</a>.</label>
+          </div>
         </div>
 
-        <p id="texts-optional-note" class="texts-hint texts-optional-note">Text sign-up is optional. The Sign up button turns on only after you check the box.</p>
-        <button id="texts-submit" class="button texts-submit" type="submit" disabled>Sign up for texts</button>
-        <p class="texts-legal-links"><a href="/terms#text-messages">Terms of Service</a> <span aria-hidden="true">·</span> <a href="/privacy#text-messaging">Privacy Policy</a> <span aria-hidden="true">·</span> <a href="/">No thanks, keep browsing Tagalong</a></p>
-        <noscript><p class="texts-noscript">JavaScript is required to submit this form. Turn it on and reload this page, or email <a href="mailto:support@tagalongai.com">support@tagalongai.com</a> for help.</p></noscript>
+        <div class="texts-actions">
+          <button id="texts-submit" class="button texts-submit" type="submit">Sign up</button>
+          <p class="texts-legal-links"><a href="/terms#text-messages">Terms of Service</a> <span aria-hidden="true">·</span> <a href="/privacy#text-messaging">Privacy Policy</a> <span aria-hidden="true">·</span> <a href="/">No thanks, keep browsing Tagalong</a></p>
+        </div>
+        <noscript><p class="texts-noscript">With JavaScript off, the form still works but shows a plain confirmation. Questions? Email <a href="mailto:support@tagalongai.com">support@tagalongai.com</a>.</p></noscript>
         <div id="texts-status" class="texts-status" role="status" aria-live="polite" tabindex="-1"></div>
       </form>
     </section>
@@ -73,20 +82,24 @@
         <li><strong>Tips</strong><span>Short, practical ways to get more from your meeting notes.</span></li>
         <li><strong>Occasional Tagalong Pro offers</strong><span>Now and then, a deal on Tagalong Pro.</span></li>
       </ul>
+      <p class="texts-channels">By email, always. By text as well, only if you add your mobile number and check the box.</p>
       <dl class="texts-facts">
-        <div><dt>How often</dt><dd>Message frequency varies, up to 4 msgs/month.</dd></div>
-        <div><dt>Cost</dt><dd>Msg &amp; data rates may apply.</dd></div>
-        <div><dt>Stop anytime</dt><dd>Reply STOP to any message to cancel.</dd></div>
+        <div><dt>Email updates</dt><dd>Unsubscribe with the link in any email, or email <a href="mailto:support@tagalongai.com">support@tagalongai.com</a>.</dd></div>
+        <div><dt>Texts (optional)</dt><dd>Message frequency varies, up to 4 msgs/month.</dd></div>
+        <div><dt>Text cost</dt><dd>Msg &amp; data rates may apply.</dd></div>
+        <div><dt>Stop texts anytime</dt><dd>Reply STOP to any message to cancel.</dd></div>
         <div><dt>Get help</dt><dd>Reply HELP, or email <a href="mailto:support@tagalongai.com">support@tagalongai.com</a>.</dd></div>
+        <div><dt>Where texts work</dt><dd>US and Canadian mobile numbers.</dd></div>
       </dl>
-      <p class="texts-promise">We never sell or share your mobile number or text consent with third parties for marketing purposes.</p>
+      <p class="texts-promise">We never sell or share your mobile number or text consent with third parties for marketing purposes. We don’t sell or share your email address for marketing either.</p>
     </aside>
   </div>
 
   <section class="texts-fineprint" aria-labelledby="texts-fineprint-title">
     <h2 id="texts-fineprint-title">Program details</h2>
-    <p>Tagalong text messages are sent by Tagalong AI to the mobile number you provide on this page after you check the consent box. Signing up is optional and is not required to download, buy, or use Tagalong. Messages cover product updates and new releases, tips, and occasional offers on Tagalong Pro. Message frequency varies, up to 4 msgs/month. Msg &amp; data rates may apply. Consent is not a condition of purchase. Reply STOP to cancel at any time; you will receive one confirmation and no further messages. Reply HELP for help, or email <a href="mailto:support@tagalongai.com">support@tagalongai.com</a>. Carriers are not liable for delayed or undelivered messages. Available for US and Canadian mobile numbers.</p>
-    <p>Read how we handle your number in our <a href="/privacy#text-messaging">Privacy Policy</a> and the program terms in our <a href="/terms#text-messages">Terms of Service</a>.</p>
+    <p><strong>Email updates.</strong> When you sign up on this page, Tagalong AI sends Tagalong product updates and news, tips, and occasional Tagalong Pro offers to the email address you provide. We use your email address and optional first name only for these updates. Unsubscribe anytime with the link in any email, or by writing to <a href="mailto:support@tagalongai.com">support@tagalongai.com</a>.</p>
+    <p><strong>Text messages (optional).</strong> Tagalong text messages are sent by Tagalong AI only to the mobile number you provide on this page, and only if you check the consent box. You can sign up for email updates without entering a mobile number or checking the box, and signing up is not required to download, buy, or use Tagalong. Messages cover product updates and new releases, tips, and occasional offers on Tagalong Pro. Message frequency varies, up to 4 msgs/month. Msg &amp; data rates may apply. Consent is not a condition of purchase. Reply STOP to cancel at any time; you will receive one confirmation and no further messages. Reply HELP for help, or email <a href="mailto:support@tagalongai.com">support@tagalongai.com</a>. Carriers are not liable for delayed or undelivered messages. Available for US and Canadian mobile numbers.</p>
+    <p>Read how we handle your email address and mobile number in our <a href="/privacy#email-updates">Privacy Policy</a> and the text program terms in our <a href="/terms#text-messages">Terms of Service</a>.</p>
   </section>
 </main>
 

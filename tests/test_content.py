@@ -276,6 +276,7 @@ class PublishingTests(unittest.TestCase):
         self.assertIn('https://sms-promote-production.up.railway.app/public/join', (out / 'texts.js').read_text())
         privacy = (out / 'privacy.html').read_text()
         self.assertIn('id="text-messaging"', privacy)
+        self.assertIn('id="email-updates"', privacy)
         self.assertIn('We do not sell or share your SMS opt-in data or personal information with third parties for marketing purposes.', privacy)  # Twilio A2P check
         self.assertIn('No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. All the above categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties.', privacy)
         terms = (out / 'terms.html').read_text()

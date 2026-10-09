@@ -1,4 +1,4 @@
-/* Text-updates opt-in page (/texts). Builds on homepage.css + content.css tokens. */
+/* Tagalong updates sign-up page (/texts): email required, texts optional. Builds on homepage.css + content.css tokens. */
 .homepage .texts-heading h1 {max-width:780px;}
 .homepage .texts-layout {display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start;margin:12px 0 56px;}
 
@@ -26,7 +26,9 @@
 .homepage .texts-consent a {color:var(--brand-green);text-decoration:underline;text-underline-offset:3px;}
 
 .homepage .texts-submit {width:100%;font-size:17px;}
-.homepage .texts-optional-note {margin:0 0 10px;}
+.homepage .texts-optin {display:grid;gap:10px;}
+.homepage .texts-optional-note {margin:0;}
+.homepage .texts-actions {display:grid;}
 .homepage .texts-legal-links {margin:12px 0 0;font-size:14px;text-align:center;color:#5b6357;}
 .homepage .texts-legal-links a {color:var(--brand-green);text-decoration:underline;text-underline-offset:3px;}
 .homepage .texts-submit:disabled {background:#7fa98b;border-color:#7fa98b;cursor:not-allowed;box-shadow:none;}
@@ -41,7 +43,7 @@
 
 .homepage .texts-details {padding-top:8px;}
 .homepage .texts-details h2 {font-size:clamp(24px,2.4vw,30px);letter-spacing:-.03em;color:#315239;margin-bottom:18px;}
-.homepage .texts-list {list-style:none;padding:0;margin:0 0 28px;display:grid;gap:0;}
+.homepage .texts-list {list-style:none;padding:0;margin:0 0 18px;display:grid;gap:0;}
 .homepage .texts-list li {display:grid;gap:4px;padding:16px 0 16px 34px;border-top:1px solid #dce1d3;position:relative;}
 .homepage .texts-list li::before {content:'';position:absolute;left:4px;top:22px;width:14px;height:14px;border-radius:50%;background:var(--brand-gold-tint);border:2px solid #d4a843;}
 .homepage .texts-list strong {font-size:17px;color:var(--ink);}
@@ -53,11 +55,14 @@
 .homepage .texts-facts dd {margin:6px 0 0;font-size:15px;line-height:1.5;color:#3f463c;overflow-wrap:anywhere;}
 .homepage .texts-facts a {color:var(--brand-green);text-decoration:underline;text-underline-offset:3px;}
 
+.homepage .texts-channels {font-size:16px;line-height:1.55;color:#3f463c;margin:0 0 20px;}
+
 .homepage .texts-promise {font-weight:600;color:#315239;background:#eef2e7;border-left:3px solid var(--brand-green);border-radius:0 8px 8px 0;padding:14px 16px;}
 
 .homepage .texts-fineprint {max-width:860px;border-top:1px solid #dce1d3;padding:32px 0 8px;}
 .homepage .texts-fineprint h2 {font-size:20px;letter-spacing:-.01em;margin-bottom:12px;}
 .homepage .texts-fineprint p {font-size:15px;line-height:1.7;color:var(--muted);margin-bottom:12px;}
+.homepage .texts-fineprint strong {color:#3f463c;}
 
 @media(max-width:900px){.homepage .texts-layout {grid-template-columns:1fr;}.homepage .texts-details {padding-top:0;}}
 @media(max-width:560px){.homepage .texts-facts {grid-template-columns:1fr;}.homepage .texts-consent {padding:14px;}.homepage .texts-layout {margin-bottom:40px;}}
